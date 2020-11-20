@@ -1,0 +1,53 @@
+<resources>
+    <string name="db_name">duties_db_temp</string>
+    <string name="app_name">FB Result</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Main</string>
+    <string name="menu_gallery">My duties</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_logout">Logout</string>
+    <string name="logout_title">Account</string>
+    <string name="mainDutyTitle">The nearest duty</string>
+    <string name="days_left">%d days left</string>
+    <string name="today">Today!</string>
+    <string name="no_duty">List of duties is empty</string>
+    <string name="partner">Partner: %s</string>
+
+    <string name="name">Name</string>
+    <string name="duties_number">Number of duties in current month:</string>
+    <string name="btn_diffs_commit_text">Commit changes</string>
+    <string name="password">Password</string>
+    <string name="show">show</string>
+    <string name="editPass">Change password</string>
+    <string name="editEmail">Change email</string>
+    <string name="hide">hide</string>
+    <string name="email_tip">New email:</string>
+
+    <string name="btn_neg_text">Cancel</string>
+    <string name="btn_pos_text">OK</string>
+    <string name="empty_fields_ex">Please, enter data</string>
+    <string name="pass_tip">New password:</string>
+    <string name="conf_pass_tip">Repeat new password:</string>
+    <string name="conf_pass_ex">Passwords are not equals!</string>
+    <string name="pass_length_ex">Password must have more then 6 symbols</string>
+    <string name="email_dialog_title">Email updating</string>
+    <string name="email_dialog_msg">Enter and confirm your email</string>
+    <string name="pass_dialog_title">Password updating</string>
+    <string name="pass_dialog_msg">Enter and confirm your password</string>
+
+    <string-array name="daysOfWeek">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+</resources>

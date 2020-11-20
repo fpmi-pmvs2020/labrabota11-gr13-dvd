@@ -21,13 +21,6 @@ import com.task.fbresult.db.DBRequester;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.DutyManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class AllDutiesFragment extends Fragment {
@@ -58,12 +51,12 @@ public class AllDutiesFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private View getViewWithDuty(Duty duty){
         View child = View.inflate(getContext(),R.layout.duty_item,null);
-        TextView tvDate = child.findViewById(R.id.tvDutyDate);
+        //TextView tvDate = child.findViewById(R.id.tvDutyTitle);
         TextView tvWeekDay = child.findViewById(R.id.tvDutyWeekDay);
-        TextView tvPartner = child.findViewById(R.id.tvDutyPartner);
+        //TextView tvPartner = child.findViewById(R.id.tvDutyTag);
         TextView tvRemainedTime = child.findViewById(R.id.tvDutyTimeRemained);
-        tvDate.setText(duty.getDate());
-        tvPartner.setText(duty.getPartner());
+        //tvDate.setText(duty.getDate());
+        //tvPartner.setText(duty.getPartner());
         DutyManager dutyManager = new DutyManager(duty,getResources());
         tvRemainedTime.setText(dutyManager.getDaysLeftAsString());
         tvWeekDay.setText(dutyManager.getDayOfWeek());

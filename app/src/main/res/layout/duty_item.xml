@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/tvDutyDate"
+        android:id="@+id/tvDutyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -24,18 +24,18 @@
         android:textColor="@color/dark_blue"
         android:layout_marginEnd="15dp"
         android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="@id/tvDutyDate"
+        app:layout_constraintTop_toTopOf="@id/tvDutyTitle"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/tvDutyPartner"
+        android:id="@+id/tvDutyTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/coral"
         android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvDutyDate"
+        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
@@ -46,6 +46,6 @@
         android:layout_marginBottom="15dp"
         android:layout_marginStart="15dp"
         android:textColor="@color/coral"
-        app:layout_constraintTop_toBottomOf="@id/tvDutyPartner"
+        app:layout_constraintTop_toBottomOf="@id/tvDutyTag"
         app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

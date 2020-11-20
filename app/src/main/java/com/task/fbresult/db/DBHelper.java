@@ -19,7 +19,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dbHelper;
 
-    private static final String LOG_TAG = "myLogs";
+    public static final String LOG_TAG = "myLogs";
+
+    public static final String PER_ON_DUTY_TABLE =              "PeopleOnDuty";
+    public static final String PER_ON_DUTY_ID_COLUMN =          "Id";
+    public static final String PER_ON_DUTY_PERSON_FK_COLUMN =   "PersonId";
+    public static final String PER_ON_DUTY_DUTY_FK_COLUMN =     "DutyId";
+    public static final String PER_ON_DUTY_FROM_COLUMN =        "OnDutyFrom";
+    public static final String PER_ON_DUTY_TO_COLUMN =          "OnDutyTo";
+
+    public static final String PERSON_TABLE =                   "People";
+    public static final String PERSON_ID_COLUMN =               "Id";
+    public static final String PERSON_LOGIN_COLUMN =            "Login";
+    public static final String PERSON_FIO_COLUMN =              "FIO";
+    public static final String PERSON_TEL_COLUMN =              "Telephone";
+    public static final String PERSON_ADDRESS_COLUMN =          "Address";
+    public static final String PERSON_BIRTH_COLUMN =            "BirthDate";
+    public static final String PERSON_ROLE_COLUMN =             "Role";
+
+    public static final String DUTY_TABLE =                     "Duties";
+    public static final String DUTY_ID_COLUMN =                 "Id";
+    public static final String DUTY_FROM_COLUMN =               "DutyFrom";
+    public static final String DUTY_TO_COLUMN =                 "DutyTo";
+    public static final String DUTY_TYPE_FK_COLUMN =            "DutyTypeId";
+    public static final String DUTY_MAX_PEOPLE_COLUMN =         "MaxPeopleOnDuty";
+
+    public static final String TYPES_TABLE =                    "Duties";
+    public static final String TYPES_ID_COLUMN =                "Id";
+    public static final String DUTY_TITLE_COLUMN =              "TypeName";
+
 
     private DBHelper(@Nullable Context context, @Nullable String name,
                     @Nullable SQLiteDatabase.CursorFactory factory,
@@ -34,6 +62,14 @@ public class DBHelper extends SQLiteOpenHelper {
         if(dbHelper==null)
             dbHelper = new DBHelper(context, name, factory, version);
 
+        return dbHelper;
+    }
+
+    public static DBHelper newInstance(){
+
+        if (dbHelper == null){
+            throw new RuntimeException("context don't exist, use another newInstant(_context)");
+        }
         return dbHelper;
     }
 

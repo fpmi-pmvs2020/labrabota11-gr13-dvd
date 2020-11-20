@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private void startSignInWindow() {
         List<AuthUI.IdpConfig> providers = new ArrayList<>();
         //providers.add(new AuthUI.IdpConfig.PhoneBuilder().build());
-        providers.add(new AuthUI.IdpConfig.EmailBuilder().build());
+        providers.add(new AuthUI.IdpConfig.EmailBuilder().setAllowNewAccounts(false).build());
         startActivityForResult(AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)

@@ -44,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DUTY_TYPE_FK_COLUMN =            "DutyTypeId";
     public static final String DUTY_MAX_PEOPLE_COLUMN =         "MaxPeopleOnDuty";
 
-    public static final String TYPES_TABLE =                    "Duties";
+    public static final String TYPES_TABLE =                    "DutyTypes";
     public static final String TYPES_ID_COLUMN =                "Id";
     public static final String DUTY_TITLE_COLUMN =              "TypeName";
 

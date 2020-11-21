@@ -28,7 +28,6 @@ public class RoleDao extends Dao<Role>{
     ContentValues getContentValues(Role role) {
         ContentValues cv = new ContentValues();
 
-        cv.put(ROLE_ID_COLUMN, role.getId());
         cv.put(ROLE_NAME_COLUMN, role.getName());
 
         return cv;

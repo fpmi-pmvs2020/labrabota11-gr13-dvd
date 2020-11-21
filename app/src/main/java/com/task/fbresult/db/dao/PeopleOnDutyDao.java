@@ -27,7 +27,6 @@ public class PeopleOnDutyDao extends Dao<PeopleOnDuty> {
     ContentValues getContentValues(PeopleOnDuty peopleOnDuty) {
         ContentValues cv = new ContentValues();
 
-        cv.put(PER_ON_DUTY_ID_COLUMN, peopleOnDuty.getId());
         cv.put(PER_ON_DUTY_PERSON_FK_COLUMN, peopleOnDuty.getPersonId());
         cv.put(PER_ON_DUTY_DUTY_FK_COLUMN, peopleOnDuty.getDutyId());
         cv.put(PER_ON_DUTY_FROM_COLUMN, peopleOnDuty.getFrom().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));

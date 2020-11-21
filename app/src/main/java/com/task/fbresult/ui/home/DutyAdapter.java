@@ -73,7 +73,7 @@ public class DutyAdapter extends RecyclerView.Adapter<DutyAdapter.ViewHolder> {
             super(view);
 
             title = view.findViewById(R.id.tvDutyTitle);
-            tag = view.findViewById(R.id.tvDutyTag);
+            tag = view.findViewById(R.id.tvDutyPartners);
             from = view.findViewById(R.id.tvDutyStartTime);
             to = view.findViewById(R.id.tvDutyEndTime);
             max = view.findViewById(R.id.tvDutyAmounts);

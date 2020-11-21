@@ -50,7 +50,7 @@ public class AllDutiesFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private View getViewWithDuty(Duty duty) {
-        View child = View.inflate(getContext(), R.layout.duty_item, null);
+        View child = View.inflate(getContext(), R.layout.duty_first_item, null);
         //TextView tvDate = child.findViewById(R.id.tvDutyTitle);
         TextView tvWeekDay = child.findViewById(R.id.tvDutyWeekDay);
         //TextView tvPartner = child.findViewById(R.id.tvDutyTag);

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/light_blue_oval_shape"
+    android:padding="22dp">
+
+    <TextView
+        android:id="@+id/tvDutyTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/dark_blue"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDutyDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light_blue"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle"
+        app:layout_constraintStart_toStartOf="@id/tvDutyTitle"/>
+
+    <TextView
+        android:id="@+id/tvDutyWeekDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light_blue"
+        android:textSize="18sp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@id/tvDutyDate"
+        app:layout_constraintEnd_toEndOf="@id/tvDutyTitle" />
+
+    <TextView
+        android:id="@+id/tvDutyTimeRemained"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/coral"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDutyDate" />
+
+    <TextView
+        android:id="@+id/tvPartnersTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/dark_blue"
+        android:textSize="16sp"
+        android:text="@string/partner"
+        app:layout_constraintStart_toStartOf="@id/tvDutyDate"
+        app:layout_constraintTop_toBottomOf="@+id/tvDutyTimeRemained" />
+
+    <TextView
+        android:id="@+id/tvDutyPartners"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="@string/test_partners"
+        android:textColor="@color/coral"
+        android:textSize="16sp"
+        android:maxWidth="240dp"
+        app:layout_constraintEnd_toEndOf="@id/tvDutyTitle"
+        app:layout_constraintTop_toTopOf="@+id/tvPartnersTip" />
+
+
+
+    <TextView
+        android:id="@+id/tvDutyStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintEnd_toStartOf="@id/tvDutyEndTime"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/tvDutyEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvDutyTitle"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="26dp"
+        android:textSize="14sp"
+        android:textColor="@color/dark_blue"
+        android:text="@string/duty_time_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDutyPartners" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:textColor="@color/dark_blue"
+        android:text="@string/duty_people_count"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="@+id/tvDutyEndTime"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+</androidx.constraintlayout.widget.ConstraintLayout>

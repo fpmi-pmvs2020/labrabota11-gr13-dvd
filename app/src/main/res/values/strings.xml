@@ -17,7 +17,7 @@
     <string name="days_left">%d days left</string>
     <string name="today">Today!</string>
     <string name="no_duty">List of duties is empty</string>
-    <string name="partner">Partner: %s</string>
+    <string name="partner">Partners: </string>
 
     <string name="name">Name</string>
     <string name="duties_number">Number of duties in current month:</string>
@@ -43,6 +43,8 @@
 
     <string name="duty_time_view">Duty time:</string>
     <string name="duty_people_count">Position amount</string>
+
+    <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
 
     <string-array name="daysOfWeek">
         <item>Monday</item>

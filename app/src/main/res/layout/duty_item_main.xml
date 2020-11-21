@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvDutyTag"
+        android:id="@+id/tvDutyPartners"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -44,7 +44,7 @@
         android:textColor="@color/coral"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDutyTag" />
+        app:layout_constraintTop_toBottomOf="@id/tvDutyPartners" />
 
     <TextView
         android:id="@+id/tvDutyStartTime"
@@ -70,7 +70,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/duty_time_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDutyTag" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDutyPartners" />
 
     <TextView
         android:id="@+id/textView7"

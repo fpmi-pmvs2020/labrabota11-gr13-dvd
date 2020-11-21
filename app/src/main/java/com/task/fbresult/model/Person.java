@@ -21,6 +21,15 @@ public class Person {
         this.role = role;
     }
 
+    public Person(String login, String fio, String telephone, String address, LocalDate birthday, String role) {
+        this.login = login;
+        this.fio = fio;
+        this.telephone = telephone;
+        this.address = address;
+        this.birthday = birthday;
+        this.role = role;
+    }
+
     //region get/set
 
     public String getFio() {

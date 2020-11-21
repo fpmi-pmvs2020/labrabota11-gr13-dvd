@@ -18,6 +18,13 @@ public class Duty {
         this.maxPeople = maxPeople;
     }
 
+    public Duty(LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+        this.from = from;
+        this.to = to;
+        this.type = type;
+        this.maxPeople = maxPeople;
+    }
+
     //region get/set
     public long getId() {
         return id;

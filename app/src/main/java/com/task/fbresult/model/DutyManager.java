@@ -9,6 +9,8 @@ import com.task.fbresult.R;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -19,6 +21,24 @@ public class DutyManager {
     public DutyManager(Duty duty, Resources resources){
         this.duty = duty;
         this.resources = resources;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getStartTime(){
+        LocalTime localTime = duty.getFrom().toLocalTime();
+        return getFormattedTime(localTime);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getFinishTime(){
+        LocalTime localTime = duty.getTo().toLocalTime();
+        return getFormattedTime(localTime);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getFormattedTime(LocalTime localTime){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm");
+        return localTime.format(dateTimeFormatter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

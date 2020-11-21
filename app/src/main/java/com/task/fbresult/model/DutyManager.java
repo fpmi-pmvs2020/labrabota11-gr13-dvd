@@ -43,11 +43,12 @@ public class DutyManager {
     private Date getCurrentDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
         Date currentDate = null;
-        try {
-            currentDate = sdf.parse(duty.getDate());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return currentDate;
+//        try {
+//            currentDate = sdf.parse(duty.getDate());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        throw new UnsupportedOperationException("method isn't realised yet");
+        //return currentDate;
     }
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.model.DutyTypes;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import static com.task.fbresult.db.DBHelper.TYPES_ID_COLUMN;
 import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 
 public class DutyTypesDao extends Dao<DutyTypes> {
+
+    public static String GET_ALL_QUERY = "select * from "+ TYPES_TABLE ;
+
     @Override
     String getTableName() {
         return TYPES_TABLE;

@@ -13,8 +13,12 @@ import static com.task.fbresult.db.DBHelper.DB_LOG;
 import static com.task.fbresult.db.DBHelper.ROLE_ID_COLUMN;
 import static com.task.fbresult.db.DBHelper.ROLE_NAME_COLUMN;
 import static com.task.fbresult.db.DBHelper.ROLE_TABLE;
+import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 
 public class RoleDao extends Dao<Role>{
+
+    public static String GET_ALL_QUERY = "select * from "+ ROLE_TABLE ;
+
     @Override
     String getTableName() {
         return ROLE_TABLE;

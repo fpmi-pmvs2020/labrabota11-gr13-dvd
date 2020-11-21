@@ -4,6 +4,10 @@ public class DutyTypes {
     private long id;
     private String title;
 
+    public DutyTypes(String title) {
+        this.title = title;
+    }
+
     public DutyTypes(long id, String title) {
         this.id = id;
         this.title = title;

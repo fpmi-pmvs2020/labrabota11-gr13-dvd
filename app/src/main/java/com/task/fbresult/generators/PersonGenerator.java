@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.task.fbresult.db.dao.RoleDao;
 import com.task.fbresult.model.Person;
 
 import java.time.LocalDate;
@@ -48,7 +49,7 @@ public class PersonGenerator {
                     tel,
                     "minsk",
                     LocalDate.now(),
-                    "role"
+                    new RoleDao().get(RoleDao.GET_ALL_QUERY).stream().findAny().get().getId()
             );
             ans.add(person);
         }

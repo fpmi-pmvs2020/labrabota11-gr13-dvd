@@ -66,7 +66,7 @@ public class DutyDao extends Dao<Duty> {
                         c.getInt(id),
                         LocalDateTime.parse(c.getString(from),formatter),
                         LocalDateTime.parse(c.getString(to),formatter),
-                        c.getString(type_fk),
+                        c.getInt(type_fk),
                         c.getInt(max)
                 );
 

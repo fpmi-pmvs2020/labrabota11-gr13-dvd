@@ -7,10 +7,10 @@ public class Duty {
     private long id;
     private LocalDateTime from;
     private LocalDateTime to;
-    private String type;
+    private long type;
     private int maxPeople;
 
-    public Duty(long id, LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+    public Duty(long id, LocalDateTime from, LocalDateTime to, long type, int maxPeople) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -18,7 +18,7 @@ public class Duty {
         this.maxPeople = maxPeople;
     }
 
-    public Duty(LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+    public Duty(LocalDateTime from, LocalDateTime to, long type, int maxPeople) {
         this.from = from;
         this.to = to;
         this.type = type;
@@ -50,11 +50,11 @@ public class Duty {
         this.to = to;
     }
 
-    public String getType() {
+    public long getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(long type) {
         this.type = type;
     }
 

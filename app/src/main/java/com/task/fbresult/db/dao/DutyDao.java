@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +28,9 @@ import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 public class DutyDao extends Dao<Duty> {
 
     public static String GET_ALL_QUERY = "select * from "+ DUTY_TABLE ;
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    public static String GET_DUTIES_WITH_DAY = "select * from"
+            +DUTY_TABLE+"where "+DUTY_FROM_COLUMN+"> %s and "+DUTY_TO_COLUMN+"< %s";
+
     @Override
     String getTableName() {
         return DUTY_TABLE;
@@ -37,8 +40,8 @@ public class DutyDao extends Dao<Duty> {
     ContentValues getContentValues(Duty duty) {
         ContentValues cv = new ContentValues();
 
-        cv.put(DUTY_FROM_COLUMN, duty.getFrom().format(formatter));
-        cv.put(DUTY_TO_COLUMN, duty.getTo().format(formatter));
+        cv.put(DUTY_FROM_COLUMN, LocalDateTimeHelper.getDateTimeAsString(duty.getFrom()));
+        cv.put(DUTY_TO_COLUMN, LocalDateTimeHelper.getDateTimeAsString(duty.getTo()));
         cv.put(DUTY_TYPE_FK_COLUMN, duty.getType());
         cv.put(DUTY_MAX_PEOPLE_COLUMN, duty.getMaxPeople());
 
@@ -65,8 +68,8 @@ public class DutyDao extends Dao<Duty> {
 
                 Duty duty = new Duty(
                         c.getInt(id),
-                        LocalDateTime.parse(c.getString(from),formatter),
-                        LocalDateTime.parse(c.getString(to),formatter),
+                        LocalDateTimeHelper.parseString(c.getString(from)),
+                        LocalDateTimeHelper.parseString(c.getString(to)),
                         c.getInt(type_fk),
                         c.getInt(max)
                 );

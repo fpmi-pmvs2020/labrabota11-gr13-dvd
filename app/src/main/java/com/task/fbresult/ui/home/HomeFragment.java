@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,7 +18,9 @@ import com.task.fbresult.R;
 import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.DBRequester;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.util.DutyFormatter;
+import com.task.fbresult.util.LocalDateTimeHelper;
+
+import java.time.LocalDateTime;
 
 public class HomeFragment extends Fragment {
 
@@ -44,18 +45,9 @@ public class HomeFragment extends Fragment {
     private void configureCalendar() {
         CalendarView calendarView = root.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            String dayStr = String.valueOf(dayOfMonth);
-            if (dayStr.length() == 1)
-                dayStr = "0" + dayStr;
-            month++;
-            String monthStr = String.valueOf(month);
-            if (monthStr.length() == 1)
-                monthStr = "0" + month;
-
-            String selectedDate = dayStr + "." +
-                    monthStr + "." +
-                    year;
-            showSelectedDuty(selectedDate);
+            LocalDateTime localDateTime = LocalDateTime.of(year,month,dayOfMonth,0,0);
+            String dateAsString = LocalDateTimeHelper.getDateTimeAsString(localDateTime);
+            showSelectedDuty(dateAsString);
         });
     }
 

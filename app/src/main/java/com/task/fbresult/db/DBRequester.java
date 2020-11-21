@@ -7,7 +7,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.util.LocalDateHelper;
+import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class DBRequester {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Duty getFirstDutyWithName(String name){
-        String todayDate = LocalDateHelper.getDateAsString(LocalDate.now());
+        /*String todayDate = LocalDateTimeHelper.getDateTimeAsString(LocalDate.now());
         Cursor c = db.rawQuery("select cur_date from dates" +
                 " inner join dates_to_workers_con as con on dates.id = con.date_id" +
                 " inner join workers on con.worker_id = workers.id" +
@@ -34,7 +34,8 @@ public class DBRequester {
         c.close();
 
         c = getNamesWorkersOnDate(date);
-        return parseCursorWithUserName(c,name);
+        return parseCursorWithUserName(c,name);*/
+        return null;
     }
 
     private Cursor getNamesWorkersOnDate(String date){
@@ -60,7 +61,7 @@ public class DBRequester {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Duty> getDutiesForName(String name){
-        String todayDate = LocalDateHelper.getDateAsString(LocalDate.now());
+        /*String todayDate = LocalDateTimeHelper.getDateTimeAsString(LocalDate.now());
         Cursor c = db.rawQuery("select cur_date, name from dates" +
                 " inner join dates_to_workers_con as con on dates.id = con.date_id" +
                 " inner join workers on con.worker_id = workers.id" +
@@ -77,7 +78,8 @@ public class DBRequester {
             duties.add(tempDuty);
         }
 
-        return duties;
+        return duties;*/
+        return null;
     }
 
     public Duty getDutyWithDate(String date){

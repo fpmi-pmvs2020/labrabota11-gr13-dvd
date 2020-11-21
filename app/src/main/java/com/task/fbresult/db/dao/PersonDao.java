@@ -18,6 +18,9 @@ import java.util.List;
 import static com.task.fbresult.db.DBHelper.*;
 
 public class PersonDao extends Dao<Person>{
+
+    public static String GET_ALL_QUERY = "select * from "+ PERSON_TABLE ;
+
     @Override
     String getTableName() {
         return DBHelper.PERSON_TABLE;

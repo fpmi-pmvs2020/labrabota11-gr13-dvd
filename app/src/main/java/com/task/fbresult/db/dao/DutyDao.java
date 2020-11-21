@@ -21,10 +21,12 @@ import static com.task.fbresult.db.DBHelper.DUTY_TABLE;
 import static com.task.fbresult.db.DBHelper.DUTY_TO_COLUMN;
 import static com.task.fbresult.db.DBHelper.DUTY_TYPE_FK_COLUMN;
 import static com.task.fbresult.db.DBHelper.DB_LOG;
+import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class DutyDao extends Dao<Duty> {
 
+    public static String GET_ALL_QUERY = "select * from "+ DUTY_TABLE ;
     DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     @Override
     String getTableName() {

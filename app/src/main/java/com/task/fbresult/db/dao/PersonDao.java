@@ -20,6 +20,10 @@ import static com.task.fbresult.db.DBHelper.*;
 public class PersonDao extends Dao<Person>{
 
     public static String GET_ALL_QUERY = "select * from "+ PERSON_TABLE ;
+    public static String GET_USER_WITH_LOGIN_QUERY = "select * from "+ PERSON_TABLE
+            + "where "+PERSON_LOGIN_COLUMN+ "=";
+    public static String GET_USER_WITH_ID = "select * from "+ PERSON_TABLE
+            + "where "+PERSON_ID_COLUMN+ "=";
 
     @Override
     String getTableName() {

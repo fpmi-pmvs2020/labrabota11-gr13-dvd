@@ -19,7 +19,7 @@ import com.task.fbresult.R;
 import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.DBRequester;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.DutyManager;
+import com.task.fbresult.util.DutyManager;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class AllDutiesFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private View getViewWithDuty(Duty duty) {
-        View child = View.inflate(getContext(), R.layout.duty_first_item, null);
+        /*View child = View.inflate(getContext(), R.layout.duty_first_item, null);
         //TextView tvDate = child.findViewById(R.id.tvDutyTitle);
         TextView tvWeekDay = child.findViewById(R.id.tvDutyWeekDay);
         //TextView tvPartner = child.findViewById(R.id.tvDutyTag);
@@ -60,7 +60,8 @@ public class AllDutiesFragment extends Fragment {
         DutyManager dutyManager = new DutyManager(duty, getResources());
         tvRemainedTime.setText(dutyManager.getDaysLeftAsString());
         tvWeekDay.setText(dutyManager.getDayOfWeek());
-        return child;
+        return child;*/
+        return null;
     }
 
     private List<Duty> loadDuties() {

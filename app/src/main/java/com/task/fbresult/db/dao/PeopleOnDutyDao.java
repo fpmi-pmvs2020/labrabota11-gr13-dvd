@@ -17,6 +17,9 @@ import java.util.List;
 import static com.task.fbresult.db.DBHelper.*;
 
 public class PeopleOnDutyDao extends Dao<PeopleOnDuty> {
+    public static String GET_PEOPLE_ON_DUTY_WITH_DUTY_ID = "select * from "+ PER_ON_DUTY_TABLE
+            + "where "+PER_ON_DUTY_DUTY_FK_COLUMN+ "=";
+
     @Override
     String getTableName() {
         return PER_ON_DUTY_TABLE;

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -18,6 +19,7 @@ import com.task.fbresult.R;
 import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.DBRequester;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.util.DutyFormatter;
 
 public class HomeFragment extends Fragment {
 
@@ -38,6 +40,7 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void configureCalendar() {
         CalendarView calendarView = root.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
@@ -56,6 +59,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void showSelectedDuty(String selectedDate) {
         LinearLayout linearLayout = root.findViewById(R.id.selectedDayDutyLayout);
         try {
@@ -64,7 +68,7 @@ public class HomeFragment extends Fragment {
 
         }
         Duty duty = loadSelectedDuty(selectedDate);
-        View child = getViewWithDuty(duty);
+        View child = getViewWithFirstDuty(duty);
         linearLayout.addView(child);
     }
 
@@ -78,27 +82,14 @@ public class HomeFragment extends Fragment {
     private void showFirstDuty() {
         LinearLayout linearLayout = root.findViewById(R.id.firstDutyLayout);
         Duty firstDuty = loadFirstDuty();
-        View child = getViewWithDuty(firstDuty);
+        View child = getViewWithFirstDuty(firstDuty);
         linearLayout.addView(child);
     }
 
-    private View getViewWithDuty(Duty duty) {
-//        View child = View.inflate(getContext(),R.layout.duty_item,null);
-//        //TextView tvDate = child.findViewById(R.id.tvDutyTitle);
-//        TextView tvWeekDay = child.findViewById(R.id.tvDutyWeekDay);
-//        //TextView tvPartner = child.findViewById(R.id.tvDutyTag);
-//        TextView tvRemainedTime = child.findViewById(R.id.tvDutyTimeRemained);
-//
-//        if(duty == null)
-//            tvDate.setText(getString(R.string.no_duty));
-//        else {
-//            tvDate.setText(duty.getDate());
-//            tvPartner.setText(String.format(getString(R.string.partner),duty.getPartner()));
-//            DutyManager dutyManager = new DutyManager(duty,getResources());
-//            tvWeekDay.setText(dutyManager.getDayOfWeek());
-//            tvRemainedTime.setText(dutyManager.getDaysLeftAsString());
-//        }
-        return null;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private View getViewWithFirstDuty(Duty duty) {
+        FirstDutyViewHolder viewHolder = new FirstDutyViewHolder(getContext());
+        return viewHolder.formatViewWithDuty(duty);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

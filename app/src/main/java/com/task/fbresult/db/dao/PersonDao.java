@@ -67,7 +67,7 @@ public class PersonDao extends Dao<Person>{
                         c.getString(tel),
                         c.getString(add),
                         LocalDate.parse(c.getString(birth), DateTimeFormatter.ISO_DATE),
-                        c.getString(role)
+                        c.getInt(role)
                 );
                 ans.add(person);
 

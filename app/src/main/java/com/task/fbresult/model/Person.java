@@ -9,25 +9,31 @@ public class Person {
     private String telephone;
     private String address;
     private LocalDate birthday;
-    private String role;
+    private int roleId;
 
-    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, String role) {
+    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, int role) {
         this.id = id;
         this.login = login;
         this.fio = fio;
         this.telephone = telephone;
         this.address = address;
         this.birthday = birthday;
-        this.role = role;
+        this.roleId = role;
     }
 
-    public Person(String login, String fio, String telephone, String address, LocalDate birthday, String role) {
+    public Person(String login, String fio, String telephone, String address, LocalDate birthday, int role) {
         this.login = login;
         this.fio = fio;
         this.telephone = telephone;
         this.address = address;
         this.birthday = birthday;
-        this.role = role;
+        this.roleId = role;
+    }
+
+    public Person(String login, String fio, int role) {
+        this.login = login;
+        this.fio = fio;
+        this.roleId = role;
     }
 
     //region get/set
@@ -67,8 +73,8 @@ public class Person {
         return birthday;
     }
 
-    public String getRole() {
-        return role;
+    public int getRole() {
+        return roleId;
     }
 
     public void setId(long id) {
@@ -95,8 +101,8 @@ public class Person {
         this.birthday = birthday;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(int role) {
+        this.roleId = role;
     }
 
     //endregion

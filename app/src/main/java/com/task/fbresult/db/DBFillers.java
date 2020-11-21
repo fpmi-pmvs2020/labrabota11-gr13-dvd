@@ -11,10 +11,19 @@ import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.db.dao.DutyTypesDao;
 import com.task.fbresult.db.dao.PeopleOnDutyDao;
 import com.task.fbresult.db.dao.PersonDao;
+import com.task.fbresult.db.dao.RoleDao;
 import com.task.fbresult.generators.DatesGenerator;
 import com.task.fbresult.generators.DatesToWorkersLinksGenerator;
+import com.task.fbresult.generators.DutyGenerator;
+import com.task.fbresult.generators.DutyTypesGenerator;
 import com.task.fbresult.generators.Generator;
+import com.task.fbresult.generators.PeopleOnDutyGenerator;
 import com.task.fbresult.generators.PersonGenerator;
+import com.task.fbresult.generators.RoleGenerator;
+import com.task.fbresult.generators.UsersGenerator;
+import com.task.fbresult.model.Person;
+
+import java.util.stream.Stream;
 
 public class DBFillers {
     DBHelper dbHelper;
@@ -35,14 +44,21 @@ public class DBFillers {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void fillData() {
+    public static void fillData() {
 
-//        fillAndPrintColumnOfTable(db,"workers",
-//                new String[]{"name"}, PersonGenerator::generate);
-//        fillAndPrintColumnOfTable(db,"dates",
-//                new String[]{"cur_date"}, DatesGenerator::generate);
-//        fillAndPrintColumnOfTable(db,"dates_to_workers_con",
-//                new String[]{"date_id","worker_id"}, DatesToWorkersLinksGenerator::generate);
+        cleanTables();
+        DutyDao dutyDao = new DutyDao();
+        DutyTypesDao dutyTypesDao = new DutyTypesDao();
+        PeopleOnDutyDao peopleOnDutyDao = new PeopleOnDutyDao();
+        PersonDao personDao = new PersonDao();
+        RoleDao roleDao = new RoleDao();
+
+        RoleGenerator.generate().forEach(roleDao::save);
+        DutyTypesGenerator.generate().forEach(dutyTypesDao::save);
+        PersonGenerator.generate().forEach(personDao::save);
+        DutyGenerator.generate().forEach(dutyDao::save);
+        PeopleOnDutyGenerator.generate().forEach(peopleOnDutyDao::save);
+
     }
 
     private void fillAndPrintColumnOfTable(SQLiteDatabase db, String tableName,

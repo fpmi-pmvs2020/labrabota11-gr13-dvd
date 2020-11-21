@@ -14,7 +14,7 @@ public abstract class Dao<T> {
     private static final String LOG_TAG = "db_log";
     DBHelper dbHelper = DBHelper.getInstance();
 
-    List<T> get(String query){
+    public List<T> get(String query){
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.rawQuery(query, null);

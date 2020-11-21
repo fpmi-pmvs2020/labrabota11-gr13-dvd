@@ -1,5 +1,7 @@
 package com.task.fbresult.generators;
 
-public interface Generator {
-    String[][] generate();
+import java.util.List;
+
+public interface Generator<T> {
+    List<T> generate();
 }

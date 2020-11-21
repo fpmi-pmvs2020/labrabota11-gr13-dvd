@@ -47,8 +47,8 @@ public class DBFillers {
 
     private void fillAndPrintColumnOfTable(SQLiteDatabase db, String tableName,
                                            String[] columnNames, Generator generator){
-        String[][]values = generator.generate();
-        insertValues(db, values, tableName, columnNames);
+//        String[][]values = generator.generate();
+//        insertValues(db, values, tableName, columnNames);
         //dbHelper.writeTable(db,tableName);
     }
 

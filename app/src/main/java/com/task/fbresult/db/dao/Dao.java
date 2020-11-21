@@ -25,7 +25,7 @@ public abstract class Dao<T> {
         return parseCursor;
     }
 
-    void save(T t){
+    public void save(T t){
 
         ContentValues cv = getContentValues(t);
 
@@ -37,7 +37,7 @@ public abstract class Dao<T> {
         Log.d(LOG_TAG, "--- Insert in "+getTableName()+": ---rowID: "+rowID+"    "+t);
     }
 
-    void update(T t){
+    public void update(T t){
         ContentValues cv = getContentValues(t);
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -47,7 +47,7 @@ public abstract class Dao<T> {
 
     }
 
-    void delete(T t){
+    public void delete(T t){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int delCount = db.delete(getTableName(), "id = "+ getID(t), null);
         Log.d(LOG_TAG, getTableName()+"--- delete in :"+t);

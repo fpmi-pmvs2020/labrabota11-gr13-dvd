@@ -116,18 +116,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 PER_ON_DUTY_FROM_COLUMN +        " text not null," +
                 PER_ON_DUTY_TO_COLUMN +          " text not null);";
 
-        db.beginTransaction();
-
         db.execSQL(typeTable);
         db.execSQL(roleTable);
         db.execSQL(dutyTable);
         db.execSQL(personOnDuty);
         db.execSQL(personTable);
 
-        db.endTransaction();
-
-        //DBFiller dbFiller = new DBFiller(db,this);
-        //dbFiller.fillData();
     }
 
     @Override

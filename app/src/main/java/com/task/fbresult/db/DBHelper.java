@@ -37,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PERSON_TEL_COLUMN =              "Telephone";
     public static final String PERSON_ADDRESS_COLUMN =          "Address";
     public static final String PERSON_BIRTH_COLUMN =            "BirthDate";
-    public static final String PERSON_ROLE_COLUMN =             "Role";
+    public static final String PERSON_ROLE_COLUMN =             "RoleId";
 
     public static final String DUTY_TABLE =                     "Duties";
     public static final String DUTY_ID_COLUMN =                 "Id";
@@ -45,6 +45,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DUTY_TO_COLUMN =                 "DutyTo";
     public static final String DUTY_TYPE_FK_COLUMN =            "DutyTypeId";
     public static final String DUTY_MAX_PEOPLE_COLUMN =         "MaxPeopleOnDuty";
+
+    public static final String ROLE_TABLE =                     "Roles";
+    public static final String ROLE_ID_COLUMN =                 "Id";
+    public static final String ROLE_NAME_COLUMN =               "Name";
 
     public static final String TYPES_TABLE =                    "DutyTypes";
     public static final String TYPES_ID_COLUMN =                "Id";
@@ -83,35 +87,39 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String typeTable = "create table " + TYPES_TABLE + "("+
                 TYPES_ID_COLUMN +           " integer primary key autoincrement," +
-                TYPES_TITLE_COLUMN +        " text);";
+                TYPES_TITLE_COLUMN +        " text not null);";
+
+        String roleTable = "create table " + ROLE_TABLE + "("+
+                ROLE_ID_COLUMN +           " integer primary key autoincrement," +
+                ROLE_NAME_COLUMN +        " text not null);";
 
         String dutyTable = "create table " + DUTY_TABLE + "("+
                 DUTY_ID_COLUMN +                " integer primary key autoincrement," +
-                TYPES_TITLE_COLUMN +            " text," +
-                DUTY_FROM_COLUMN +              " text," +
-                DUTY_TO_COLUMN +                " text," +
+                DUTY_FROM_COLUMN +              " text not null," +
+                DUTY_TO_COLUMN +                " text not null," +
                 DUTY_TYPE_FK_COLUMN +           " integer references "+TYPES_TABLE+" ("+TYPES_ID_COLUMN+")," +
-                DUTY_MAX_PEOPLE_COLUMN +        " integer);";
+                DUTY_MAX_PEOPLE_COLUMN +        " integer not null);";
 
         String personTable = "create table " + PERSON_TABLE + "("+
                 PERSON_ID_COLUMN +               " integer primary key autoincrement," +
-                PERSON_LOGIN_COLUMN +            " text," +
+                PERSON_LOGIN_COLUMN +            " text not null," +
                 PERSON_FIO_COLUMN +              " text," +
                 PERSON_TEL_COLUMN +              " text," +
                 PERSON_ADDRESS_COLUMN +          " text," +
                 PERSON_BIRTH_COLUMN +            " text," +
-                PERSON_ROLE_COLUMN +             " text);";
+                PERSON_ROLE_COLUMN +             " integer references "+ROLE_TABLE+" ("+ROLE_ID_COLUMN+")"+");";
 
         String personOnDuty = "create table " + PER_ON_DUTY_TABLE + "("+
                 PER_ON_DUTY_ID_COLUMN +          " integer primary key autoincrement," +
                 PER_ON_DUTY_PERSON_FK_COLUMN +   " integer references "+PERSON_TABLE+" ("+PERSON_ID_COLUMN+")," +
                 PER_ON_DUTY_DUTY_FK_COLUMN +     " integer references "+DUTY_TABLE+" ("+DUTY_ID_COLUMN+")," +
-                PER_ON_DUTY_FROM_COLUMN +        " text," +
-                PER_ON_DUTY_TO_COLUMN +          " text);";
+                PER_ON_DUTY_FROM_COLUMN +        " text not null," +
+                PER_ON_DUTY_TO_COLUMN +          " text not null);";
 
         db.beginTransaction();
 
         db.execSQL(typeTable);
+        db.execSQL(roleTable);
         db.execSQL(dutyTable);
         db.execSQL(personOnDuty);
         db.execSQL(personTable);

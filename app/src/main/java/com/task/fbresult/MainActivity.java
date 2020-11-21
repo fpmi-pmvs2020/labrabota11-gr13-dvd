@@ -1,6 +1,7 @@
 package com.task.fbresult;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +17,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.task.fbresult.db.DBFillers;
+import com.task.fbresult.db.DBHelper;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,9 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private NavigationView navigationView;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DBHelper instance = DBHelper.getInstance(this, null);
+
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             startSignInWindow();

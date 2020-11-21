@@ -17,6 +17,12 @@ public class PeopleOnDuty {
         this.to = to;
     }
 
+    public PeopleOnDuty(long personId, long dutyId, LocalDateTime from, LocalDateTime to) {
+        this.personId = personId;
+        this.dutyId = dutyId;
+        this.from = from;
+        this.to = to;
+    }
 
     //region get/set
     public long getId() {

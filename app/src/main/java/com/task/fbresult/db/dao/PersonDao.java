@@ -71,7 +71,7 @@ public class PersonDao extends Dao<Person>{
                 );
                 ans.add(person);
 
-                Log.d(LOG_TAG, "--- get in table person: "+ person);
+                Log.d(DB_LOG, "--- get in table person: "+ person);
 
             } while (c.moveToNext());
         }

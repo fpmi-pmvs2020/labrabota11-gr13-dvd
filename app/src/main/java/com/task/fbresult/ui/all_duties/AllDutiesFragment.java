@@ -39,35 +39,35 @@ public class AllDutiesFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showAllUserDuties(){
+    private void showAllUserDuties() {
         LinearLayout dutiesLayout = root.findViewById(R.id.allDutiesLayout);
-        List<Duty>duties = loadDuties();
-        for(Duty duty:duties){
+        List<Duty> duties = loadDuties();
+        for (Duty duty : duties) {
             View dutyView = getViewWithDuty(duty);
             dutiesLayout.addView(dutyView);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private View getViewWithDuty(Duty duty){
-        View child = View.inflate(getContext(),R.layout.duty_item,null);
+    private View getViewWithDuty(Duty duty) {
+        View child = View.inflate(getContext(), R.layout.duty_item, null);
         //TextView tvDate = child.findViewById(R.id.tvDutyTitle);
         TextView tvWeekDay = child.findViewById(R.id.tvDutyWeekDay);
         //TextView tvPartner = child.findViewById(R.id.tvDutyTag);
         TextView tvRemainedTime = child.findViewById(R.id.tvDutyTimeRemained);
         //tvDate.setText(duty.getDate());
         //tvPartner.setText(duty.getPartner());
-        DutyManager dutyManager = new DutyManager(duty,getResources());
+        DutyManager dutyManager = new DutyManager(duty, getResources());
         tvRemainedTime.setText(dutyManager.getDaysLeftAsString());
         tvWeekDay.setText(dutyManager.getDayOfWeek());
         return child;
     }
 
-    private List<Duty> loadDuties(){
+    private List<Duty> loadDuties() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DBHelper dbHelper = DBHelper.getInstance(getContext(),getString(R.string.db_name),
-                null,1);
+        DBHelper dbHelper = DBHelper.getInstance(getContext(),null);
         DBRequester dbRequester = dbHelper.getDBRequester();
-        return dbRequester.getDutiesForName(user.getDisplayName());
+        //return dbRequester.getDutiesForName(user.getDisplayName());
+        throw new UnsupportedOperationException("method is not realised yet");
     }
 }

@@ -20,7 +20,7 @@ import static com.task.fbresult.db.DBHelper.DUTY_MAX_PEOPLE_COLUMN;
 import static com.task.fbresult.db.DBHelper.DUTY_TABLE;
 import static com.task.fbresult.db.DBHelper.DUTY_TO_COLUMN;
 import static com.task.fbresult.db.DBHelper.DUTY_TYPE_FK_COLUMN;
-import static com.task.fbresult.db.DBHelper.LOG_TAG;
+import static com.task.fbresult.db.DBHelper.DB_LOG;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class DutyDao extends Dao<Duty> {
@@ -72,7 +72,7 @@ public class DutyDao extends Dao<Duty> {
 
                 ans.add(duty);
 
-                Log.d(LOG_TAG, "--- get in table duty: "+ duty);
+                Log.d(DB_LOG, "--- get in table duty: "+ duty);
 
             } while (c.moveToNext());
         }

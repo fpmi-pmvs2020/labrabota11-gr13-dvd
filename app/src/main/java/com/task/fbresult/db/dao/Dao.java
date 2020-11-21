@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class Dao<T> {
 
     private static final String LOG_TAG = "db_log";
-    DBHelper dbHelper = DBHelper.newInstance();
+    DBHelper dbHelper = DBHelper.getInstance();
 
     List<T> get(String query){
 

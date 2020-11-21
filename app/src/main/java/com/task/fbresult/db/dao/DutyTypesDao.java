@@ -9,8 +9,8 @@ import com.task.fbresult.model.DutyTypes;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.task.fbresult.db.DBHelper.DUTY_TITLE_COLUMN;
-import static com.task.fbresult.db.DBHelper.LOG_TAG;
+import static com.task.fbresult.db.DBHelper.TYPES_TITLE_COLUMN;
+import static com.task.fbresult.db.DBHelper.DB_LOG;
 import static com.task.fbresult.db.DBHelper.TYPES_ID_COLUMN;
 import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 
@@ -25,7 +25,7 @@ public class DutyTypesDao extends Dao<DutyTypes> {
         ContentValues cv = new ContentValues();
 
         cv.put(TYPES_ID_COLUMN, dutyTypes.getId());
-        cv.put(DUTY_TITLE_COLUMN, dutyTypes.getTitle());
+        cv.put(TYPES_TITLE_COLUMN, dutyTypes.getTitle());
 
         return cv;
     }
@@ -41,7 +41,7 @@ public class DutyTypesDao extends Dao<DutyTypes> {
 
         if (c.moveToFirst()) {
             int id = c.getColumnIndex(TYPES_ID_COLUMN);
-            int title = c.getColumnIndex(DUTY_TITLE_COLUMN);
+            int title = c.getColumnIndex(TYPES_TITLE_COLUMN);
 
             do {
 
@@ -52,7 +52,7 @@ public class DutyTypesDao extends Dao<DutyTypes> {
 
                 ans.add(types);
 
-                Log.d(LOG_TAG, "--- get in table duty types "+ types);
+                Log.d(DB_LOG, "--- get in table duty types "+ types);
 
             } while (c.moveToNext());
         }

@@ -34,7 +34,7 @@ public class DBFiller {
                                            String[] columnNames, Generator generator){
         String[][]values = generator.generate();
         insertValues(db, values, tableName, columnNames);
-        dbHelper.writeTable(db,tableName);
+        //dbHelper.writeTable(db,tableName);
     }
 
     private void insertValues(SQLiteDatabase db, String[][] values,

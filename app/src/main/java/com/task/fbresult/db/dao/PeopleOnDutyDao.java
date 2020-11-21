@@ -8,9 +8,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.model.PeopleOnDuty;
-import com.task.fbresult.model.Person;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -67,7 +65,7 @@ public class PeopleOnDutyDao extends Dao<PeopleOnDuty> {
 
                 ans.add(person);
 
-                Log.d(LOG_TAG, "--- get in table people on duty: "+ person);
+                Log.d(DB_LOG, "--- get in table people on duty: "+ person);
 
             } while (c.moveToNext());
         }

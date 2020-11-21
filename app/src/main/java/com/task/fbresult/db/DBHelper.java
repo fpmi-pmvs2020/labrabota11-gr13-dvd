@@ -19,8 +19,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dbHelper;
 
-    public static final String LOG_TAG = "myLogs";
-
+    //region fields
+    public static final int DB_VERSION = 1;
+    public static final String DB_NAME = "duties_db";
+    public static final String DB_LOG = "myDbLogs";
     public static final String PER_ON_DUTY_TABLE =              "PeopleOnDuty";
     public static final String PER_ON_DUTY_ID_COLUMN =          "Id";
     public static final String PER_ON_DUTY_PERSON_FK_COLUMN =   "PersonId";
@@ -46,8 +48,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TYPES_TABLE =                    "DutyTypes";
     public static final String TYPES_ID_COLUMN =                "Id";
-    public static final String DUTY_TITLE_COLUMN =              "TypeName";
-
+    public static final String TYPES_TITLE_COLUMN =             "TypeName";
+    //endregion fields
 
     private DBHelper(@Nullable Context context, @Nullable String name,
                     @Nullable SQLiteDatabase.CursorFactory factory,
@@ -56,16 +58,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public static DBHelper getInstance(@Nullable Context context, @Nullable String name,
-                                @Nullable SQLiteDatabase.CursorFactory factory,
-                                int version){
+    public static DBHelper getInstance(@Nullable Context context,
+                                       @Nullable SQLiteDatabase.CursorFactory factory){
         if(dbHelper==null)
-            dbHelper = new DBHelper(context, name, factory, version);
+            dbHelper = new DBHelper(context, DB_NAME, factory, DB_VERSION);
 
         return dbHelper;
     }
 
-    public static DBHelper newInstance(){
+    public static DBHelper getInstance(){
 
         if (dbHelper == null){
             throw new RuntimeException("context don't exist, use another newInstant(_context)");
@@ -80,44 +81,45 @@ public class DBHelper extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table dates (" +
-                "id integer primary key autoincrement," +
-                "cur_date date);");
-        db.execSQL("create table workers(" +
-                "id integer primary key autoincrement," +
-                "name text);");
-        db.execSQL("create table dates_to_workers_con(" +
-                "id integer primary key autoincrement," +
-                "date_id integer references dates (id) on delete cascade," +
-                "worker_id integer references workers (id) on delete cascade);");
+        String typeTable = "create table " + TYPES_TABLE + "("+
+                TYPES_ID_COLUMN +           " integer primary key autoincrement," +
+                TYPES_TITLE_COLUMN +        " text);";
 
-        DBFiller dbFiller = new DBFiller(db,this);
-        dbFiller.fillData();
-    }
+        String dutyTable = "create table " + DUTY_TABLE + "("+
+                DUTY_ID_COLUMN +                " integer primary key autoincrement," +
+                TYPES_TITLE_COLUMN +            " text," +
+                DUTY_FROM_COLUMN +              " text," +
+                DUTY_TO_COLUMN +                " text," +
+                DUTY_TYPE_FK_COLUMN +           " integer references "+TYPES_TABLE+" ("+TYPES_ID_COLUMN+")," +
+                DUTY_MAX_PEOPLE_COLUMN +        " integer);";
 
-    void writeTable(SQLiteDatabase db, String tableName) {
-        Cursor c = db.rawQuery("select * from " + tableName, null);
-        logCursor(c, "Table "+tableName);
-        c.close();
-    }
+        String personTable = "create table " + PERSON_TABLE + "("+
+                PERSON_ID_COLUMN +               " integer primary key autoincrement," +
+                PERSON_LOGIN_COLUMN +            " text," +
+                PERSON_FIO_COLUMN +              " text," +
+                PERSON_TEL_COLUMN +              " text," +
+                PERSON_ADDRESS_COLUMN +          " text," +
+                PERSON_BIRTH_COLUMN +            " text," +
+                PERSON_ROLE_COLUMN +             " text);";
 
-    private void logCursor(Cursor c, String title) {
-        if (c != null) {
-            if (c.moveToFirst()) {
-                Log.d(LOG_TAG, title + ". " + c.getCount() + " rows");
-                StringBuilder sb = new StringBuilder();
-                do {
-                    sb.setLength(0);
-                    for (String cn : c.getColumnNames()) {
-                        sb.append(cn)
-                                .append(" = ")
-                                .append(c.getString(c.getColumnIndex(cn)))
-                                .append("; ");
-                    }
-                    Log.d(LOG_TAG, sb.toString());
-                } while (c.moveToNext());
-            }
-        } else Log.d(LOG_TAG, title + ". Cursor is null");
+        String personOnDuty = "create table " + PER_ON_DUTY_TABLE + "("+
+                PER_ON_DUTY_ID_COLUMN +          " integer primary key autoincrement," +
+                PER_ON_DUTY_PERSON_FK_COLUMN +   " integer references "+PERSON_TABLE+" ("+PERSON_ID_COLUMN+")," +
+                PER_ON_DUTY_DUTY_FK_COLUMN +     " integer references "+DUTY_TABLE+" ("+DUTY_ID_COLUMN+")," +
+                PER_ON_DUTY_FROM_COLUMN +        " text," +
+                PER_ON_DUTY_TO_COLUMN +          " text);";
+
+        db.beginTransaction();
+
+        db.execSQL(typeTable);
+        db.execSQL(dutyTable);
+        db.execSQL(personOnDuty);
+        db.execSQL(personTable);
+
+        db.endTransaction();
+
+        //DBFiller dbFiller = new DBFiller(db,this);
+        //dbFiller.fillData();
     }
 
     @Override

@@ -17,7 +17,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.R;
 import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.DBRequester;
+import com.task.fbresult.db.dao.DutyDao;
+import com.task.fbresult.db.dao.PeopleOnDutyDao;
+import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.PeopleOnDuty;
+import com.task.fbresult.model.Person;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDateTime;
@@ -86,10 +91,13 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Duty loadFirstDuty() {
-        DBHelper dbHelper = DBHelper.getInstance(getContext(),
-                null);
-        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        DBRequester dbRequester = dbHelper.getDBRequester();
-        return dbRequester.getFirstDutyWithName(userName);
+        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Person currentUser = new PersonDao()
+                .get(PersonDao.GET_USER_WITH_LOGIN_QUERY+userEmail).get(0);
+        PeopleOnDuty peopleOnDuty = new PeopleOnDutyDao()
+                .get(String.format(PeopleOnDutyDao.GET_FIRST_PEOPLE_ON_DUTY_WITH_PERSON_ID,
+                        currentUser.getId())).get(0);
+        return new DutyDao()
+                .get(DutyDao.GET_DUTY_WITH_ID+peopleOnDuty.getDutyId()).get(0);
     }
 }

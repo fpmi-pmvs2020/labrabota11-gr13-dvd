@@ -41,6 +41,9 @@
     <string name="pass_dialog_title">Password updating</string>
     <string name="pass_dialog_msg">Enter and confirm your password</string>
 
+    <string name="duty_time_view">Duty time:</string>
+    <string name="duty_people_count">Position amount</string>
+
     <string-array name="daysOfWeek">
         <item>Monday</item>
         <item>Tuesday</item>
@@ -50,4 +53,5 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
+
 </resources>

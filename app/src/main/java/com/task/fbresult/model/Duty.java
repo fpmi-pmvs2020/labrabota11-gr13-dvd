@@ -1,35 +1,69 @@
 package com.task.fbresult.model;
 
+import java.time.LocalDateTime;
+
 public class Duty {
-    String date;
 
-    public String getDate() {
-        return date;
+    private long id;
+    private LocalDateTime from;
+    private LocalDateTime to;
+    private String type;
+    private int maxPeople;
+
+    public Duty(long id, LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.type = type;
+        this.maxPeople = maxPeople;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public Duty(LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+        this.from = from;
+        this.to = to;
+        this.type = type;
+        this.maxPeople = maxPeople;
     }
 
-    public String getPartner() {
-        return partner;
+    //region get/set
+    public long getId() {
+        return id;
     }
 
-    public void setPartner(String partner) {
-        this.partner = partner;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getFirstWorker() {
-        return firstWorker;
+    public LocalDateTime getFrom() {
+        return from;
     }
 
-    String firstWorker;
-
-    String partner;
-
-    public Duty(String date, String partner, String firstWorker) {
-        this.date = date;
-        this.partner = partner;
-        this.firstWorker = firstWorker;
+    public void setFrom(LocalDateTime from) {
+        this.from = from;
     }
+
+    public LocalDateTime getTo() {
+        return to;
+    }
+
+    public void setTo(LocalDateTime to) {
+        this.to = to;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getMaxPeople() {
+        return maxPeople;
+    }
+
+    public void setMaxPeople(int maxPeople) {
+        this.maxPeople = maxPeople;
+    }
+    //endregion
 }

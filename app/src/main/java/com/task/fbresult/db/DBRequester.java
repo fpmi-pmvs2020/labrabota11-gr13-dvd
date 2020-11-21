@@ -55,7 +55,7 @@ public class DBRequester {
                 partnerName = null;
             }
         }
-        return new Duty(date,partnerName,name);
+        throw new UnsupportedOperationException();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -87,6 +87,6 @@ public class DBRequester {
         String firstName = c.getString(0);
         c.moveToNext();
         String secondName = c.getString(0);
-        return new Duty(date,secondName,firstName);
+        throw new UnsupportedOperationException();
     }
 }

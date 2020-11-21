@@ -9,9 +9,9 @@ public class Person {
     private String telephone;
     private String address;
     private LocalDate birthday;
-    private int roleId;
+    private long roleId;
 
-    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, int role) {
+    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, long role) {
         this.id = id;
         this.login = login;
         this.fio = fio;
@@ -21,7 +21,7 @@ public class Person {
         this.roleId = role;
     }
 
-    public Person(String login, String fio, String telephone, String address, LocalDate birthday, int role) {
+    public Person(String login, String fio, String telephone, String address, LocalDate birthday, long role) {
         this.login = login;
         this.fio = fio;
         this.telephone = telephone;
@@ -30,7 +30,7 @@ public class Person {
         this.roleId = role;
     }
 
-    public Person(String login, String fio, int role) {
+    public Person(String login, String fio, long role) {
         this.login = login;
         this.fio = fio;
         this.roleId = role;
@@ -73,7 +73,7 @@ public class Person {
         return birthday;
     }
 
-    public int getRole() {
+    public long getRole() {
         return roleId;
     }
 
@@ -101,7 +101,7 @@ public class Person {
         this.birthday = birthday;
     }
 
-    public void setRole(int role) {
+    public void setRole(long role) {
         this.roleId = role;
     }
 

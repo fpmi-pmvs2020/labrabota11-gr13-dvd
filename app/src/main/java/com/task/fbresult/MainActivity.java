@@ -1,12 +1,14 @@
 package com.task.fbresult;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +45,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DBHelper instance = DBHelper.getInstance(this, null);
+        DBHelper.getInstance(this, null);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("shared",MODE_PRIVATE);
+        if(!sharedPreferences.contains("dbIsFilled")) {
+            DBFillers.fillData();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("dbIsFilled",true);
+            editor.apply();
+        }
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {

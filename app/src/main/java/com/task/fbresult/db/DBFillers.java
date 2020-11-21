@@ -28,17 +28,20 @@ import java.util.stream.Stream;
 public class DBFillers {
     DBHelper dbHelper;
 
-    public DBFillers(){
+    public DBFillers() {
         this.dbHelper = dbHelper;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void cleanTables(){
+    public static void cleanTables() {
+        SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
 
-        new DutyDao().delete(null);
-        new PersonDao().delete(null);
-        new DutyTypesDao().delete(null);
-        new PeopleOnDutyDao().delete(null);
+        db.delete(DBHelper.DUTY_TABLE, null, null);
+        db.delete(DBHelper.TYPES_TABLE, null, null);
+        db.delete(DBHelper.PERSON_TABLE, null, null);
+        db.delete(DBHelper.ROLE_TABLE, null, null);
+        db.delete(DBHelper.PER_ON_DUTY_TABLE, null, null);
+
         Log.d(DBHelper.DB_LOG, "information from table was deleted");
 
     }
@@ -62,7 +65,7 @@ public class DBFillers {
     }
 
     private void fillAndPrintColumnOfTable(SQLiteDatabase db, String tableName,
-                                           String[] columnNames, Generator generator){
+                                           String[] columnNames, Generator generator) {
 //        String[][]values = generator.generate();
 //        insertValues(db, values, tableName, columnNames);
         //dbHelper.writeTable(db,tableName);
@@ -72,8 +75,8 @@ public class DBFillers {
                               String tableName, String[] columnNames) {
         for (int i = 0; i < values[0].length; i++) {
             ContentValues cv = new ContentValues();
-            for (int j = 0;j<values.length;j++)
-                cv.put(columnNames[j],values[j][i]);
+            for (int j = 0; j < values.length; j++)
+                cv.put(columnNames[j], values[j][i]);
             db.insert(tableName, null, cv);
         }
     }

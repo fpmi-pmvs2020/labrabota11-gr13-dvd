@@ -31,7 +31,6 @@ public class PersonDao extends Dao<Person>{
     ContentValues getContentValues(Person person) {
         ContentValues cv = new ContentValues();
 
-        cv.put(PERSON_ID_COLUMN, person.getId());
         cv.put(PERSON_LOGIN_COLUMN, person.getLogin());
         cv.put(PERSON_FIO_COLUMN, person.getFio());
         cv.put(PERSON_TEL_COLUMN, person.getTelephone());

@@ -29,7 +29,6 @@ public class DutyTypesDao extends Dao<DutyTypes> {
     ContentValues getContentValues(DutyTypes dutyTypes) {
         ContentValues cv = new ContentValues();
 
-        cv.put(TYPES_ID_COLUMN, dutyTypes.getId());
         cv.put(TYPES_TITLE_COLUMN, dutyTypes.getTitle());
 
         return cv;

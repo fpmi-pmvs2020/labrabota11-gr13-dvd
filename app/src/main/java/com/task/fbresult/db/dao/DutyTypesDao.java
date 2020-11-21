@@ -18,6 +18,7 @@ import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 public class DutyTypesDao extends Dao<DutyTypes> {
 
     public static String GET_ALL_QUERY = "select * from "+ TYPES_TABLE ;
+    public static String GET_BY_ID_QUERY = "select * from "+ TYPES_TABLE + " where " + TYPES_ID_COLUMN + " =" ;
 
     @Override
     String getTableName() {

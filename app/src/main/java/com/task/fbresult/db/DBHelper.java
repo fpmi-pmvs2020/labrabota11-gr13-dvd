@@ -10,13 +10,19 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.task.fbresult.R;
 import com.task.fbresult.model.Duty;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    private Context context;
     private static DBHelper dbHelper;
 
     private static final String LOG_TAG = "myLogs";
@@ -24,7 +30,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private DBHelper(@Nullable Context context, @Nullable String name,
                     @Nullable SQLiteDatabase.CursorFactory factory,
                     int version) {
+
         super(context, name, factory, version);
+        this.context = context;
     }
 
 
@@ -44,6 +52,17 @@ public class DBHelper extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        InputStream inputStream = context.getResources().openRawResource(R.raw.db);
+
+        try {
+            String queries = IOUtils.toString(inputStream);
+            for(String query: queries.split(";"))
+                db.execSQL(query);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*
         db.execSQL("create table dates (" +
                 "id integer primary key autoincrement," +
                 "cur_date date);");
@@ -53,7 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table dates_to_workers_con(" +
                 "id integer primary key autoincrement," +
                 "date_id integer references dates (id) on delete cascade," +
-                "worker_id integer references workers (id) on delete cascade);");
+                "worker_id integer references workers (id) on delete cascade);");*/
 
         DBFiller dbFiller = new DBFiller(db,this);
         dbFiller.fillData();

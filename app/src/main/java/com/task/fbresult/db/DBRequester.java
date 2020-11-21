@@ -30,7 +30,7 @@ public class DBRequester {
                 "' order by cur_date limit 1;",null);
         if(c.getCount() == 0)
             return null;
-        String date = c.getString(0);
+        String date = c.getString(1);
         c.close();
 
         c = getNamesWorkersOnDate(date);
@@ -45,12 +45,12 @@ public class DBRequester {
     }
 
     private Duty parseCursorWithUserName(Cursor c, String name){
-        String partnerName = c.getString(1);
-        String date = c.getString(0);
+        String partnerName = c.getString(2);
+        String date = c.getString(1);
         c.moveToNext();
         if(partnerName.equals(name)) {
             if(c.moveToNext()) {
-                partnerName = c.getString(1);
+                partnerName = c.getString(2);
             }else{
                 partnerName = null;
             }

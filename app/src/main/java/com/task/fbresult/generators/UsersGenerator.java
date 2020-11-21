@@ -12,6 +12,10 @@ public class UsersGenerator{
             "Иванов","Петров","Сидоров","Смирненко","Иванчук","Каспаров","Мерзоян"
     };
 
+    private final static String[] phones = {
+            "+375111111111", "+375222222222","+375333333333","+375444444444"
+    };
+
     public static String[][] generate() {
         String[]result = new String[namesNumber];
         Random random = new Random();

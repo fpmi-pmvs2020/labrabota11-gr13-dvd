@@ -43,14 +43,17 @@ public class DutyManager {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private List<PeopleOnDuty> getWhoWorksWithUser(List<PeopleOnDuty>peopleOnDuties,
                                                    List<PeopleOnDuty>currentUserOnDuty){
-        List<PeopleOnDuty>partnersOnDuty = new ArrayList<>();
-        for(PeopleOnDuty personOnDuty:peopleOnDuties){
-            for(PeopleOnDuty currentUserOnDutyItem:currentUserOnDuty){
-                if(doWorkOnTheSameTime(personOnDuty,currentUserOnDutyItem))
-                    partnersOnDuty.add(personOnDuty);
-            }
-        }
-        return partnersOnDuty;
+        return peopleOnDuties.stream()
+                .filter(peopleOnDuty -> workOnTimeWithPersonIntervals(currentUserOnDuty,peopleOnDuty))
+                .collect(Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean workOnTimeWithPersonIntervals(List<PeopleOnDuty>intervals, PeopleOnDuty person){
+        List<PeopleOnDuty> currentIntervals = intervals.stream()
+                .filter(peopleOnDuty -> doWorkOnTheSameTime(peopleOnDuty,person))
+                .collect(Collectors.toList());
+        return !currentIntervals.isEmpty();
     }
 
 

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PersonGenerator {
-    private final static int namesNumber = 30;
+    private final static int namesNumber = 3;
     private final static String[] names = {
             "Дмитрий", "Иван", "Петр", "Виктор", "Егор", "Даниил", "Михаил", "Илья"
     };
@@ -38,11 +38,11 @@ public class PersonGenerator {
 
         List<Person> ans = new ArrayList<>();
         Random random = new Random();
-        for (int i= 0; i < namesNumber; i++) {
+        for (int i = 0; i < namesNumber; i++) {
 
             String tel = Stream.generate(() -> random.nextInt(10)).limit(9).map(String::valueOf).collect(Collectors.joining());
             Person person = new Person(
-                    "admin@mail.com",
+                    "admin" + (i == 0 ? "" : i) + "@mail.com",
                     names[random.nextInt(names.length)] + " " +
                             surnames[random.nextInt(surnames.length)] + " " +
                             patronimic[random.nextInt(patronimic.length)],

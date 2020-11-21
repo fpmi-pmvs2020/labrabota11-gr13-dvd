@@ -122,6 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(personOnDuty);
         db.execSQL(personTable);
 
+        DBFillers.fillData();
     }
 
     @Override

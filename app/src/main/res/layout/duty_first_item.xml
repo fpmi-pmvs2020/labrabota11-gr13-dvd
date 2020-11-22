@@ -24,6 +24,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/firstLine"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/dark_blue_line" />
+
     <TextView
         android:id="@+id/tvDutyDate"
         android:layout_width="wrap_content"
@@ -74,11 +84,10 @@
         android:layout_marginEnd="10dp"
         android:gravity="center"
         android:maxWidth="240dp"
-        android:text="@string/test_partners"
         android:textColor="@color/coral"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@id/tvDutyTitle"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintStart_toStartOf="@+id/tvTimeTip"
         app:layout_constraintTop_toTopOf="@+id/tvPartnersTip" />
 
 
@@ -90,7 +99,7 @@
         android:textSize="14sp"
         android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toStartOf="@id/tvDutyEndTime"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
 
     <TextView
         android:id="@+id/tvDutyEndTime"
@@ -100,10 +109,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="@+id/tvDutyTitle"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvTimeTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
@@ -115,15 +124,15 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDutyPartners" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tvPositionsAmountTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textSize="14sp"
         android:textColor="@color/dark_blue"
         android:text="@string/duty_people_count"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintStart_toStartOf="@+id/tvTimeTip"
+        app:layout_constraintTop_toBottomOf="@+id/tvTimeTip" />
 
     <TextView
         android:id="@+id/tvDutyPosAmount"
@@ -132,5 +141,5 @@
         android:textSize="14sp"
         android:textColor="@color/dark_blue"
         app:layout_constraintStart_toStartOf="@+id/tvDutyEndTime"
-        app:layout_constraintTop_toTopOf="@+id/textView7" />
+        app:layout_constraintTop_toTopOf="@+id/tvPositionsAmountTip" />
 </androidx.constraintlayout.widget.ConstraintLayout>

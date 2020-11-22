@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.task.fbresult.R;
-import com.task.fbresult.ui.peoples_on_duty_stat.DutyStatisticFragment;
 
 public class DutyPagerAdapter extends FragmentPagerAdapter {
 

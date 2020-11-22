@@ -4,17 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.all_duties.AllDutiesFragment">
+    android:background="@color/gypsum"
+    tools:context=".ui.all_duties.UserDutiesFragment">
 
-    <LinearLayout
-        android:id="@+id/allDutiesLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recPersonDuties"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

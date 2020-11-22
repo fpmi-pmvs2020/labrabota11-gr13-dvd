@@ -24,6 +24,8 @@ import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
+import com.task.fbresult.ui.adapters.DutyAdapter;
+import com.task.fbresult.ui.holders.FirstDutyViewHolder;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDateTime;

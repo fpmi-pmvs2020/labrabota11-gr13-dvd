@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.task.fbresult.R;
 import com.task.fbresult.db.dao.DutyTypesDao;
 import com.task.fbresult.db.dao.PersonDao;
-import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.DutyTypes;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
-import com.task.fbresult.ui.home.NodeListener;
+import com.task.fbresult.ui.adapters.NodeListener;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;

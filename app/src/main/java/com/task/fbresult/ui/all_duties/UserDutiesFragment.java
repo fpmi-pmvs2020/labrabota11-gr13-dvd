@@ -5,44 +5,55 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.task.fbresult.R;
-import com.task.fbresult.db.DBHelper;
+import com.task.fbresult.db.dao.DutyDao;
+import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.Person;
+import com.task.fbresult.ui.adapters.TimedDutyAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
-public class AllDutiesFragment extends Fragment {
+public class UserDutiesFragment extends Fragment {
 
-    private AllDutiesViewModel allDutiesViewModel;
+    private UserDutiesViewModel userDutiesViewModel;
     View root;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        allDutiesViewModel =
-                new ViewModelProvider(this).get(AllDutiesViewModel.class);
-        root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        userDutiesViewModel =
+                new ViewModelProvider(this).get(UserDutiesViewModel.class);
+        root = inflater.inflate(R.layout.fragment_person_duties, container, false);
         showAllUserDuties();
         return root;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showAllUserDuties() {
-        LinearLayout dutiesLayout = root.findViewById(R.id.allDutiesLayout);
+        RecyclerView dutiesRecycler = root.findViewById(R.id.recPersonDuties);
         List<Duty> duties = loadDuties();
-        for (Duty duty : duties) {
-            View dutyView = getViewWithDuty(duty);
-            dutiesLayout.addView(dutyView);
-        }
+        dutiesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        TimedDutyAdapter dutyAdapter = new TimedDutyAdapter(getContext(), duties, indexOf -> {
+            TimedDutyAdapter adapter = (TimedDutyAdapter) dutiesRecycler.getAdapter();
+            Duty selectedDuty = Objects.requireNonNull(adapter).items.get(indexOf);
+            loadDutyActivity(selectedDuty);
+        });
+        dutiesRecycler.setAdapter(dutyAdapter);
+    }
+
+    private void loadDutyActivity(Duty duty){
+        //TODO:
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -61,11 +72,12 @@ public class AllDutiesFragment extends Fragment {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private List<Duty> loadDuties() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DBHelper dbHelper = DBHelper.getInstance(getContext(),null);
-        //DBRequester dbRequester = dbHelper.getDBRequester();
-        //return dbRequester.getDutiesForName(user.getDisplayName());
-        throw new UnsupportedOperationException("method is not realised yet");
+        String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String userQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
+        Person currentUser = new PersonDao().get(userQuery).get(0);
+        String dutiesQuery = String.format(DutyDao.GET_DUTIES_WITH_PERSON_ID,currentUser.getId());
+        return new DutyDao().get(dutiesQuery);
     }
 }

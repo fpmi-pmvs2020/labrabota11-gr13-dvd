@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.home;
+package com.task.fbresult.ui.holders;
 
 import android.content.Context;
 import android.content.res.Resources;

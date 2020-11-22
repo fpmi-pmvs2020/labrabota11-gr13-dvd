@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -14,6 +15,16 @@ public class LocalDateTimeHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getDateTimeAsString(LocalDateTime date){
         return date.format(formatter);
+    }
+
+    public static String getFormattedDate(LocalDate date){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return date.format(dateTimeFormatter);
+    }
+
+    public static String getFormattedTime(LocalDateTime localDateTime){
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm");
+        return localDateTime.format(timeFormatter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

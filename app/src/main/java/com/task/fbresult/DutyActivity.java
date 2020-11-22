@@ -6,18 +6,31 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.task.fbresult.ui.peoples_on_duty.DutyPagerAdapter;
 
 
 public class DutyActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duty);
+
         Toolbar toolbar = findViewById(R.id.duty_toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        DutyPagerAdapter adapter = new DutyPagerAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = findViewById(R.id.duty_pager);
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+
     }
 
     @Override
@@ -34,9 +47,8 @@ public class DutyActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menu.add("heool");
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
 }

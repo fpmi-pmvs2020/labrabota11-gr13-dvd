@@ -49,6 +49,8 @@
     <string name="tab_text_2">Statistics</string>
 
     <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
+    <string name="left_duty_time">Time lefted:</string>
+    <string name="peoples_on_this_duty_title">Peoples on this duty</string>
 
     <string-array name="daysOfWeek">
         <item>Monday</item>

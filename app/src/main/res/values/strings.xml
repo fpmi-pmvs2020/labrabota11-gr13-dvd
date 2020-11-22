@@ -45,6 +45,9 @@
     <string name="duty_people_count">Position amount:</string>
     <string name="no_partners">You are on duty alone</string>
 
+    <string name="tab_text_1">Info</string>
+    <string name="tab_text_2">Statistics</string>
+
     <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
 
     <string-array name="daysOfWeek">

@@ -29,9 +29,10 @@ public class DutyManager {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Person> getPartners(){
         String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Person currentUser = new PersonDao().get(PersonDao.GET_USER_WITH_LOGIN_QUERY+login).get(0);
-        List<PeopleOnDuty>peopleOnDuties
-                = new PeopleOnDutyDao().get(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID+"");
+        String userQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
+        Person currentUser = new PersonDao().get(userQuery).get(0);
+        String query = String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID,duty.getId());
+        List<PeopleOnDuty>peopleOnDuties = new PeopleOnDutyDao().get(query);
         List<PeopleOnDuty>currentUserOnDuty = peopleOnDuties.stream()
                 .filter(peopleOnDuty -> peopleOnDuty.getPersonId() == currentUser.getId())
                 .collect(Collectors.toList());
@@ -72,8 +73,10 @@ public class DutyManager {
     private List<Person> transformPeopleOnDutyToPersons(List<PeopleOnDuty>peopleOnDutyList){
         PersonDao personDao = new PersonDao();
         List<Person>persons = new ArrayList<>();
-        for(PeopleOnDuty personOnDuty:peopleOnDutyList)
-            persons.add(personDao.get(PersonDao.GET_USER_WITH_ID +personOnDuty.getPersonId()).get(0));
+        for(PeopleOnDuty personOnDuty:peopleOnDutyList) {
+            String query = String.format(PersonDao.GET_USER_WITH_ID, personOnDuty.getPersonId());
+            persons.add(personDao.get(query).get(0));
+        }
         return persons;
     }
 

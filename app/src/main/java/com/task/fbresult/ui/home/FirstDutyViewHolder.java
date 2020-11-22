@@ -16,6 +16,9 @@ public class FirstDutyViewHolder {
     Resources resources;
     View child;
     TextView tvDutyTitle;
+    TextView tvPartnersTip;
+    TextView tvTimeTip;
+    TextView tvPosAmountTip;
     TextView tvDutyDate;
     TextView tvWeekDay;
     TextView tvPartners;
@@ -28,19 +31,29 @@ public class FirstDutyViewHolder {
         resources = context.getResources();
         child  = View.inflate(context, R.layout.duty_first_item,null);
         tvDutyTitle = child.findViewById(R.id.tvDutyTitle);
-
+        tvPartnersTip = child.findViewById(R.id.tvPartnersTip);
+        tvTimeTip = child.findViewById(R.id.tvTimeTip);
+        tvPosAmountTip = child.findViewById(R.id.tvPositionsAmountTip);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View formatViewWithDuty(Duty duty){
-        if(duty == null)
+        if(duty == null) {
             tvDutyTitle.setText(resources.getString(R.string.no_duty));
-        else {
+            setTipsVisibility(View.INVISIBLE);
+        }else {
             initNecessaryFields();
             DutyFormatter dutyFormatter = new DutyFormatter(duty,resources);
+            setTipsVisibility(View.VISIBLE);
             formatDutyOnDisplay(dutyFormatter);
         }
         return child;
+    }
+
+    private void setTipsVisibility(int visibility){
+        tvPosAmountTip.setVisibility(visibility);
+        tvTimeTip.setVisibility(visibility);
+        tvPartnersTip.setVisibility(visibility);
     }
 
     private void initNecessaryFields(){

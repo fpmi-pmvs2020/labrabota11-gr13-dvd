@@ -78,10 +78,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return dbHelper;
     }
 
-    public DBRequester getDBRequester(){
-        return new DBRequester(getReadableDatabase());
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(SQLiteDatabase db) {

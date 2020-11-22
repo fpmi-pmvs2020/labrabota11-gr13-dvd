@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.R;
-import com.task.fbresult.db.DBHelper;
-import com.task.fbresult.db.DBRequester;
 import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.db.dao.PeopleOnDutyDao;
 import com.task.fbresult.db.dao.PersonDao;
@@ -26,11 +26,14 @@ import com.task.fbresult.model.Person;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private View root;
+    RecyclerView recyclerView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,6 +41,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView = root.findViewById(R.id.dayDutyRecycler);
         configureCalendar();
         FirebaseAuth.getInstance().addAuthStateListener(param -> {
             if (FirebaseAuth.getInstance().getCurrentUser() != null)
@@ -51,28 +55,34 @@ public class HomeFragment extends Fragment {
         CalendarView calendarView = root.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             LocalDateTime localDateTime = LocalDateTime.of(year,month,dayOfMonth,0,0);
-            String dateAsString = LocalDateTimeHelper.getDateTimeAsString(localDateTime);
-            showSelectedDuty(dateAsString);
+            showSelectedDuty(localDateTime);
         });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void showSelectedDuty(String selectedDate) {
-        LinearLayout linearLayout = root.findViewById(R.id.selectedDayDutyLayout);
-        try {
-            linearLayout.removeViewAt(1);
-        } catch (Exception e) {
+    private void showSelectedDuty(LocalDateTime localDateTime) {
+        List<Duty> duties = loadSelectedDuty(localDateTime);
 
-        }
-        Duty duty = loadSelectedDuty(selectedDate);
-        View child = getViewWithFirstDuty(duty);
-        linearLayout.addView(child);
+        DutyAdapter dutyAdapter = new DutyAdapter(getContext(), duties, indexOf -> {
+            DutyAdapter adapter = (DutyAdapter)recyclerView.getAdapter();
+            Duty selectedDuty = Objects.requireNonNull(adapter).items.get(indexOf);
+            loadDutyActivity(selectedDuty);
+        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(dutyAdapter);
     }
 
-    private Duty loadSelectedDuty(String selectedDate) {
-        DBHelper dbHelper = DBHelper.getInstance(getContext(), null);
-        DBRequester dbRequester = dbHelper.getDBRequester();
-        return dbRequester.getDutyWithDate(selectedDate);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private List<Duty> loadSelectedDuty(LocalDateTime localDateTime) {
+        LocalDateTime nextDay = localDateTime.plusDays(1);
+        String currDayAsString = LocalDateTimeHelper.getDateTimeAsString(localDateTime);
+        String nextDayAsString = LocalDateTimeHelper.getDateTimeAsString(nextDay);
+        String query = String.format(DutyDao.GET_DUTIES_WITH_DAY,currDayAsString,nextDayAsString);
+        return new DutyDao().get(query);
+    }
+
+    private void loadDutyActivity(Duty duty){
+        //TODO: load duty activity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -80,6 +90,9 @@ public class HomeFragment extends Fragment {
         LinearLayout linearLayout = root.findViewById(R.id.firstDutyLayout);
         Duty firstDuty = loadFirstDuty();
         View child = getViewWithFirstDuty(firstDuty);
+        child.setOnClickListener(v -> {
+            loadDutyActivity(firstDuty);
+        });
         linearLayout.addView(child);
     }
 
@@ -92,12 +105,15 @@ public class HomeFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Duty loadFirstDuty() {
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Person currentUser = new PersonDao()
-                .get(PersonDao.GET_USER_WITH_LOGIN_QUERY+userEmail).get(0);
-        PeopleOnDuty peopleOnDuty = new PeopleOnDutyDao()
+        String userWithLoginQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,userEmail);
+        Person currentUser = new PersonDao().get(userWithLoginQuery).get(0);
+
+        List<PeopleOnDuty> peopleOnDuties = new PeopleOnDutyDao()
                 .get(String.format(PeopleOnDutyDao.GET_FIRST_PEOPLE_ON_DUTY_WITH_PERSON_ID,
-                        currentUser.getId())).get(0);
-        return new DutyDao()
-                .get(DutyDao.GET_DUTY_WITH_ID+peopleOnDuty.getDutyId()).get(0);
+                        currentUser.getId()));
+        if(peopleOnDuties.isEmpty())
+            return null;
+        String query = String.format(DutyDao.GET_DUTY_WITH_ID,peopleOnDuties.get(0).getDutyId());
+        return new DutyDao().get(query).get(0);
     }
 }

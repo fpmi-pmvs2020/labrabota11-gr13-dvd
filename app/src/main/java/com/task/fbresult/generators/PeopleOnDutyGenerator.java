@@ -8,9 +8,12 @@ import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.PeopleOnDuty;
+import com.task.fbresult.model.Person;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.TreeSet;
 
 public class PeopleOnDutyGenerator {
     static final int DUTIES_AMOUNT = 10;
@@ -22,12 +25,19 @@ public class PeopleOnDutyGenerator {
         DutyDao dutyDao = new DutyDao();
 
 
-        for (int i=0;i< DUTIES_AMOUNT;i++) {
-            Duty duty = dutyDao.get(DutyDao.GET_ALL_QUERY).stream().findAny().get();
-
+        List<Duty>duties = dutyDao.get(DutyDao.GET_ALL_QUERY);
+        List<Person>persons = personDao.get(PersonDao.GET_ALL_QUERY);
+        Random random = new Random();
+        for (Duty duty:duties) {
+            TreeSet<Integer> peopleIndexes = new TreeSet<>();
             for (int j = 0; j < duty.getMaxPeople(); j++) {
+                int index;
+                do {
+                    index = random.nextInt(persons.size());
+                }while (peopleIndexes.contains(index));
+                peopleIndexes.add(index);
                 PeopleOnDuty peopleOnDuty = new PeopleOnDuty(
-                        personDao.get(PersonDao.GET_ALL_QUERY).stream().findAny().get().getId(),
+                        persons.get(index).getId(),
                         duty.getId(),
                         duty.getFrom(),
                         duty.getTo()

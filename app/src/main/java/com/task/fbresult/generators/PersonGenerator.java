@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PersonGenerator {
-    private final static int namesNumber = 3;
+    private final static int namesNumber = 6;
     private final static String[] names = {
             "Дмитрий", "Иван", "Петр", "Виктор", "Егор", "Даниил", "Михаил", "Илья"
     };

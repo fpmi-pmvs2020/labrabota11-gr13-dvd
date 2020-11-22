@@ -80,7 +80,7 @@ public class DutyFormatter {
     }
 
     public String getTitle(){
-        List<DutyTypes>types = new DutyTypesDao().get(DutyTypesDao.GET_BY_ID_QUERY+duty.getId());
+        List<DutyTypes>types = new DutyTypesDao().get(DutyTypesDao.GET_BY_ID_QUERY+duty.getType());
         return types.get(0).getTitle();
     }
 

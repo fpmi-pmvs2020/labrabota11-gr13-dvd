@@ -32,7 +32,6 @@ public class DutyAdapter extends RecyclerView.Adapter<DutyAdapter.ViewHolder> {
         inflater = LayoutInflater.from(context);
         this.items = items;
         this.listener = listener;
-
     }
 
     @NonNull

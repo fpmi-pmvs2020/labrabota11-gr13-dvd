@@ -46,6 +46,6 @@ public class DutyGenerator {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static int getDay(Month month){
         Random random= new Random();
-        return random.nextInt(month.maxLength());
+        return random.nextInt(month.maxLength())+1;
     }
 }

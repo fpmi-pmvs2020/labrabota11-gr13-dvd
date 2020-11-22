@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,9 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.task.fbresult.R;
 import com.task.fbresult.db.DBHelper;
-import com.task.fbresult.db.DBRequester;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.util.DutyManager;
 
 import java.util.List;
 
@@ -67,7 +64,7 @@ public class AllDutiesFragment extends Fragment {
     private List<Duty> loadDuties() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DBHelper dbHelper = DBHelper.getInstance(getContext(),null);
-        DBRequester dbRequester = dbHelper.getDBRequester();
+        //DBRequester dbRequester = dbHelper.getDBRequester();
         //return dbRequester.getDutiesForName(user.getDisplayName());
         throw new UnsupportedOperationException("method is not realised yet");
     }

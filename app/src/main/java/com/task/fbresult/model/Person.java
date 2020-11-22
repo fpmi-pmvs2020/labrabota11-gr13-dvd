@@ -1,6 +1,7 @@
 package com.task.fbresult.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Person {
     private long id;
@@ -103,6 +104,25 @@ public class Person {
 
     public void setRole(long role) {
         this.roleId = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id == person.id &&
+                roleId == person.roleId &&
+                Objects.equals(login, person.login) &&
+                Objects.equals(fio, person.fio) &&
+                Objects.equals(telephone, person.telephone) &&
+                Objects.equals(address, person.address) &&
+                Objects.equals(birthday, person.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, fio, telephone, address, birthday, roleId);
     }
 
     //endregion

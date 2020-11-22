@@ -42,7 +42,8 @@
     <string name="pass_dialog_msg">Enter and confirm your password</string>
 
     <string name="duty_time_view">Duty time:</string>
-    <string name="duty_people_count">Position amount</string>
+    <string name="duty_people_count">Position amount:</string>
+    <string name="no_partners">You are on duty alone</string>
 
     <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
 

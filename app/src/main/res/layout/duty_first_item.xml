@@ -25,14 +25,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle"
-        app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/firstLine"
-        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/dark_blue_line" />
+        android:background="@color/dark_blue"
+        app:layout_constraintBottom_toTopOf="@id/tvDutyDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle" />
 
     <TextView
         android:id="@+id/tvDutyDate"
@@ -41,7 +44,7 @@
         android:textColor="@color/light_blue"
         android:textSize="18sp"
         android:layout_margin="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle"
+        app:layout_constraintTop_toBottomOf="@id/firstLine"
         app:layout_constraintStart_toStartOf="@id/tvDutyTitle"/>
 
     <TextView
@@ -56,13 +59,13 @@
 
     <TextView
         android:id="@+id/tvDutyTimeRemained"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:textAlignment="viewEnd"
         android:layout_marginTop="10dp"
-        android:textColor="@color/coral"
+        android:textColor="@color/light_blue"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvDutyWeekDay"
         app:layout_constraintTop_toBottomOf="@id/tvDutyDate" />
 
     <TextView
@@ -91,13 +94,13 @@
         app:layout_constraintTop_toTopOf="@+id/tvPartnersTip" />
 
 
-
     <TextView
         android:id="@+id/tvDutyStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/light_blue"
         app:layout_constraintEnd_toStartOf="@id/tvDutyEndTime"
         app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
 
@@ -107,6 +110,7 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:layout_marginStart="20dp"
+        android:textColor="@color/light_blue"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="@+id/tvDutyTitle"
         app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
@@ -139,7 +143,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="@color/dark_blue"
-        app:layout_constraintStart_toStartOf="@+id/tvDutyEndTime"
+        android:textColor="@color/light_blue"
+        app:layout_constraintEnd_toEndOf="@+id/tvDutyEndTime"
         app:layout_constraintTop_toTopOf="@+id/tvPositionsAmountTip" />
 </androidx.constraintlayout.widget.ConstraintLayout>

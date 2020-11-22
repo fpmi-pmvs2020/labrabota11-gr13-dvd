@@ -19,8 +19,9 @@ import static com.task.fbresult.db.DBHelper.*;
 public class PeopleOnDutyDao extends Dao<PeopleOnDuty> {
     public static String GET_PEOPLE_ON_DUTY_WITH_DUTY_ID = "select * from "+ PER_ON_DUTY_TABLE
             + " where "+PER_ON_DUTY_DUTY_FK_COLUMN+ " = %d";
-    public static String GET_FIRST_PEOPLE_ON_DUTY_WITH_PERSON_ID = "select * from (SELECT * FROM "+PER_ON_DUTY_TABLE
-            +" ORDER BY "+PER_ON_DUTY_FROM_COLUMN+") where "+PER_ON_DUTY_PERSON_FK_COLUMN+" = %d limit 1";
+    public static String GET_FIRST_PEOPLE_ON_DUTY_OF_PERSON = "select * from (SELECT * FROM "+PER_ON_DUTY_TABLE
+            +" WHERE "+PER_ON_DUTY_FROM_COLUMN+" > '%s' " +
+            "ORDER BY "+PER_ON_DUTY_FROM_COLUMN+") where "+PER_ON_DUTY_PERSON_FK_COLUMN+" = %d limit 1";
 
     @Override
     String getTableName() {

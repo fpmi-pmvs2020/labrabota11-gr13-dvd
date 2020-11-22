@@ -84,6 +84,6 @@ public class DutyManager {
     public long getDaysLeft(){
         LocalDate dutyDate = duty.getFrom().toLocalDate();
         LocalDate todayDate = LocalDate.now();
-        return DAYS.between(dutyDate,todayDate);
+        return DAYS.between(todayDate,dutyDate);
     }
 }

@@ -47,7 +47,7 @@ public class DutyFormatter {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String getFormattedTime(LocalTime localTime){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return localTime.format(dateTimeFormatter);
     }
 
@@ -76,6 +76,8 @@ public class DutyFormatter {
         StringBuilder stringBuilder = new StringBuilder();
         for(Person partner:partners)
             stringBuilder.append(partner.getName()+" "+partner.getSurname()+", ");
+        if(stringBuilder.length() == 0)
+            return resources.getString(R.string.no_partners);
         return stringBuilder.substring(0,stringBuilder.length()-2);
     }
 

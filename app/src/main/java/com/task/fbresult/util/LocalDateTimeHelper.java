@@ -20,4 +20,9 @@ public class LocalDateTimeHelper {
     public static LocalDateTime parseString(String strDate){
         return LocalDateTime.parse(strDate,formatter);
     }
+
+    public static String getTodayDateAsString(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return getDateTimeAsString(localDateTime);
+    }
 }

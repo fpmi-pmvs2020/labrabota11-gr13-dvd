@@ -28,10 +28,10 @@ import static com.task.fbresult.db.DBHelper.TYPES_TABLE;
 public class DutyDao extends Dao<Duty> {
 
     public static String GET_DUTY_WITH_ID = "select * from "+DUTY_TABLE+" where "
-            +DUTY_ID_COLUMN+"=%d";
+            +DUTY_ID_COLUMN+" = %d";
     public static String GET_ALL_QUERY = "select * from "+ DUTY_TABLE;
-    public static String GET_DUTIES_WITH_DAY = "select * from"
-            +DUTY_TABLE+" where "+DUTY_FROM_COLUMN+"> '%s' and "+DUTY_TO_COLUMN+"< '%s'";
+    public static String GET_DUTIES_WITH_DAY = "select * from "
+            +DUTY_TABLE+" where "+DUTY_FROM_COLUMN+" > '%s' and "+DUTY_TO_COLUMN+" < '%s'";
 
     @Override
     String getTableName() {

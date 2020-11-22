@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FBResult">
+f        <activity
+            android:name=".DutyActivity"
+            android:theme="@style/Theme.FBResult.NoActionBar">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

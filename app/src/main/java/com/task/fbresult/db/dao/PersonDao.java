@@ -21,9 +21,9 @@ public class PersonDao extends Dao<Person>{
 
     public static String GET_ALL_QUERY = "select * from "+ PERSON_TABLE ;
     public static String GET_USER_WITH_LOGIN_QUERY = "select * from "+ PERSON_TABLE
-            + "where "+PERSON_LOGIN_COLUMN+ "=";
+            + " where "+PERSON_LOGIN_COLUMN+ "='%s'";
     public static String GET_USER_WITH_ID = "select * from "+ PERSON_TABLE
-            + "where "+PERSON_ID_COLUMN+ "=";
+            + " where "+PERSON_ID_COLUMN+ " = %d";
 
     @Override
     String getTableName() {

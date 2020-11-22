@@ -50,7 +50,7 @@ public class DutyAdapter extends RecyclerView.Adapter<DutyAdapter.ViewHolder> {
         holder.title.setText(dutyTypes.get(0).getTitle());
         holder.from.setText(item1.getFrom().format(formatter));
         holder.to.setText(item1.getTo().format(formatter));
-        holder.max.setText(item1.getMaxPeople());
+        holder.max.setText(String.valueOf(item1.getMaxPeople()));
 
     }
 

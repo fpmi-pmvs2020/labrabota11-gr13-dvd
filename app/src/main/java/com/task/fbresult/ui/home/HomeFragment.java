@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,8 +55,13 @@ public class HomeFragment extends Fragment {
     private void configureCalendar() {
         CalendarView calendarView = root.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            LocalDateTime localDateTime = LocalDateTime.of(year,month,dayOfMonth,0,0);
+            LocalDateTime localDateTime = LocalDateTime.of(year,month+1,dayOfMonth,0,0);
             showSelectedDuty(localDateTime);
+            LinearLayout linearLayout = root.findViewById(R.id.firstDutyLayout);
+            linearLayout.removeAllViewsInLayout();
+            ConstraintLayout constraintLayout = root.findViewById(R.id.homeConstraint);
+            constraintLayout.removeView(linearLayout);
+            linearLayout.setVisibility(View.GONE);
         });
     }
 
@@ -107,10 +113,10 @@ public class HomeFragment extends Fragment {
         String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String userWithLoginQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,userEmail);
         Person currentUser = new PersonDao().get(userWithLoginQuery).get(0);
-
-        List<PeopleOnDuty> peopleOnDuties = new PeopleOnDutyDao()
-                .get(String.format(PeopleOnDutyDao.GET_FIRST_PEOPLE_ON_DUTY_WITH_PERSON_ID,
-                        currentUser.getId()));
+        String todayDateAsString = LocalDateTimeHelper.getTodayDateAsString();
+        String peopleOnDutyWithIdQuery = String.format(PeopleOnDutyDao.GET_FIRST_PEOPLE_ON_DUTY_OF_PERSON,
+                todayDateAsString, currentUser.getId());
+        List<PeopleOnDuty> peopleOnDuties = new PeopleOnDutyDao().get(peopleOnDutyWithIdQuery);
         if(peopleOnDuties.isEmpty())
             return null;
         String query = String.format(DutyDao.GET_DUTY_WITH_ID,peopleOnDuties.get(0).getDutyId());

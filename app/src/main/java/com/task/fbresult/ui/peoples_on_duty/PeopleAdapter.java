@@ -21,6 +21,7 @@ import com.task.fbresult.ui.adapters.NodeListener;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
@@ -84,6 +85,16 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public void onClick(View v) {
             if (listener != null)
                 listener.nodeClicked(getAbsoluteAdapterPosition());
+        }
+    }
+
+    public static class Item{
+        public PeopleOnDuty people;
+        public Set<PeopleOnDutyState> state;
+
+        public Item(PeopleOnDuty people, Set<PeopleOnDutyState> me) {
+            this.people = people;
+            state = me;
         }
     }
 }

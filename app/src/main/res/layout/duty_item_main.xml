@@ -3,42 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:background="@drawable/border_rect_shape"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_border_blue_line"
     android:padding="12dp">
 
     <TextView
         android:id="@+id/tvDutyTitle"
-        android:layout_width="409dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
         android:layout_marginTop="16dp"
-        android:gravity="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="15dp"
+        android:textAlignment="viewStart"
         android:textAllCaps="true"
         android:textColor="@color/dark_blue"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvDutyPartners"
-        android:layout_width="409dp"
+    <ImageView
+        android:id="@+id/imgViewCheckMark"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textColor="@color/coral"
-        android:textSize="16sp"
+        android:visibility="invisible"
+        android:background="@drawable/check_mark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
+        app:layout_constraintTop_toTopOf="@id/tvDutyTitle" />
 
     <TextView
         android:id="@+id/tvDutyStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/light_blue"
         android:layout_marginStart="60dp"
         app:layout_constraintStart_toEndOf="@+id/tvTimeTip"
         app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
@@ -48,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:textColor="@color/light_blue"
         app:layout_constraintStart_toEndOf="@+id/tvDutyStartTime"
         app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
 
@@ -55,16 +54,18 @@
         android:id="@+id/tvTimeTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="108dp"
-        android:layout_marginTop="16dp"
+        android:textColor="@color/dark_blue"
         android:text="@string/duty_time_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDutyPartners" />
+        app:layout_constraintTop_toBottomOf="@id/tvDutyTitle"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvPositionsAmountTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/dark_blue"
         android:layout_marginTop="5dp"
         android:text="@string/duty_people_count"
         app:layout_constraintStart_toStartOf="@+id/tvTimeTip"
@@ -74,6 +75,8 @@
         android:id="@+id/tvDutyAmounts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tvDutyEndTime"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/light_blue"
+        app:layout_constraintEnd_toEndOf="@+id/tvDutyEndTime"
         app:layout_constraintTop_toTopOf="@+id/tvPositionsAmountTip" />
 </androidx.constraintlayout.widget.ConstraintLayout>

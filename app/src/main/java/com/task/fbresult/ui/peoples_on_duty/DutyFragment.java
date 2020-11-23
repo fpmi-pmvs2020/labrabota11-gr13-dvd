@@ -48,7 +48,7 @@ public class DutyFragment extends Fragment implements NodeListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.duty_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_duty, container, false);
         duty = getCurrentDuty();
 
         LinearLayout dutyHolder = view.findViewById(R.id.duty_frame);
@@ -60,8 +60,9 @@ public class DutyFragment extends Fragment implements NodeListener {
         setDayText(view, this.duty.getFrom());
 
 
-        adapter = new PeopleAdapter(getContext(), getPeoples(this.duty), this);
+        adapter = new PeopleAdapter(getContext(), PeoplesProviders.getOrderedListOfPerson(this.duty), this);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration(new PeopleAdapter.SimpleDivider(getContext()));
 
         leftTimeHandler = new Handler();
         leftTimeHandler.post(updateTime);
@@ -74,14 +75,14 @@ public class DutyFragment extends Fragment implements NodeListener {
         return new DutyDao().get(String.format(DutyDao.GET_DUTY_WITH_ID, 1222)).get(0);
     }
 
-    List<PeopleOnDuty> getPeoples(Duty duty) {
-        return new PeopleOnDutyDao().get(String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID, duty.getId()));
-    }
+//    List<PeopleOnDuty> getPeoples(Duty duty) {
+//        return new PeopleOnDutyDao().get(String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID, duty.getId()));
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void nodeClicked(int indexOf) {
-        Toast.makeText(getContext(), adapter.items.get(indexOf).getFrom().toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), adapter.items.get(indexOf).people.getFrom().toString(), Toast.LENGTH_LONG).show();
     }
 
     Runnable updateTime = new Runnable() {

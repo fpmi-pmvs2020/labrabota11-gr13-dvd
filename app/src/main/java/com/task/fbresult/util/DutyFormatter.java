@@ -15,7 +15,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 public class DutyFormatter {
     private final Duty duty;
@@ -64,9 +66,8 @@ public class DutyFormatter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getDayOfWeek(){
         LocalDateTime localDateTime = duty.getFrom();
-        int dayOfWeek = localDateTime.getDayOfWeek().getValue()-1;
-        String[]days = resources.getStringArray(R.array.daysOfWeek);
-        return days[dayOfWeek];
+        Locale currentLocale = resources.getConfiguration().locale;
+        return localDateTime.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE,currentLocale);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

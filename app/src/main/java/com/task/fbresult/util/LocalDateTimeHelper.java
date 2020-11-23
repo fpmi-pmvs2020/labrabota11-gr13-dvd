@@ -1,5 +1,6 @@
 package com.task.fbresult.util;
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -7,6 +8,8 @@ import androidx.annotation.RequiresApi;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class LocalDateTimeHelper {
@@ -35,5 +38,12 @@ public class LocalDateTimeHelper {
     public static String getTodayDateAsString(){
         LocalDateTime localDateTime = LocalDateTime.now();
         return getDateTimeAsString(localDateTime);
+    }
+
+    public static String getFormattedMonthAndYear(LocalDate localDate, Context context){
+        Locale currentLocale = context.getResources().getConfiguration().locale;
+        String month = localDate.getMonth().getDisplayName(TextStyle.FULL_STANDALONE,currentLocale);
+        String year = String.valueOf(localDate.getYear());
+        return month+", "+year;
     }
 }

@@ -9,10 +9,10 @@ import com.task.fbresult.R;
 
 public class TimeViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView tvDate;
+    public TextView tvData;
 
-    public TimeViewHolder(View view) {
+    public TimeViewHolder(View view,int tvId) {
         super(view);
-        tvDate = view.findViewById(R.id.tvDateView);
+        tvData = view.findViewById(tvId);
     }
 }

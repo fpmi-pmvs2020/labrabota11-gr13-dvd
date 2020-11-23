@@ -15,30 +15,46 @@ import com.task.fbresult.ui.holders.TimeViewHolder;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
 public class TimedDutyAdapter extends DutyAdapter {
-    int datesCount;
-    HashMap<Integer,LocalDate>dates = new HashMap<>();
-    TreeSet<Integer> datesIndexes = new TreeSet<>();
+    HashMap<Integer,LocalDate>dates;
+    TreeSet<Integer> daysIndexes;
+    TreeSet<Integer> monthIndexes;
+    Context context;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public TimedDutyAdapter(Context context, @NonNull List<Duty> items, NodeListener listener) {
         super(context,items,listener);
-        this.items = getDutiesWithNulls();
+        this.context = context;
+        this.items = getDutiesWithNulls(items);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private List<Duty> getDutiesWithNulls(){
+    public void setDuties(List<Duty>duties){
+        this.items = getDutiesWithNulls(duties);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private List<Duty> getDutiesWithNulls(List<Duty>items){
+        dates = new HashMap<>();
+        daysIndexes = new TreeSet<>();
+        monthIndexes = new TreeSet<>();
+
         List<Duty>result = new ArrayList<>();
         LocalDate lastDate = LocalDate.of(1,1,1);
         for(int i = 0;i<items.size();i++){
             LocalDate itemDate = items.get(i).getFrom().toLocalDate();
             if(!itemDate.isEqual(lastDate)){
-                datesIndexes.add(result.size());
+                if(lastDate.getMonthValue()!=itemDate.getMonthValue()){
+                    monthIndexes.add(result.size());
+                    result.add(null);
+                }
+                daysIndexes.add(result.size());
                 dates.put(result.size(),itemDate);
                 lastDate = itemDate;
                 result.add(null);
@@ -52,27 +68,40 @@ public class TimedDutyAdapter extends DutyAdapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
         switch (viewType){
             case 0:
                 return super.onCreateViewHolder(parent,viewType);
             case 1:
-                View view = inflater.inflate(R.layout.date_view, parent, false);
-                return new TimeViewHolder(view);
+                view = inflater.inflate(R.layout.day_view, parent, false);
+                return new TimeViewHolder(view,R.id.tvDayView);
+            case 2:
+                view = inflater.inflate(R.layout.month_view, parent, false);
+                return new TimeViewHolder(view,R.id.tvMonthView);
         }
         return null;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return datesIndexes.contains(position)?1:0;
+        if(daysIndexes.contains(position))
+            return 1;
+        else if(monthIndexes.contains(position))
+            return 2;
+        else
+            return 0;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if(datesIndexes.contains(position)){
+        if(daysIndexes.contains(position)){
             TimeViewHolder holder = (TimeViewHolder)viewHolder;
-            holder.tvDate.setText(LocalDateTimeHelper.getFormattedDate(dates.get(position)));
+            holder.tvData.setText(LocalDateTimeHelper.getFormattedDate(dates.get(position)));
+        }else if(monthIndexes.contains(position)){
+            TimeViewHolder holder = (TimeViewHolder)viewHolder;
+            holder.tvData.setText(LocalDateTimeHelper
+                    .getFormattedMonthAndYear(dates.get(position+1),context));
         }else{
             super.onBindViewHolder(viewHolder,position);
         }
@@ -81,6 +110,6 @@ public class TimedDutyAdapter extends DutyAdapter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int getItemCount() {
-        return items.size()+datesCount;
+        return items.size();
     }
 }

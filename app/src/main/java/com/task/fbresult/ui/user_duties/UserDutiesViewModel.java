@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.all_duties;
+package com.task.fbresult.ui.user_duties;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

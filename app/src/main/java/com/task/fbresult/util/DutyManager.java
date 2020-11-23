@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -28,17 +29,24 @@ public class DutyManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Person> getPartners(){
-        String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String userQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
-        Person currentUser = new PersonDao().get(userQuery).get(0);
-        String query = String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID,duty.getId());
-        List<PeopleOnDuty>peopleOnDuties = new PeopleOnDutyDao().get(query);
+        Person currentUser = FBUtils.getCurrentPerson();
+        List<PeopleOnDuty>peopleOnDuties = getPeopleOnDuty();
         List<PeopleOnDuty>currentUserOnDuty = peopleOnDuties.stream()
                 .filter(peopleOnDuty -> peopleOnDuty.getPersonId() == currentUser.getId())
                 .collect(Collectors.toList());
         peopleOnDuties.removeIf(peopleOnDuty -> peopleOnDuty.getPersonId() == currentUser.getId());
         List<PeopleOnDuty>partnersOnDuty = getWhoWorksWithUser(peopleOnDuties,currentUserOnDuty);
         return transformPeopleOnDutyToPersons(partnersOnDuty);
+    }
+
+    private List<PeopleOnDuty> getPeopleOnDuty(){
+        String query = String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID,duty.getId());
+        return new PeopleOnDutyDao().get(query);
+    }
+
+    public List<Person>getPersonOnDuty(){
+        List<PeopleOnDuty>peopleOnDuties = getPeopleOnDuty();
+        return transformPeopleOnDutyToPersons(peopleOnDuties);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,9 +81,14 @@ public class DutyManager {
     private List<Person> transformPeopleOnDutyToPersons(List<PeopleOnDuty>peopleOnDutyList){
         PersonDao personDao = new PersonDao();
         List<Person>persons = new ArrayList<>();
+        TreeSet<Long>userIds = new TreeSet<>();
         for(PeopleOnDuty personOnDuty:peopleOnDutyList) {
             String query = String.format(PersonDao.GET_USER_WITH_ID, personOnDuty.getPersonId());
-            persons.add(personDao.get(query).get(0));
+            Person person = personDao.get(query).get(0);
+            if(!userIds.contains(person.getId())) {
+                persons.add(person);
+                userIds.add(person.getId());
+            }
         }
         return persons;
     }

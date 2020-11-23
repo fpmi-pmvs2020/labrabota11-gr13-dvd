@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.task.fbresult.ui.all_duties.UserDutiesFragment"
+        android:name="com.task.fbresult.ui.user_duties.UserDutiesFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_person_duties" />
 

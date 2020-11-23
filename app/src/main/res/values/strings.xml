@@ -52,14 +52,10 @@
     <string name="left_duty_time">Time lefted:</string>
     <string name="peoples_on_this_duty_title">Peoples on this duty</string>
 
-    <string-array name="daysOfWeek">
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-        <item>Sunday</item>
+    <string-array name="duty_types">
+        <item>future</item>
+        <item>past</item>
+        <item>all</item>
     </string-array>
 
 </resources>

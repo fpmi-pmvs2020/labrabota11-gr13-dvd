@@ -4,16 +4,16 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.db.dao.PeopleOnDutyDao;
 import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
+import com.task.fbresult.util.DAORequester;
+import com.task.fbresult.util.FBUtils;
+import com.task.fbresult.util.LocalDateTimeInterval;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -22,14 +22,9 @@ import java.util.stream.Collectors;
 
 public class PeoplesProviders {
 
-    public static List<PeopleOnDuty> getPersonOnDutyList(Duty duty){
-        return new PeopleOnDutyDao().get(String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID, duty.getId()));
-    }
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<PeopleAdapter.Item> getOrderedListOfPerson(Duty duty){
-        List<PeopleOnDuty> list = getPersonOnDutyList(duty);
+        List<PeopleOnDuty> list = DAORequester.getPeopleOnDuty(duty);
         return list.stream().map(PeoplesProviders::mapWith)
                 .sorted(
                         Comparator
@@ -41,40 +36,38 @@ public class PeoplesProviders {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static PeopleAdapter.Item mapWith(PeopleOnDuty people){
-        LocalDateTime now = LocalDateTime.now();
         PeopleAdapter.Item ans = new PeopleAdapter.Item(people, new HashSet<>());
-        if(getUserAsPerson().equals(getPerson(people))){
+        Person currentUser = FBUtils.getCurrentUserAsPerson();
+        if(currentUser.getId() == people.getPersonId()){
             ans.state.add(PeopleOnDutyState.ME);
         }
 
-        if(now.isBefore(people.getFrom())){
-            ans.state.add(PeopleOnDutyState.IN_FUTURE);
-            return ans;
-        }
-
-        if(now.isBefore(people.getTo())){
-            ans.state.add(PeopleOnDutyState.IN_PROGRESS);
-            return ans;
-        }
-
-        if(now.isAfter(people.getTo())){
-            ans.state.add(PeopleOnDutyState.ENDED);
-            return ans;
-        }
-
-        throw new RuntimeException("Strange behavior");
+        PeopleOnDutyState state = getPeopleOnDutyState(people);
+        ans.state.add(state);
+        return ans;
     }
 
-    private static Person getUserAsPerson(){
-        String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String userQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
-        //return new PersonDao().get(String.format(PersonDao.GET_USER_WITH_ID, 128)).get(0);
-        return new PersonDao().get(userQuery).get(0);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static PeopleOnDutyState getPeopleOnDutyState(PeopleOnDuty people){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTimeInterval interval = new LocalDateTimeInterval(people.getFrom(),people.getTo());
+        int pointPosition = interval.getPointPosition(now);
+        return getDutyState(pointPosition);
     }
 
-    private static Person getPerson(PeopleOnDuty people){
-        return new PersonDao().get(String.format(PersonDao.GET_USER_WITH_ID, people.getPersonId())).get(0);
+    private static PeopleOnDutyState getDutyState(int position){
+        switch (position){
+            case -1:
+                return PeopleOnDutyState.IN_FUTURE;
+            case 0:
+                return PeopleOnDutyState.IN_PROGRESS;
+            case 1:
+                return PeopleOnDutyState.ENDED;
+            default:
+                return null;
+        }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private static int getMax(Set<PeopleOnDutyState> state){
         return state.stream().mapToInt(value -> value.order).min().orElse(-1);

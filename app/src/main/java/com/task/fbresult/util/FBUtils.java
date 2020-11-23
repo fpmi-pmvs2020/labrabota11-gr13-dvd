@@ -5,7 +5,7 @@ import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Person;
 
 public class FBUtils {
-    public static Person getCurrentPerson(){
+    public static Person getCurrentUserAsPerson(){
         String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String userQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
         return new PersonDao().get(userQuery).get(0);

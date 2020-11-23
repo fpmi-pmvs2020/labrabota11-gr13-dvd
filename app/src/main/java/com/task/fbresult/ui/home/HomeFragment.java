@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Duty loadFirstDuty() {
-        Person currentUser = FBUtils.getCurrentPerson();
+        Person currentUser = FBUtils.getCurrentUserAsPerson();
         return DAORequester.getFirstOfNextDutiesOfPerson(currentUser);
     }
 }

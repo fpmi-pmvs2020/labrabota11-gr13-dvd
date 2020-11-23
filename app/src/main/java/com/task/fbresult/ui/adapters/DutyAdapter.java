@@ -29,7 +29,7 @@ public class DutyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected final LayoutInflater inflater;
     private final NodeListener listener;
     public List<Duty> items;
-    private final Person currentUser = FBUtils.getCurrentPerson();
+    private final Person currentUser = FBUtils.getCurrentUserAsPerson();
 
     public DutyAdapter(Context context,@NonNull List<Duty> items,@Nullable NodeListener listener) {
         inflater = LayoutInflater.from(context);

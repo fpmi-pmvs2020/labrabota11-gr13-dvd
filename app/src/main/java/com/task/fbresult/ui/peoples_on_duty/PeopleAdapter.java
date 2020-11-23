@@ -21,6 +21,7 @@ import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.adapters.NodeListener;
+import com.task.fbresult.util.DAORequester;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,10 +60,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         else if(item.state.contains(PeopleOnDutyState.IN_FUTURE))
             holder.markInFuture();
 
-
-        long personId = item.people.getPersonId();
-        Person person = (new PersonDao().get(String.format(PersonDao.GET_USER_WITH_ID , personId))).get(0);
-
+        Person person = DAORequester.getPersonInPeopleOnDuty(item.people);
         holder.title.setText(person.getFio());
         holder.from.setText(item.people.getFrom().format(formatter));
         holder.to.setText(item.people.getTo().format(formatter));

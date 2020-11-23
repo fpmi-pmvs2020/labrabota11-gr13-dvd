@@ -24,7 +24,7 @@ public class DutyManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Person> getPartners(){
-        Person currentUser = FBUtils.getCurrentPerson();
+        Person currentUser = FBUtils.getCurrentUserAsPerson();
         List<PeopleOnDuty>peopleOnDuties = DAORequester.getPeopleOnDuty(duty);
         List<PeopleOnDuty>currentUserOnDuty = peopleOnDuties.stream()
                 .filter(peopleOnDuty -> peopleOnDuty.getPersonId() == currentUser.getId())
@@ -53,13 +53,8 @@ public class DutyManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean doWorkOnTheSameTime(PeopleOnDuty first, PeopleOnDuty second){
-        LocalTime firstFrom = first.getFrom().toLocalTime();
-        LocalTime firstTo = first.getTo().toLocalTime();
-        LocalTime secondFrom = second.getFrom().toLocalTime();
-        LocalTime secondTo = second.getTo().toLocalTime();
-
-        LocalTimeInterval firstInterval = new LocalTimeInterval(firstFrom,firstTo);
-        LocalTimeInterval secondInterval = new LocalTimeInterval(secondFrom,secondTo);
+        LocalDateTimeInterval firstInterval = new LocalDateTimeInterval(first.getFrom(),first.getTo());
+        LocalDateTimeInterval secondInterval = new LocalDateTimeInterval(second.getFrom(),second.getTo());
         return firstInterval.intersects(secondInterval);
     }
 

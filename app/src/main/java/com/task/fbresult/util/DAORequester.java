@@ -71,7 +71,7 @@ public class DAORequester {
         return persons;
     }
 
-    private static Person getPersonInPeopleOnDuty(PeopleOnDuty peopleOnDuty){
+    public static Person getPersonInPeopleOnDuty(PeopleOnDuty peopleOnDuty){
         String query = String.format(PersonDao.GET_USER_WITH_ID, peopleOnDuty.getPersonId());
         return new PersonDao().get(query).get(0);
     }

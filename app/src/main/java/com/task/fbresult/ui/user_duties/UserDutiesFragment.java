@@ -122,7 +122,7 @@ public class UserDutiesFragment extends Fragment {
     }
 
     private List<Duty> loadDuties() {
-        Person currentUser = FBUtils.getCurrentPerson();
+        Person currentUser = FBUtils.getCurrentUserAsPerson();
         List<Duty>duties = DAORequester.getPersonDuties(currentUser);
         duties.sort((first,second)->first.getFrom().compareTo(second.getFrom()));
         return duties;

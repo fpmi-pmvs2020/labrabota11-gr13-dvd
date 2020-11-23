@@ -1,8 +1,9 @@
 package com.task.fbresult.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Duty {
+public class Duty implements Serializable {
 
     private long id;
     private LocalDateTime from;

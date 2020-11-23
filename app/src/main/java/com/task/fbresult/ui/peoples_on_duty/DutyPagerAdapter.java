@@ -1,6 +1,7 @@
 package com.task.fbresult.ui.peoples_on_duty;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,12 +19,13 @@ public class DutyPagerAdapter extends FragmentPagerAdapter {
             R.string.tab_text_2
     };
     private final Context mContext;
+    private final Bundle parameters;
 
 
-
-    public DutyPagerAdapter(Context context, FragmentManager fm) {
+    public DutyPagerAdapter(Context context, FragmentManager fm, Bundle par) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mContext = context;
+        parameters = par;
     }
 
     @Override
@@ -36,9 +38,9 @@ public class DutyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return DutyFragment.newInstance();
+                return DutyFragment.newInstance(parameters);
             case 1:
-                return DutyStatisticFragment.newInstance();
+                return DutyStatisticFragment.newInstance(parameters);
             default: throw new UnknownError("strange behavior");
         }
     }

@@ -11,19 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.R;
-import com.task.fbresult.db.dao.DutyTypesDao;
-import com.task.fbresult.db.dao.PeopleOnDutyDao;
-import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.DutyTypes;
+import com.task.fbresult.model.DutyType;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.holders.DutyViewHolder;
+import com.task.fbresult.util.DAORequester;
+import com.task.fbresult.util.FBUtils;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -32,16 +29,12 @@ public class DutyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected final LayoutInflater inflater;
     private final NodeListener listener;
     public List<Duty> items;
-    public final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
-    private final Person currentUser;
+    private final Person currentUser = FBUtils.getCurrentPerson();
 
     public DutyAdapter(Context context,@NonNull List<Duty> items,@Nullable NodeListener listener) {
         inflater = LayoutInflater.from(context);
         this.items = items;
         this.listener = listener;
-        String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String query = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
-        currentUser = new PersonDao().get(query).get(0);
     }
 
     @NonNull
@@ -54,16 +47,14 @@ public class DutyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         Duty duty = items.get(position);
-        DutyTypesDao dutyTypesDao = new DutyTypesDao();
-        List<DutyTypes> dutyTypes = dutyTypesDao.get(DutyTypesDao.GET_BY_ID_QUERY + duty.getType());
+        DutyType dutyType = DAORequester.getDutyType(duty);
         DutyViewHolder holder = (DutyViewHolder)viewHolder;
 
-        holder.title.setText(dutyTypes.get(0).getTitle());
+        holder.title.setText(dutyType.getTitle());
         holder.from.setText(LocalDateTimeHelper.getFormattedTime(duty.getFrom()));
         holder.to.setText(LocalDateTimeHelper.getFormattedTime(duty.getTo()));
         holder.max.setText(String.valueOf(duty.getMaxPeople()));
-        String query = String.format(PeopleOnDutyDao.GET_PEOPLE_ON_DUTY_WITH_DUTY_ID,duty.getId());
-        List<PeopleOnDuty>peopleOnDuties = new PeopleOnDutyDao().get(query);
+        List<PeopleOnDuty>peopleOnDuties = DAORequester.getPeopleOnDuty(duty);
         for(PeopleOnDuty peopleOnDuty:peopleOnDuties){
             if(peopleOnDuty.getPersonId() == currentUser.getId()) {
                 holder.checkMark.setVisibility(View.VISIBLE);

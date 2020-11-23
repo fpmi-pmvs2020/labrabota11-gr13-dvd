@@ -22,13 +22,12 @@ import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.db.dao.DutyTypesDao;
 import com.task.fbresult.db.dao.PeopleOnDutyDao;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.DutyTypes;
+import com.task.fbresult.model.DutyType;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.ui.adapters.NodeListener;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -142,7 +141,7 @@ public class DutyFragment extends Fragment implements NodeListener {
         TextView max = currentDuty.findViewById(R.id.tvDutyAmounts);
 
         DutyTypesDao dutyTypesDao = new DutyTypesDao();
-        List<DutyTypes> dutyTypes = dutyTypesDao.get(DutyTypesDao.GET_BY_ID_QUERY + duty.getType());
+        List<DutyType> dutyTypes = dutyTypesDao.get(DutyTypesDao.GET_BY_ID_QUERY + duty.getType());
 
         title.setText(dutyTypes.get(0).getTitle());
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;

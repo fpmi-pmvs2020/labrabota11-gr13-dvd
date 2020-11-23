@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.task.fbresult.R;
 import com.task.fbresult.db.dao.DutyTypesDao;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.DutyTypes;
+import com.task.fbresult.model.DutyType;
 import com.task.fbresult.model.Person;
 
 import java.time.LocalDate;
@@ -83,7 +83,7 @@ public class DutyFormatter {
     }
 
     public String getTitle(){
-        List<DutyTypes>types = new DutyTypesDao().get(DutyTypesDao.GET_BY_ID_QUERY+duty.getType());
+        List<DutyType>types = new DutyTypesDao().get(DutyTypesDao.GET_BY_ID_QUERY+duty.getType());
         return types.get(0).getTitle();
     }
 

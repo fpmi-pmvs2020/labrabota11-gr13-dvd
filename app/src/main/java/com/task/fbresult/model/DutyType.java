@@ -1,14 +1,14 @@
 package com.task.fbresult.model;
 
-public class DutyTypes {
+public class DutyType {
     private long id;
     private String title;
 
-    public DutyTypes(String title) {
+    public DutyType(String title) {
         this.title = title;
     }
 
-    public DutyTypes(long id, String title) {
+    public DutyType(long id, String title) {
         this.id = id;
         this.title = title;
     }

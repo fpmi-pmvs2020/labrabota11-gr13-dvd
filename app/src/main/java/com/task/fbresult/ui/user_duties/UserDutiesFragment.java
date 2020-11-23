@@ -16,15 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.R;
-import com.task.fbresult.db.dao.DutyDao;
-import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.Person;
-import com.task.fbresult.ui.adapters.DutyAdapter;
 import com.task.fbresult.ui.adapters.TimedDutyAdapter;
-import com.task.fbresult.util.LocalDateTimeHelper;
+import com.task.fbresult.util.DAORequester;
+import com.task.fbresult.util.FBUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -88,6 +85,11 @@ public class UserDutiesFragment extends Fragment {
 
     private void showDutiesBelongsSpinnerPosition(int spnPosition){
         TimedDutyAdapter dutyAdapter = (TimedDutyAdapter)dutiesRecycler.getAdapter();
+        changeDutiesOnAdapterBelongsSpnPosition(dutyAdapter,spnPosition);
+        dutyAdapter.notifyDataSetChanged();
+    }
+
+    private void changeDutiesOnAdapterBelongsSpnPosition(TimedDutyAdapter dutyAdapter, int spnPosition){
         switch (spnPosition){
             case 0:
                 dutyAdapter.setDuties(getNextDuties());
@@ -99,7 +101,6 @@ public class UserDutiesFragment extends Fragment {
                 dutyAdapter.setDuties(duties);
                 break;
         }
-        dutyAdapter.notifyDataSetChanged();
     }
 
     private List<Duty> getNextDuties(){
@@ -121,12 +122,8 @@ public class UserDutiesFragment extends Fragment {
     }
 
     private List<Duty> loadDuties() {
-        String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String userQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,login);
-        Person currentUser = new PersonDao().get(userQuery).get(0);
-        String dutiesQuery = String.format(DutyDao.GET_ALL_DUTIES_WITH_PERSON_ID,
-                currentUser.getId(), LocalDateTimeHelper.getTodayDateAsString());
-        List<Duty>duties = new DutyDao().get(dutiesQuery);
+        Person currentUser = FBUtils.getCurrentPerson();
+        List<Duty>duties = DAORequester.getPersonDuties(currentUser);
         duties.sort((first,second)->first.getFrom().compareTo(second.getFrom()));
         return duties;
     }

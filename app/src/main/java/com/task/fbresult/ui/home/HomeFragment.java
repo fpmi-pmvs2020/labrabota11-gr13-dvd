@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,13 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.R;
 import com.task.fbresult.db.dao.DutyDao;
-import com.task.fbresult.db.dao.PeopleOnDutyDao;
-import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.adapters.DutyAdapter;
 import com.task.fbresult.ui.holders.FirstDutyViewHolder;
+import com.task.fbresult.util.DAORequester;
+import com.task.fbresult.util.FBUtils;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDateTime;
@@ -60,9 +58,6 @@ public class HomeFragment extends Fragment {
             LocalDateTime localDateTime = LocalDateTime.of(year,month+1,dayOfMonth,0,0);
             showSelectedDuty(localDateTime);
             LinearLayout linearLayout = root.findViewById(R.id.firstDutyLayout);
-            linearLayout.removeAllViewsInLayout();
-            ConstraintLayout constraintLayout = root.findViewById(R.id.homeConstraint);
-            constraintLayout.removeView(linearLayout);
             linearLayout.setVisibility(View.GONE);
         });
     }
@@ -98,9 +93,7 @@ public class HomeFragment extends Fragment {
         LinearLayout linearLayout = root.findViewById(R.id.firstDutyLayout);
         Duty firstDuty = loadFirstDuty();
         View child = getViewWithFirstDuty(firstDuty);
-        child.setOnClickListener(v -> {
-            loadDutyActivity(firstDuty);
-        });
+        child.setOnClickListener(v -> loadDutyActivity(firstDuty));
         linearLayout.addView(child);
     }
 
@@ -112,16 +105,7 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private Duty loadFirstDuty() {
-        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String userWithLoginQuery = String.format(PersonDao.GET_USER_WITH_LOGIN_QUERY,userEmail);
-        Person currentUser = new PersonDao().get(userWithLoginQuery).get(0);
-        String todayDateAsString = LocalDateTimeHelper.getTodayDateAsString();
-        String peopleOnDutyWithIdQuery = String.format(PeopleOnDutyDao.GET_FIRST_PEOPLE_ON_DUTY_OF_PERSON,
-                todayDateAsString, currentUser.getId());
-        List<PeopleOnDuty> peopleOnDuties = new PeopleOnDutyDao().get(peopleOnDutyWithIdQuery);
-        if(peopleOnDuties.isEmpty())
-            return null;
-        String query = String.format(DutyDao.GET_DUTY_WITH_ID,peopleOnDuties.get(0).getDutyId());
-        return new DutyDao().get(query).get(0);
+        Person currentUser = FBUtils.getCurrentPerson();
+        return DAORequester.getFirstOfNextDutiesOfPerson(currentUser);
     }
 }

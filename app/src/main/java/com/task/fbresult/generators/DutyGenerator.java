@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.db.dao.DutyTypesDao;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.DutyTypes;
+import com.task.fbresult.model.DutyType;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -20,7 +20,7 @@ public class DutyGenerator {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Duty> generate(){
         List<Duty> ans = new ArrayList<>();
-        List<DutyTypes>dutyTypes = (new DutyTypesDao()).get(DutyTypesDao.GET_ALL_QUERY);
+        List<DutyType>dutyTypes = (new DutyTypesDao()).get(DutyTypesDao.GET_ALL_QUERY);
         for(int i=0; i< DUTY_AMOUNTS; i++){
 
             Month month = getMonth();

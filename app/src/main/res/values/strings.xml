@@ -41,7 +41,6 @@
     <string name="pass_dialog_title">Password updating</string>
     <string name="pass_dialog_msg">Enter and confirm your password</string>
 
-    <string name="duty_time_view">Duty time:</string>
     <string name="duty_people_count">Position amount:</string>
     <string name="no_partners">You are on duty alone</string>
 
@@ -51,6 +50,7 @@
     <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
     <string name="left_duty_time">Time lefted:</string>
     <string name="peoples_on_this_duty_title">Peoples on this duty</string>
+    <string name="main_duty_statistic">Main Duty statistic</string>
 
     <string-array name="duty_types">
         <item>future</item>

@@ -18,7 +18,7 @@
             android:top="-10dp">
             <shape android:shape="rectangle">
                 <stroke
-                    android:width="10dp"
+                    android:width="2dp"
                     android:color="#595959" />
             </shape>
         </item>

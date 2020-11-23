@@ -14,7 +14,7 @@ import com.task.fbresult.ui.peoples_on_duty.DutyPagerAdapter;
 
 public class DutyActivity extends AppCompatActivity {
 
-
+    public static final String DUTY_PARAMETERS = "duty_key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +24,8 @@ public class DutyActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DutyPagerAdapter adapter = new DutyPagerAdapter(this, getSupportFragmentManager());
+
+        DutyPagerAdapter adapter = new DutyPagerAdapter(this, getSupportFragmentManager(), getIntent().getExtras());
         ViewPager viewPager = findViewById(R.id.duty_pager);
         viewPager.setAdapter(adapter);
 

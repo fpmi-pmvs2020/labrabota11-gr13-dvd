@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.task.fbresult.DutyActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.db.dao.DutyTypesDao;
@@ -40,8 +41,10 @@ public class DutyFragment extends Fragment implements NodeListener {
     private TextView leftTime;
     private Duty duty;
 
-    public static DutyFragment newInstance() {
-        return new DutyFragment();
+    public static DutyFragment newInstance(Bundle parameters) {
+        DutyFragment dutyFragment = new DutyFragment();
+        dutyFragment.setArguments(parameters);
+        return dutyFragment;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -49,7 +52,7 @@ public class DutyFragment extends Fragment implements NodeListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_duty, container, false);
-        duty = getCurrentDuty();
+        duty = (Duty)getArguments().getSerializable(DutyActivity.DUTY_PARAMETERS);
 
         LinearLayout dutyHolder = view.findViewById(R.id.duty_frame);
         RecyclerView recycler = view.findViewById(R.id.duty_recycler);

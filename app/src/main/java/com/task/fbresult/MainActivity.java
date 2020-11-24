@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +20,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.db.DBFillers;
 import com.task.fbresult.db.DBHelper;
+import com.task.fbresult.db.dao.DutyDao;
+import com.task.fbresult.model.Duty;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -61,6 +62,21 @@ public class MainActivity extends AppCompatActivity {
         }else{
             configureScreen();
         }
+
+        findViewById(R.id.fab).setOnClickListener((e)->{
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DutyActivity.DUTY_PARAMETERS, getCurrentDuty());
+            Toast.makeText(this, "finded", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, DutyActivity.class).putExtras(bundle));
+
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Duty getCurrentDuty() {
+        //todo return current duty;
+        return new DutyDao().get(String.format(DutyDao.GET_ALL_QUERY)).stream().filter(e -> e.getMaxPeople()>3).findFirst().get();
+        //return null;
     }
 
     @Override

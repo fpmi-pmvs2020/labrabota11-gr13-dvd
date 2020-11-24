@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c7799bda-4859-4a91-8522-f5ecf2a253f3" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="C:\Go" />
+  <component name="ProjectId" id="1keSbuo7fRmodoSchikOTU6IXIH" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+  </component>
+  <component name="RunManager">
+    <configuration name="go build GraphDrawer" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="GraphDrawer" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="GraphDrawer" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="447" y="195" width="1092" height="739" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606159576594">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state x="447" y="195" width="1092" height="739" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.0.1853.1080@67.0.1853.1080" timestamp="1606159576594" />
+    <state x="1240" y="246" key="#com.intellij.ide.util.MemberChooser" timestamp="1606062372994">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state x="1240" y="246" key="#com.intellij.ide.util.MemberChooser/67.0.1853.1080@67.0.1853.1080" timestamp="1606062372994" />
+    <state width="1810" height="295" key="GridCell.Tab.0.bottom" timestamp="1606235572534">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="295" key="GridCell.Tab.0.bottom/67.0.1853.1080@67.0.1853.1080" timestamp="1606235572534" />
+    <state width="1810" height="295" key="GridCell.Tab.0.center" timestamp="1606235572534">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="295" key="GridCell.Tab.0.center/67.0.1853.1080@67.0.1853.1080" timestamp="1606235572534" />
+    <state width="1810" height="295" key="GridCell.Tab.0.left" timestamp="1606235572534">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="295" key="GridCell.Tab.0.left/67.0.1853.1080@67.0.1853.1080" timestamp="1606235572534" />
+    <state width="1810" height="295" key="GridCell.Tab.0.right" timestamp="1606235572534">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="295" key="GridCell.Tab.0.right/67.0.1853.1080@67.0.1853.1080" timestamp="1606235572534" />
+    <state width="1810" height="364" key="GridCell.Tab.1.bottom" timestamp="1606216409965">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="364" key="GridCell.Tab.1.bottom/67.0.1853.1080@67.0.1853.1080" timestamp="1606216409965" />
+    <state width="1810" height="364" key="GridCell.Tab.1.center" timestamp="1606216409964">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="364" key="GridCell.Tab.1.center/67.0.1853.1080@67.0.1853.1080" timestamp="1606216409964" />
+    <state width="1810" height="364" key="GridCell.Tab.1.left" timestamp="1606216409963">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="364" key="GridCell.Tab.1.left/67.0.1853.1080@67.0.1853.1080" timestamp="1606216409963" />
+    <state width="1810" height="364" key="GridCell.Tab.1.right" timestamp="1606216409964">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="1810" height="364" key="GridCell.Tab.1.right/67.0.1853.1080@67.0.1853.1080" timestamp="1606216409964" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1606143173553">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/67.0.1853.1080@67.0.1853.1080" timestamp="1606143173553" />
+    <state width="934" height="548" key="XDebugger.FullValuePopup" timestamp="1606216220027">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state width="934" height="548" key="XDebugger.FullValuePopup/67.0.1853.1080@67.0.1853.1080" timestamp="1606216220027" />
+    <state x="656" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1606075413442">
+      <screen x="67" y="0" width="1853" height="1080" />
+    </state>
+    <state x="656" y="235" width="672" height="678" key="search.everywhere.popup/67.0.1853.1080@67.0.1853.1080" timestamp="1606075413442" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/drawer/drawer.go</url>
+          <line>52</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

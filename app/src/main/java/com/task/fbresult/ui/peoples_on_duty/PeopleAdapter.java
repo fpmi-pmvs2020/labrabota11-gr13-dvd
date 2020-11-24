@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +33,7 @@ import com.task.fbresult.util.ScreenUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +45,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     private final NodeListener listener;
     public final List<Item> items;
     public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    private final Context context;
     public int width;
 
     public PeopleAdapter(Context context, @NonNull List<Item> items, @Nullable NodeListener listener) {
-        inflater = LayoutInflater.from(context);
+        this.context = context;
+        inflater = LayoutInflater.from(this.context);
         this.items = items;
         this.listener = listener;
     }
@@ -63,7 +68,16 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull PeopleAdapter.ViewHolder holder, int position) {
         Item item = items.get(position);
-        if (item.state.contains(PeopleOnDutyState.ME))
+
+        if (item.images != null)
+            holder.image.setImageBitmap(item.images);
+
+        if (item.state.contains(PeopleOnDutyState.TITLE)){
+            holder.devider.setText("");
+            return;
+        }
+
+        else if (item.state.contains(PeopleOnDutyState.ME))
             holder.markMe();
         else if (item.state.contains(PeopleOnDutyState.IN_PROGRESS))
             holder.markInProgress();
@@ -76,11 +90,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         holder.title.setText(person.getSurname() + " " + person.getName().substring(0, 1) + ". " + person.getPatronymic().substring(0, 1) + ".");
         holder.from.setText(item.people.getFrom().format(formatter));
         holder.to.setText(item.people.getTo().format(formatter));
-        if (item.images != null)
-            holder.image.setImageBitmap(item.images);
-
-        this.width = holder.image.getLayoutParams().width;
-
 
     }
 
@@ -95,6 +104,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public TextView title;
         public TextView from;
         public TextView to;
+        public TextView devider;
         public View view;
         public ImageView image;
 
@@ -106,6 +116,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             //View byId = view.findViewById(23);
 
             title = view.findViewById(R.id.tvPeopleDutyName);
+            devider = view.findViewById(R.id.tvDevider);
             from = view.findViewById(R.id.tvPeopleDutyStartTime);
             to = view.findViewById(R.id.tvPeopleDutyEndTime);
             to = view.findViewById(R.id.tvPeopleDutyEndTime);
@@ -166,7 +177,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public void onDrawOver(Canvas c, RecyclerView parent, @NotNull RecyclerView.State state) {
             //divider padding give some padding whatever u want or disable
             int left = parent.getPaddingLeft() + 80;
-            int right = parent.getWidth() - parent.getPaddingRight() - 80;
+            int right = parent.getWidth() - parent.getPaddingRight();
 
             int childCount = parent.getChildCount();
             for (int i = 0; i < childCount; i++) {

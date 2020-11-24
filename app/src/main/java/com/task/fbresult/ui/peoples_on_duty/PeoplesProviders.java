@@ -25,12 +25,16 @@ public class PeoplesProviders {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<PeopleAdapter.Item> getOrderedListOfPerson(Duty duty){
         List<PeopleOnDuty> list = DAORequester.getPeopleOnDuty(duty);
-        return list.stream().map(PeoplesProviders::mapWith)
+        List<PeopleAdapter.Item> items = list.stream().map(PeoplesProviders::mapWith)
                 .sorted(
                         Comparator
-                                .comparingInt(e-> getMax(((PeopleAdapter.Item)e).state))
-                                .thenComparing(e -> ((PeopleAdapter.Item)e).people.getFrom())
+                                .comparingInt(e -> getMax(((PeopleAdapter.Item) e).state))
+                                .thenComparing(e -> ((PeopleAdapter.Item) e).people.getFrom())
                 ).collect(Collectors.toList());
+        Set<PeopleOnDutyState> set = new HashSet<>();
+        set.add(PeopleOnDutyState.TITLE);
+        items.add(0, new PeopleAdapter.Item(new PeopleOnDuty(0,0,0, LocalDateTime.now(),LocalDateTime.now()),set));
+        return items;
 
     }
 

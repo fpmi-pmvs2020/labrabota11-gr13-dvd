@@ -73,19 +73,9 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
             drawable.setColorFilter(getResources().getColor(R.color.dark_blue), PorterDuff.Mode.SRC_ATOP);
         }
 
-        loadUserData();
+        update();
 
         return root;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void loadUserData(){
-        Person currentUser = FBUtils.getCurrentUserAsPerson();
-        etPhone.setText(currentUser.getTelephone());
-        etName.setText(currentUser.getFio());
-        etAddress.setText(currentUser.getAddress());
-        tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));
     }
 
     private void allowDataChanges(){
@@ -122,7 +112,6 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         new PersonDao().update(currentUser);
         setFieldsEnabled(false);
         btnCommitChanges.setVisibility(View.GONE);
-        loadUserData();
     }
 
     private boolean checkFio(String fullFio){
@@ -156,9 +145,15 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void update() {
-
+        Person currentUser = FBUtils.getCurrentUserAsPerson();
+        etPhone.setText(currentUser.getTelephone());
+        etName.setText(currentUser.getFio());
+        etAddress.setText(currentUser.getAddress());
+        tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));
     }
 
     private void showError(String message){

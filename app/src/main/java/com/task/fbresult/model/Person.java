@@ -51,11 +51,11 @@ public class Person {
     }
 
     public String getName() {
-        return fio.split(" ")[0];
+        return fio.split(" ")[1];
     }
 
     public String getSurname() {
-        return fio.split(" ")[1];
+        return fio.split(" ")[0];
     }
 
     public String getPatronymic() {

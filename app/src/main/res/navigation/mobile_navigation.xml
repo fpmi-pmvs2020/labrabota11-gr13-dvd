@@ -14,12 +14,12 @@
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.task.fbresult.ui.user_duties.UserDutiesFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_duties"
         tools:layout="@layout/fragment_person_duties" />
 
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.task.fbresult.ui.profile.ProfileFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
         android:layout_marginTop="15dp"
-        android:text="@string/duty_time_view"
+        android:text="@string/duty_time"
         android:textColor="@color/dark_blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDutyTitle" />

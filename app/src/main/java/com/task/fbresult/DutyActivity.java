@@ -1,5 +1,7 @@
 package com.task.fbresult;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.task.fbresult.model.Duty;
 import com.task.fbresult.ui.peoples_on_duty.DutyPagerAdapter;
 
 
@@ -32,6 +35,12 @@ public class DutyActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+    }
+
+    public static void getInstance(Duty duty, Context context){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DutyActivity.DUTY_PARAMETERS,duty);
+        context.startActivity(new Intent(context,DutyActivity.class).putExtras(bundle));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.task.fbresult.ui.home;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.task.fbresult.DutyActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.model.Duty;
@@ -85,7 +87,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadDutyActivity(Duty duty){
-        //TODO: load duty activity
+        DutyActivity.getInstance(duty,getContext());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

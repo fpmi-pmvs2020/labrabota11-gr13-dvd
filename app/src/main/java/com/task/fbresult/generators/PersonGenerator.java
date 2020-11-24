@@ -40,11 +40,11 @@ public class PersonGenerator {
         Random random = new Random();
         for (int i = 0; i < namesNumber; i++) {
 
-            String tel = Stream.generate(() -> random.nextInt(10)).limit(9).map(String::valueOf).collect(Collectors.joining());
+            String tel = "+375"+Stream.generate(() -> random.nextInt(10)).limit(9).map(String::valueOf).collect(Collectors.joining());
             Person person = new Person(
                     "admin" + (i == 0 ? "" : i) + "@mail.com",
-                    names[random.nextInt(names.length)] + " " +
-                            surnames[random.nextInt(surnames.length)] + " " +
+                    surnames[random.nextInt(surnames.length)] + " " +
+                            names[random.nextInt(names.length)] + " " +
                             patronimic[random.nextInt(patronimic.length)],
                     tel,
                     "minsk",

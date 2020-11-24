@@ -1,5 +1,6 @@
 package com.task.fbresult.ui.user_duties;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.task.fbresult.DutyActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.Person;
@@ -118,7 +120,7 @@ public class UserDutiesFragment extends Fragment {
     }
 
     private void loadDutyActivity(Duty duty){
-        //TODO:
+        DutyActivity.getInstance(duty,getContext());
     }
 
     private List<Duty> loadDuties() {

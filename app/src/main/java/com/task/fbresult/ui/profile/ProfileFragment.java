@@ -150,7 +150,8 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
     public void update() {
         Person currentUser = FBUtils.getCurrentUserAsPerson();
         etPhone.setText(currentUser.getTelephone());
-        etName.setText(currentUser.getFio());
+       // etName.setText(currentUser.getFio());
+        etName.setText("l;kasdf ha sldfkasd fhlasjkhfasldkf asld faksdj hfa sdfhasd fhasd jfhalksd hfa lksjhdf kah sdfhasldk hfa shdl lfhakjs dhfja hlds jhka h");
         etAddress.setText(currentUser.getAddress());
         tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));

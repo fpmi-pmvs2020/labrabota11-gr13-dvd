@@ -26,7 +26,7 @@ public class LocalDateTimeHelper {
     }
 
     public static String getFormattedTime(LocalDateTime localDateTime){
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return localDateTime.format(timeFormatter);
     }
 

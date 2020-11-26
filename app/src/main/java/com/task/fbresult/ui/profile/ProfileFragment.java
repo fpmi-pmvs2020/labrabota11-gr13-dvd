@@ -62,9 +62,9 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         btnCommitChanges = root.findViewById(R.id.btnCommitChanges);
         btnEditData = root.findViewById(R.id.btnChangeUserData);
 
-        btnEditData.setOnClickListener(v-> allowDataChanges());
+        btnEditData.setOnClickListener(v -> allowDataChanges());
         btnChangePass.setOnClickListener(v -> updatePassword());
-        btnCommitChanges.setOnClickListener(v->commitChanges());
+        btnCommitChanges.setOnClickListener(v -> commitChanges());
 
 
         Drawable drawable = (btnEditData.getDrawable());
@@ -78,32 +78,32 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         return root;
     }
 
-    private void allowDataChanges(){
+    private void allowDataChanges() {
         btnCommitChanges.setVisibility(View.VISIBLE);
         setFieldsEnabled(true);
     }
 
-    private void setFieldsEnabled(boolean flag){
+    private void setFieldsEnabled(boolean flag) {
         etName.setEnabled(flag);
         etAddress.setEnabled(flag);
         etPhone.setEnabled(flag);
     }
 
-    private void updatePassword(){
+    private void updatePassword() {
         DialogBuilderFactory builderFactory = new DialogBuilderFactory(getContext());
         DialogBuilder builder = builderFactory.getDialogBuilder(DialogType.PASSWORD_UPDATE);
         AlertDialog dialog = builder.build(null,
-                null,this);
+                null, this);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
         dialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void commitChanges(){
+    private void commitChanges() {
         String fullFio = etName.getText().toString();
         String address = etAddress.getText().toString();
         String phone = etPhone.getText().toString();
-        if(!(checkFio(fullFio) && checkAddress(address) && checkPhone(phone)))
+        if (!(checkFio(fullFio) && checkAddress(address) && checkPhone(phone)))
             return;
         Person currentUser = FBUtils.getCurrentUserAsPerson();
         currentUser.setAddress(address);
@@ -114,9 +114,9 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         btnCommitChanges.setVisibility(View.GONE);
     }
 
-    private boolean checkFio(String fullFio){
+    private boolean checkFio(String fullFio) {
         String[] fio = fullFio.split(" ");
-        if(fio.length!=3) {
+        if (fio.length != 3) {
             showError(getString(R.string.fio_ex));
             return false;
         }
@@ -129,16 +129,16 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         return true;
     }
 
-    private boolean checkAddress(String address){
-        if(address.isEmpty()) {
+    private boolean checkAddress(String address) {
+        if (address.isEmpty()) {
             showError(getString(R.string.addr_ex));
             return false;
         }
         return true;
     }
 
-    private boolean checkPhone(String phone){
-        if(!phone.matches("\\+375[\\d]{9}")){
+    private boolean checkPhone(String phone) {
+        if (!phone.matches("\\+375[\\d]{9}")) {
             showError(getString(R.string.phone_ex));
             return false;
         }
@@ -150,14 +150,13 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
     public void update() {
         Person currentUser = FBUtils.getCurrentUserAsPerson();
         etPhone.setText(currentUser.getTelephone());
-       // etName.setText(currentUser.getFio());
-        etName.setText("l;kasdf ha sldfkasd fhlasjkhfasldkf asld faksdj hfa sdfhasd fhasd jfhalksd hfa lksjhdf kah sdfhasldk hfa shdl lfhakjs dhfja hlds jhka h");
+        etName.setText(currentUser.getFio());
         etAddress.setText(currentUser.getAddress());
         tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));
     }
 
-    private void showError(String message){
-        Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
+    private void showError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }

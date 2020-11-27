@@ -62,14 +62,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             configureScreen();
         }
-
-        findViewById(R.id.fab).setOnClickListener((e)->{
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(DutyActivity.DUTY_PARAMETERS, getCurrentDuty());
-            Toast.makeText(this, "finded", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, DutyActivity.class).putExtras(bundle));
-
-        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

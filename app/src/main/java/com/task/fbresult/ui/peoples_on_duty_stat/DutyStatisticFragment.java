@@ -1,13 +1,10 @@
 package com.task.fbresult.ui.peoples_on_duty_stat;
 
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
@@ -20,24 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.task.fbresult.DutyActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.GraphicResult;
 import com.task.fbresult.ui.adapters.NodeListener;
-import com.task.fbresult.ui.peoples_on_duty.DutyFragment;
-import com.task.fbresult.ui.peoples_on_duty.DutyFragmentViewModel;
 import com.task.fbresult.ui.peoples_on_duty.PeopleAdapter;
 import com.task.fbresult.ui.peoples_on_duty.PeoplesProviders;
 
 import java.time.Duration;
-import java.time.Period;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DutyStatisticFragment extends Fragment implements NodeListener, SeekBar.OnSeekBarChangeListener {
     private Duty duty;
     private PeopleAdapter adapter;
     private SeekBar seekBar;
-    Map<Integer, List<Bitmap>> map;
+    private DutyStatisticViewModel model;
 
     public static DutyStatisticFragment newInstance(Bundle parameters) {
         DutyStatisticFragment dutyFragment = new DutyStatisticFragment();
@@ -61,27 +51,20 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
         view.findViewById(R.id.time_before_duty_left);
         seekBar = view.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(this);
-        seekBar.setProgress(0);
-        seekBar.setMax((int)Duration.between(duty.getTo(),duty.getFrom()).abs().toHours());
 
 
-        DutyFragmentViewModel model = new ViewModelProvider(this).get(DutyFragmentViewModel.class);
+        model = new ViewModelProvider(this).get(DutyStatisticViewModel.class);
         model.getGraphic(duty).observe(getViewLifecycleOwner(), (graphicResult) -> {
-
-            map = graphicResult.list.stream()
-                    .collect(Collectors.groupingBy(
-                            GraphicResult.Result::getPersonId,
-                            Collectors.mapping(
-                                    GraphicResult.Result::getImage,
-                                    Collectors.toList()
-                            )
-                    ));
-
-            for (PeopleAdapter.Item i : adapter.items)
-                i.images = map.get((int)i.people.getPersonId()).get(0);
+            for (PeopleAdapter.Item i : adapter.items){
+                if(i.people.getPersonId() == 0) continue;
+                i.images = graphicResult.get((int)i.people.getPersonId()).get(0);
+            }
 
             adapter.notifyDataSetChanged();
         });
+
+        seekBar.setMax((int)Duration.between(duty.getTo(),duty.getFrom()).abs().toHours());
+        seekBar.setProgress(0);
         return view;
     }
 
@@ -90,9 +73,10 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+        model.requestHourlyDate(progress);
     }
 
     @Override

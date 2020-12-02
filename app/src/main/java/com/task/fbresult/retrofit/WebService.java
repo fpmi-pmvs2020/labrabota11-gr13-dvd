@@ -2,6 +2,7 @@ package com.task.fbresult.retrofit;
 
 import com.task.fbresult.db.dao.PeopleOnDutyDao;
 import com.task.fbresult.model.GraphicResult;
+import com.task.fbresult.model.HourlyGraphicResult;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.PostModel;
 
@@ -24,14 +25,14 @@ public interface WebService {
             @Body PostModel model
     );
 
-    @GET("")
-    io.reactivex.Observable<GraphicResult> getHourlyGraphics(
-            @Body List<PeopleOnDuty> list
+    @POST("stripesHourly")
+    io.reactivex.Observable<HourlyGraphicResult> getHourlyGraphics(
+            @Body PostModel list
             );
 
 
     static WebService create() {
-
+        //"http://app-server.hopto.org:8081"
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

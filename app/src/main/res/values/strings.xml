@@ -49,7 +49,7 @@
     <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
     <string name="left_duty_time">Time lefted:</string>
     <string name="peoples_on_this_duty_title">Peoples on this duty</string>
-    <string name="main_duty_statistic">Main Duty statistic</string>
+    <string name="main_duty_statistic">Duty by hours</string>
     <string name="duty_time">Period:</string>
     <string name="fio_ex">Incorrect fio</string>
     <string name="empty_fio_ex">Name, surname and patronymic cannot be empty</string>

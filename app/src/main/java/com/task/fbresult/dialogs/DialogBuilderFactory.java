@@ -11,7 +11,6 @@ public class DialogBuilderFactory {
 
     public DialogBuilder getDialogBuilder(DialogType type){
         switch (type){
-            case EMAIL_UPDATE: return new EmailDialogBuilder(context);
             case PASSWORD_UPDATE: return new PasswordDialogBuilder(context);
             default: return null;
         }

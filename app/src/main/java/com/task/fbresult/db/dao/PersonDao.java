@@ -41,7 +41,7 @@ public class PersonDao extends Dao<Person>{
         cv.put(PERSON_ADDRESS_COLUMN, person.getAddress());
         cv.put(PERSON_BIRTH_COLUMN, person.getBirthday().format(DateTimeFormatter.ISO_DATE));
         cv.put(PERSON_ROLE_COLUMN, person.getRole());
-
+        cv.put(PERSON_IMAGE_COLUMN,person.getAvatar());
         return cv;
     }
 
@@ -63,6 +63,7 @@ public class PersonDao extends Dao<Person>{
             int add = c.getColumnIndex(PERSON_ADDRESS_COLUMN);
             int birth = c.getColumnIndex(PERSON_BIRTH_COLUMN);
             int role = c.getColumnIndex(PERSON_ROLE_COLUMN);
+            int avatar = c.getColumnIndex(PERSON_IMAGE_COLUMN);
 
             do {
 
@@ -73,6 +74,7 @@ public class PersonDao extends Dao<Person>{
                         c.getString(tel),
                         c.getString(add),
                         LocalDate.parse(c.getString(birth), DateTimeFormatter.ISO_DATE),
+                        c.getBlob(avatar),
                         c.getInt(role)
                 );
                 ans.add(person);

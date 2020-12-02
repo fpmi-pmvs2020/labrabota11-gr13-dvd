@@ -1,6 +1,5 @@
 package com.task.fbresult.ui.home;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.adapters.DutyAdapter;
-import com.task.fbresult.ui.holders.FirstDutyViewHolder;
+import com.task.fbresult.ui.holders.FirstDutyViewFiller;
 import com.task.fbresult.util.DAORequester;
 import com.task.fbresult.util.FBUtils;
 import com.task.fbresult.util.LocalDateTimeHelper;
@@ -101,7 +100,7 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private View getViewWithFirstDuty(Duty duty) {
-        FirstDutyViewHolder viewHolder = new FirstDutyViewHolder(getContext());
+        FirstDutyViewFiller viewHolder = new FirstDutyViewFiller(getContext());
         return viewHolder.formatViewWithDuty(duty);
     }
 

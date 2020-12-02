@@ -35,7 +35,7 @@ public interface WebService {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://app-server.hopto.org:8081")
+                .baseUrl("http://192.168.0.199:8081")
                 .build();
 
         return retrofit.create(WebService.class);

@@ -3,7 +3,6 @@ package com.task.fbresult.dialogs;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.task.fbresult.R;

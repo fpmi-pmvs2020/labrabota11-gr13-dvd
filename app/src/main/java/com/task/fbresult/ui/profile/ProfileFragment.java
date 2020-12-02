@@ -1,10 +1,15 @@
 package com.task.fbresult.ui.profile;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.task.fbresult.MainActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.dialogs.DialogBuilder;
@@ -29,7 +36,19 @@ import com.task.fbresult.dialogs.DialogType;
 import com.task.fbresult.dialogs.FieldsDisplay;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.util.FBUtils;
+import com.task.fbresult.util.ImgUtils;
 import com.task.fbresult.util.LocalDateTimeHelper;
+
+import java.io.IOException;
+
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment implements FieldsDisplay {
 
@@ -39,7 +58,10 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
     private EditText etAddress;
     private EditText etName;
     private EditText etPhone;
+    private ImageView avatar;
     View root;
+
+    private Person currentUser;
 
     private Button btnChangePass;
     private ImageButton btnEditData;
@@ -57,6 +79,15 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         etAddress = root.findViewById(R.id.etUserAddress);
         etName = root.findViewById(R.id.etUserName);
         etPhone = root.findViewById(R.id.etPhone);
+
+        avatar = root.findViewById(R.id.imgAvatar);
+        avatar.setOnClickListener(v -> {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            photoPickerIntent.setType("image/*");
+
+            startActivityForResult(photoPickerIntent, 1);
+        });
+
 
         btnChangePass = root.findViewById(R.id.btnChangePassword);
         btnCommitChanges = root.findViewById(R.id.btnCommitChanges);
@@ -76,6 +107,25 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         update();
 
         return root;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+        {
+            Uri chosenImageUri = data.getData();
+            Bitmap mBitmap;
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), chosenImageUri);
+                avatar.setImageBitmap(mBitmap);
+                currentUser.setAvatar(ImgUtils.getBitmapAsByteArray(mBitmap));
+                updateCurrentUser();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void allowDataChanges() {
@@ -105,11 +155,11 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         String phone = etPhone.getText().toString();
         if (!(checkFio(fullFio) && checkAddress(address) && checkPhone(phone)))
             return;
-        Person currentUser = FBUtils.getCurrentUserAsPerson();
+
         currentUser.setAddress(address);
         currentUser.setFio(fullFio);
         currentUser.setTelephone(phone);
-        new PersonDao().update(currentUser);
+        updateCurrentUser();
         setFieldsEnabled(false);
         btnCommitChanges.setVisibility(View.GONE);
     }
@@ -145,15 +195,64 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
         return true;
     }
 
+    private void updateCurrentUser(){
+        Completable.fromAction(this::updateUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //Do your stuff here
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                    }
+                });
+    }
+
+    private void updateUser(){
+        new PersonDao().update(currentUser);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void update() {
-        Person currentUser = FBUtils.getCurrentUserAsPerson();
-        etPhone.setText(currentUser.getTelephone());
-        etName.setText(currentUser.getFio());
-        etAddress.setText(currentUser.getAddress());
-        tvEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));
+        Completable.fromAction(() -> currentUser = FBUtils.getCurrentUserAsPerson())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                etPhone.setText(currentUser.getTelephone());
+                etName.setText(currentUser.getFio());
+                etAddress.setText(currentUser.getAddress());
+                tvEmail.setText(currentUser.getLogin());
+                tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));
+                byte[] avatarBytes = currentUser.getAvatar();
+                if(avatarBytes!=null) {
+                    Bitmap imgAvatar = ImgUtils.getByteArrayAsBitmap(avatarBytes);
+                    avatar.setImageBitmap(imgAvatar);
+                }
+            }
+
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+            }
+        });
+
     }
 
     private void showError(String message) {

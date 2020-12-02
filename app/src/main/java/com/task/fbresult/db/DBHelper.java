@@ -38,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PERSON_ADDRESS_COLUMN =          "Address";
     public static final String PERSON_BIRTH_COLUMN =            "BirthDate";
     public static final String PERSON_ROLE_COLUMN =             "RoleId";
+    public static final String PERSON_IMAGE_COLUMN =             "Image";
 
     public static final String DUTY_TABLE =                     "Duties";
     public static final String DUTY_ID_COLUMN =                 "Id";
@@ -103,6 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 PERSON_TEL_COLUMN +              " text," +
                 PERSON_ADDRESS_COLUMN +          " text," +
                 PERSON_BIRTH_COLUMN +            " text," +
+                PERSON_IMAGE_COLUMN +            " BLOB," +
                 PERSON_ROLE_COLUMN +             " integer references "+ROLE_TABLE+" ("+ROLE_ID_COLUMN+")"+");";
 
         String personOnDuty = "create table " + PER_ON_DUTY_TABLE + "("+

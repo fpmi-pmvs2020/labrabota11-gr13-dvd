@@ -49,6 +49,7 @@ public class PersonGenerator {
                     tel,
                     "minsk",
                     LocalDate.now(),
+                    null,
                     new RoleDao().get(RoleDao.GET_ALL_QUERY).stream().findAny().get().getId()
             );
             ans.add(person);

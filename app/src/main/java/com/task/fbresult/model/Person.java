@@ -1,5 +1,7 @@
 package com.task.fbresult.model;
 
+import android.graphics.Bitmap;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,9 +12,10 @@ public class Person {
     private String telephone;
     private String address;
     private LocalDate birthday;
+    private byte[] avatar;
     private long roleId;
 
-    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, long role) {
+    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, byte[] avatar, long role) {
         this.id = id;
         this.login = login;
         this.fio = fio;
@@ -20,15 +23,17 @@ public class Person {
         this.address = address;
         this.birthday = birthday;
         this.roleId = role;
+        this.avatar = avatar;
     }
 
-    public Person(String login, String fio, String telephone, String address, LocalDate birthday, long role) {
+    public Person(String login, String fio, String telephone, String address, LocalDate birthday, byte[] avatar, long role) {
         this.login = login;
         this.fio = fio;
         this.telephone = telephone;
         this.address = address;
         this.birthday = birthday;
         this.roleId = role;
+        this.avatar = avatar;
     }
 
     public Person(String login, String fio, long role) {
@@ -44,6 +49,14 @@ public class Person {
     }
     public long getId() {
         return id;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     public String getLogin() {

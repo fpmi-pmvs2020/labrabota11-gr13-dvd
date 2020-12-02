@@ -12,7 +12,7 @@ import com.task.fbresult.R;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.util.DutyFormatter;
 
-public class FirstDutyViewHolder {
+public class FirstDutyViewFiller {
     Resources resources;
     View child;
     TextView tvDutyTitle;
@@ -27,7 +27,7 @@ public class FirstDutyViewHolder {
     TextView tvFinishTime;
     TextView tvPositionCount;
 
-    public FirstDutyViewHolder(Context context){
+    public FirstDutyViewFiller(Context context){
         resources = context.getResources();
         child  = View.inflate(context, R.layout.duty_first_item,null);
         tvDutyTitle = child.findViewById(R.id.tvDutyTitle);

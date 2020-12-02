@@ -1,8 +1,12 @@
 package com.task.fbresult.util;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.model.GraphicResult;
+import com.task.fbresult.model.HourlyGraphicResult;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.PostModel;
 import com.task.fbresult.retrofit.WebService;
@@ -21,9 +25,18 @@ public class WebUtils {
         return WebService.create();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("CheckResult")
     static public Disposable getGraphics(int height, int width, List<PeopleOnDuty> list, Consumer<GraphicResult> result, Consumer<Throwable> error ) {
         return getWebService().getFullGraphic(new PostModel(width,  height, list))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result, error);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    static public Disposable getHourlyGraphic(int height, int width, List<PeopleOnDuty>list, Consumer<HourlyGraphicResult> result, Consumer<Throwable> error){
+        return getWebService().getHourlyGraphics(new PostModel(width,  height, list))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result, error);

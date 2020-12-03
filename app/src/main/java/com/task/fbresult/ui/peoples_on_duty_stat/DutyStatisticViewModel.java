@@ -21,13 +21,14 @@ import java.util.stream.Collectors;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
+
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class DutyStatisticViewModel extends ViewModel {
 
     private HourlyGraphicResult allResult;
     private MutableLiveData<Map<Integer, List<Bitmap>>> hourlyResult;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     public void loadData(Duty duty) {
         Disposable graphics = WebUtils.getHourlyGraphic(65, 240, DAORequester.getPeopleOnDuty(duty), successHandler, errorHandler);
     }
@@ -35,7 +36,6 @@ public class DutyStatisticViewModel extends ViewModel {
     public DutyStatisticViewModel() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public MutableLiveData<Map<Integer, List<Bitmap>>> getGraphic(Duty duty) {
         if (allResult == null) {
             allResult = new HourlyGraphicResult();
@@ -57,7 +57,8 @@ public class DutyStatisticViewModel extends ViewModel {
         error.printStackTrace();
     };
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
+
     public void requestHourlyDate(int hourIndex) {
         if (allResult == null || allResult.timeMap == null || allResult.timeMap.size() <= hourIndex)
             return;
@@ -69,6 +70,7 @@ public class DutyStatisticViewModel extends ViewModel {
                                 Collectors.toList()
                         )));
 
+        collect.put(0, List.of(allResult.minuteRuleString()));
         hourlyResult.postValue(collect);
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,12 +23,16 @@ import com.task.fbresult.ui.peoples_on_duty.PeopleAdapter;
 import com.task.fbresult.ui.peoples_on_duty.PeoplesProviders;
 
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class DutyStatisticFragment extends Fragment implements NodeListener, SeekBar.OnSeekBarChangeListener {
     private Duty duty;
     private PeopleAdapter adapter;
     private SeekBar seekBar;
     private DutyStatisticViewModel model;
+    private TextView to;
+    private TextView from;
 
     public static DutyStatisticFragment newInstance(Bundle parameters) {
         DutyStatisticFragment dutyFragment = new DutyStatisticFragment();
@@ -36,7 +41,7 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +49,9 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
         duty = (Duty)getArguments().getSerializable(DutyActivity.DUTY_PARAMETERS);
 
         RecyclerView recycler = view.findViewById(R.id.duty_recycler);
+
+        from = view.findViewById(R.id.tvFrom);
+        to = view.findViewById(R.id.tvTo);
 
         adapter = new PeopleAdapter(getContext(), PeoplesProviders.getOrderedListOfPerson(this.duty), this);
         recycler.setAdapter(adapter);
@@ -73,9 +81,11 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        from.setText(duty.getFrom().plus(Duration.ofHours(progress)).format(DateTimeFormatter.ofPattern("HH:mm")));
+        to.setText(duty.getFrom().plus(Duration.ofHours(progress+1)).format(DateTimeFormatter.ofPattern("HH:mm")));
         model.requestHourlyDate(progress);
     }
 

@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty_stat;
+package com.task.fbresult.ui.people_on_duty_stat;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import com.task.fbresult.DutyActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.ui.adapters.NodeListener;
-import com.task.fbresult.ui.peoples_on_duty.PeopleAdapter;
-import com.task.fbresult.ui.peoples_on_duty.PeoplesProviders;
+import com.task.fbresult.ui.people_on_duty.PeopleAdapter;
+import com.task.fbresult.ui.people_on_duty.PeopleProviders;
 
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +53,7 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
         from = view.findViewById(R.id.tvFrom);
         to = view.findViewById(R.id.tvTo);
 
-        adapter = new PeopleAdapter(getContext(), PeoplesProviders.getOrderedListOfPerson(this.duty), this);
+        adapter = new PeopleAdapter(getContext(), PeopleProviders.getOrderedListOfPerson(this.duty), this);
         recycler.setAdapter(adapter);
         recycler.addItemDecoration(new PeopleAdapter.SimpleDivider(getContext()));
         view.findViewById(R.id.time_before_duty_left);

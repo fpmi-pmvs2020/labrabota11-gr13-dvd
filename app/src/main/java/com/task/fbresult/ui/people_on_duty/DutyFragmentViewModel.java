@@ -1,8 +1,10 @@
-package com.task.fbresult.ui.peoples_on_duty;
+package com.task.fbresult.ui.people_on_duty;
 
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -18,6 +20,7 @@ public class DutyFragmentViewModel extends ViewModel {
 
     private MutableLiveData<GraphicResult> graphic;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void loadData(Duty duty){
         Disposable graphics = WebUtils.getGraphics(65,240, DAORequester.getPeopleOnDuty(duty), successHandler, errorHandler);
     }
@@ -25,6 +28,7 @@ public class DutyFragmentViewModel extends ViewModel {
     public DutyFragmentViewModel() {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public MutableLiveData<GraphicResult> getGraphic(Duty duty) {
         if (graphic == null) {
             graphic = new MutableLiveData<>();

@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty_stat;
+package com.task.fbresult.ui.people_on_duty_stat;
 
 import android.graphics.Bitmap;
 import android.os.Build;

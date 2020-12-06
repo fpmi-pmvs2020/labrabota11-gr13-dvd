@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty;
+package com.task.fbresult.ui.people_on_duty;
 
 import android.os.Build;
 
@@ -20,33 +20,33 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PeoplesProviders {
+public class PeopleProviders {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static List<PeopleAdapter.Item> getOrderedListOfPerson(Duty duty){
+    public static List<com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item> getOrderedListOfPerson(Duty duty){
         List<PeopleOnDuty> list = DAORequester.getPeopleOnDuty(duty);
-        List<PeopleAdapter.Item> items = list.stream().map(PeoplesProviders::mapWith)
+        List<com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item> items = list.stream().map(PeopleProviders::mapWith)
                 .sorted(
                         Comparator
-                                .comparingInt(e -> getMax(((PeopleAdapter.Item) e).state))
-                                .thenComparing(e -> ((PeopleAdapter.Item) e).people.getFrom())
+                                .comparingInt(e -> getMax(((com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item) e).state))
+                                .thenComparing(e -> ((com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item) e).people.getFrom())
                 ).collect(Collectors.toList());
-        Set<PeopleOnDutyState> set = new HashSet<>();
-        set.add(PeopleOnDutyState.TITLE);
-        items.add(0, new PeopleAdapter.Item(new PeopleOnDuty(0,0,0, LocalDateTime.now(),LocalDateTime.now()),set));
+        Set<com.task.fbresult.ui.people_on_duty.PeopleOnDutyState> set = new HashSet<>();
+        set.add(com.task.fbresult.ui.people_on_duty.PeopleOnDutyState.TITLE);
+        items.add(0, new com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item(new PeopleOnDuty(0,0,0, LocalDateTime.now(),LocalDateTime.now()),set));
         return items;
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private static PeopleAdapter.Item mapWith(PeopleOnDuty people){
-        PeopleAdapter.Item ans = new PeopleAdapter.Item(people, new HashSet<>());
+    private static com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item mapWith(PeopleOnDuty people){
+        com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item ans = new com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item(people, new HashSet<>());
         Person currentUser = FBUtils.getCurrentUserAsPerson();
         if(currentUser.getId() == people.getPersonId()){
-            ans.state.add(PeopleOnDutyState.ME);
+            ans.state.add(com.task.fbresult.ui.people_on_duty.PeopleOnDutyState.ME);
         }
 
-        PeopleOnDutyState state = getPeopleOnDutyState(people);
+        com.task.fbresult.ui.people_on_duty.PeopleOnDutyState state = getPeopleOnDutyState(people);
         ans.state.add(state);
         return ans;
     }

@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty;
+package com.task.fbresult.ui.people_on_duty;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

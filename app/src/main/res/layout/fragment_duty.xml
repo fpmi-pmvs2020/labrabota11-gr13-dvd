@@ -63,7 +63,7 @@
             android:layout_gravity="center_vertical"
             android:background="@color/dark_blue"
             android:gravity="center"
-            android:text="@string/peoples_on_this_duty_title"
+            android:text="@string/people_on_this_duty_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="30sp" />
 

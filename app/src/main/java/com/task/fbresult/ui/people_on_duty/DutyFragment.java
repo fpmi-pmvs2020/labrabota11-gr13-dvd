@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty;
+package com.task.fbresult.ui.people_on_duty;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -73,7 +73,7 @@ public class DutyFragment extends Fragment implements NodeListener{
         dutyHolder.addView(dutyInfo, 1);
         setDayText(view, this.duty.getFrom());
 
-        List<PeopleAdapter.Item> orderedListOfPerson = PeoplesProviders.getOrderedListOfPerson(this.duty);
+        List<PeopleAdapter.Item> orderedListOfPerson = PeopleProviders.getOrderedListOfPerson(this.duty);
 
 
         adapter = new PeopleAdapter(getContext(),orderedListOfPerson , this);

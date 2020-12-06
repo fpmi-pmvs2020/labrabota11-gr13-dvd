@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty;
+package com.task.fbresult.ui.people_on_duty;
 
 import android.content.Context;
 import android.os.Build;
@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.task.fbresult.R;
-import com.task.fbresult.ui.peoples_on_duty_stat.DutyStatisticFragment;
+import com.task.fbresult.ui.people_on_duty_stat.DutyStatisticFragment;
 
 public class DutyPagerAdapter extends FragmentPagerAdapter {
 

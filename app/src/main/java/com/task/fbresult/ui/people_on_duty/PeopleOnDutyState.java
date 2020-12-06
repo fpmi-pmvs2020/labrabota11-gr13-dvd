@@ -1,4 +1,4 @@
-package com.task.fbresult.ui.peoples_on_duty;
+package com.task.fbresult.ui.people_on_duty;
 
 public enum PeopleOnDutyState {
     TITLE(-1),

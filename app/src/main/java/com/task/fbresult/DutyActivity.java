@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.ui.peoples_on_duty.DutyPagerAdapter;
+import com.task.fbresult.ui.people_on_duty.DutyPagerAdapter;
 
 
 public class DutyActivity extends AppCompatActivity {

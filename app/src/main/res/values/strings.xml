@@ -1,6 +1,6 @@
 <resources>
     <string name="db_name">duties_db_temp</string>
-    <string name="app_name">FB Result</string>
+    <string name="app_name">Duty helper</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -35,8 +35,6 @@
     <string name="conf_pass_tip">Repeat new password:</string>
     <string name="conf_pass_ex">Passwords are not equals!</string>
     <string name="pass_length_ex">Password must have more then 6 symbols</string>
-    <string name="email_dialog_title">Email updating</string>
-    <string name="email_dialog_msg">Enter and confirm your email</string>
     <string name="pass_dialog_title">Password updating</string>
     <string name="pass_dialog_msg">Enter and confirm your password</string>
 
@@ -48,7 +46,7 @@
 
     <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
     <string name="left_duty_time">Time lefted:</string>
-    <string name="peoples_on_this_duty_title">Peoples on this duty</string>
+    <string name="people_on_this_duty_title">People on this duty</string>
     <string name="main_duty_statistic">Duty by hours</string>
     <string name="duty_time">Period:</string>
     <string name="fio_ex">Incorrect fio</string>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="db_name">duties_db_temp</string>
+    <string name="app_name">Duty helper</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="menu_home">Главная</string>
+    <string name="menu_duties">Мои дежурства</string>
+    <string name="menu_profile">Профиль</string>
+    <string name="menu_logout">Выход</string>
+    <string name="logout_title">Аккаунт</string>
+    <string name="mainDutyTitle">Ближайшее дежурство</string>
+    <string name="days_left">%d дней осталось</string>
+    <string name="today">Сегодня!</string>
+    <string name="no_duty">Список дежурств пуст</string>
+    <string name="partner">Напарники: </string>
+
+    <string name="name">Имя</string>
+    <string name="duties_number">Дежурств в этом месяце:</string>
+    <string name="btn_diffs_commit_text">Подтвердить</string>
+    <string name="password">Пароль</string>
+    <string name="show">показать</string>
+    <string name="edit_pass">Сменить пароль</string>
+    <string name="edit_data">Изменить данные</string>
+    <string name="hide">скрыть</string>
+
+    <string name="btn_neg_text">Отмена</string>
+    <string name="btn_pos_text">OK</string>
+    <string name="empty_fields_ex">Пожалуйста, введите данные</string>
+    <string name="pass_tip">Новый пароль:</string>
+    <string name="conf_pass_tip">Повторите пароль:</string>
+    <string name="conf_pass_ex">Пароли не совпадают!</string>
+    <string name="pass_length_ex">Пароль должен иметь больше 6 символов</string>
+    <string name="pass_dialog_title">Обновление пароля</string>
+    <string name="pass_dialog_msg">Введите и подтвердите ваш пароль</string>
+
+    <string name="duty_people_count">Число позиций:</string>
+    <string name="no_partners">Вы на дежурстве одни</string>
+
+    <string name="tab_text_1">Инфо</string>
+    <string name="tab_text_2">Подробнее</string>
+
+    <string name="test_partners">asd;lkasjdfjhalksdhfljkasbdflbasuiebiasdjkbajlshfdlasbdlfalsjkdfbaljsdbfhjlabsdfjasd</string>
+    <string name="left_duty_time">Времени осталось:</string>
+    <string name="people_on_this_duty_title">Люди на этом дежурстве</string>
+    <string name="main_duty_statistic">Дежурство по часам</string>
+    <string name="duty_time">Промежуток:</string>
+    <string name="fio_ex">Неверные ФИО</string>
+    <string name="empty_fio_ex">Имя, фамилия и отчество не могут быть пусты</string>
+    <string name="addr_ex">Адрес не может быть пуст</string>
+    <string name="phone_ex">Неверный телефон! (+375....)</string>
+    <string name="addrTip">Адрес:</string>
+    <string name="phoneTip">Телефон:</string>
+    <string name="birthDateTip">Дата рождения:</string>
+
+    <string-array name="duty_types">
+        <item>будущие</item>
+        <item>прошедшие</item>
+        <item>все</item>
+    </string-array>
+
+</resources>

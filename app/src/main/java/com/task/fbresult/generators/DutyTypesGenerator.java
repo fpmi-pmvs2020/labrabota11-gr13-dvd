@@ -8,9 +8,9 @@ import java.util.List;
 public class DutyTypesGenerator {
     public static List<DutyType> generate(){
         List<DutyType> ans = new ArrayList<>();
-        ans.add(new DutyType("EVENING_DUTIES"));
-        ans.add(new DutyType("SETTLEMENT_DUTIES"));
-        ans.add(new DutyType("NIGHT_DUTIES"));
+        ans.add(new DutyType("ВЕЧЕРНЕЕ"));
+        ans.add(new DutyType("ДНЕВНОЕ"));
+        ans.add(new DutyType("НОЧНОЕ"));
         return ans;
     }
 }

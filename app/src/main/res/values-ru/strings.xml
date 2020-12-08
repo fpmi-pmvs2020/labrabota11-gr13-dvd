@@ -15,7 +15,7 @@
     <string name="menu_logout">Выход</string>
     <string name="logout_title">Аккаунт</string>
     <string name="mainDutyTitle">Ближайшее дежурство</string>
-    <string name="days_left">%d дней осталось</string>
+    <string name="days_left">%d дня(ей) осталось</string>
     <string name="today">Сегодня!</string>
     <string name="no_duty">Список дежурств пуст</string>
     <string name="partner">Напарники: </string>
@@ -58,7 +58,7 @@
     <string name="phoneTip">Телефон:</string>
     <string name="birthDateTip">Дата рождения:</string>
 
-    <string-array name="duty_types">
+    <string-array name="duty_interval_types">
         <item>будущие</item>
         <item>прошедшие</item>
         <item>все</item>

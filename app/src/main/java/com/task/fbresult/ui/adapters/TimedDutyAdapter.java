@@ -45,12 +45,14 @@ public class TimedDutyAdapter extends DutyAdapter {
         daysIndexes = new TreeSet<>();
         monthIndexes = new TreeSet<>();
 
+        int lastMonth = 0;
         List<Duty>result = new ArrayList<>();
         LocalDate lastDate = LocalDate.of(1,1,1);
         for(int i = 0;i<items.size();i++){
             LocalDate itemDate = items.get(i).getFrom().toLocalDate();
             if(!itemDate.isEqual(lastDate)){
-                if(lastDate.getMonthValue()!=itemDate.getMonthValue()){
+                if(lastMonth!=itemDate.getMonthValue()){
+                    lastMonth = itemDate.getMonthValue();
                     monthIndexes.add(result.size());
                     result.add(null);
                 }

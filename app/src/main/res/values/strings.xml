@@ -57,7 +57,7 @@
     <string name="phoneTip">Phone:</string>
     <string name="birthDateTip">Birthdate:</string>
 
-    <string-array name="duty_types">
+    <string-array name="duty_interval_types">
         <item>future</item>
         <item>past</item>
         <item>all</item>

@@ -1,6 +1,5 @@
 package com.task.fbresult.ui.user_duties;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -68,7 +67,7 @@ public class UserDutiesFragment extends Fragment {
     private void configureSpinner(){
         spinner = root.findViewById(R.id.spnDutyType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.duty_types, R.layout.spinner_item);
+                R.array.duty_interval_types, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);

@@ -10,6 +10,7 @@ import (
 
 func main() {
 	http.HandleFunc("/stripes", server.GetPicturesHandler)
+	http.HandleFunc("/stripesHourly", server.GetHourlyPicturesHandler)
 	go func() {
 		log.Fatal(http.ListenAndServeTLS(":8080", "server.crt", "server.key", nil))
 	}()

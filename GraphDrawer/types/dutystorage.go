@@ -15,8 +15,8 @@ func CreateStorage(records []RawRecord) (storage DutyStorage) {
 
 		storage[record.PersonId] =
 		 	append(storage[record.PersonId], TimeSpan {
-				StartTime: record.StartTime.ToTime(),
-				EndTime:   record.EndTime.ToTime(),
+				StartTime: record.StartTime,
+				EndTime:   record.EndTime,
 			})
 	}
 
@@ -45,4 +45,41 @@ func (ds DutyStorage) TotalSpan() (totalSpan TimeSpan, err error) {
 	}
 
 	return totalSpan, nil
+}
+
+func (ds DutyStorage) SubStorage(span TimeSpan) (subStorage DutyStorage, err error) {
+	if len(ds) == 0 {
+		return nil, errors.New("no records in the storage")
+	}
+
+	subStorage = make(DutyStorage)
+
+	for person, spans := range ds {
+		for _, subSpan := range spans {
+			tmpSpan := TimeSpan {
+				StartTime: time.Time{},
+				EndTime:   time.Time{},
+			}
+
+			if !(subSpan.StartTime.After(span.EndTime) || subSpan.EndTime.Before(span.StartTime)) {
+				if subSpan.StartTime.Before(span.StartTime) {
+					tmpSpan.StartTime = span.StartTime
+				} else {
+					tmpSpan.StartTime = subSpan.StartTime
+				}
+				if subSpan.EndTime.After(span.EndTime) {
+					tmpSpan.EndTime = span.EndTime
+				} else {
+					tmpSpan.EndTime = subSpan.EndTime
+				}
+			}
+
+			if _, exists := subStorage[person]; !exists {
+				subStorage[person] = make([]TimeSpan, 0)
+			}
+			subStorage[person] = append(subStorage[person], subSpan)
+		}
+	}
+
+	return subStorage, nil
 }

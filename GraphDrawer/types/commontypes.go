@@ -7,27 +7,10 @@ type TimeSpan struct {
 	EndTime   time.Time
 }
 
-type RawDate struct {
-	Day   int `json:"day"`
-	Month int `json:"month"`
-	Year  int `json:"year"`
-}
-
-type RawTime struct {
-	Hour   int `json:"hour"`
-	Minute int `json:"minute"`
-	Second int `json:"second"`
-}
-
-type RawDateTime struct {
-	Date RawDate `json:"date"`
-	Time RawTime `json:"time"`
-}
-
 type RawRecord struct {
-	PersonId  int         `json:"personId"`
-	StartTime RawDateTime `json:"from"`
-	EndTime   RawDateTime `json:"to"`
+	PersonId  int       `json:"personId"`
+	StartTime time.Time `json:"from"`
+	EndTime   time.Time `json:"to"`
 }
 
 type DutyStorage map[int][]TimeSpan
@@ -45,4 +28,9 @@ type ResultBodyElement struct {
 
 type ResultBody struct {
 	List []ResultBodyElement `json:"list"`
+}
+
+type HourlyResultBody struct {
+	MinuteRuleString string `json:"minuteRuleString"`
+	TimeMap [][]ResultBodyElement `json:"timeMap"`
 }

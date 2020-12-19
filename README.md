@@ -4,7 +4,7 @@ Duty helper
 
 Requirements
 ----
-App requires android system with API version 26+ (Android 6+)
+App requires android system with API version 21+
 
 Description
 ----

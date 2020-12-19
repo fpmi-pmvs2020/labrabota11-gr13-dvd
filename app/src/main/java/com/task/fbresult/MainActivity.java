@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_logout);
         menuItem.setOnMenuItemClickListener(item -> {
             AuthUI.getInstance().signOut(this);
+            auth.signOut();
+            finishAndRemoveTask();
             finish();
             return true;
         });

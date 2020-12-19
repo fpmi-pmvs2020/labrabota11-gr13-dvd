@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private View getViewWithFirstDuty(Duty duty) {
-        FirstDutyViewFiller viewHolder = new FirstDutyViewFiller(getContext());
+        FirstDutyViewFiller viewHolder = new FirstDutyViewFiller(root.getContext());
         return viewHolder.formatViewWithDuty(duty);
     }
 

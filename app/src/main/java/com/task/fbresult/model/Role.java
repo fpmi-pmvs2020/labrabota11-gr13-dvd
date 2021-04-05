@@ -1,16 +1,6 @@
 package com.task.fbresult.model;
 
-public class Role {
-    private long id;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
+public class Role extends FBModel{
     public String getName() {
         return name;
     }
@@ -21,8 +11,11 @@ public class Role {
 
     private String name;
 
-    public Role(long id, String name) {
-        this.id = id;
+    public Role() {
+    }
+
+    public Role(String id, String name) {
+        super(id);
         this.name = name;
     }
 

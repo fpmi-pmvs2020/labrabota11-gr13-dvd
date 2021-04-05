@@ -1,22 +1,22 @@
 package com.task.fbresult.model;
 
-import android.graphics.Bitmap;
-
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Objects;
 
-public class Person {
-    private long id;
+public class Person extends FBModel{
     private String login;
     private String fio;
     private String telephone;
     private String address;
-    private LocalDate birthday;
+    private String birthday;
     private byte[] avatar;
-    private long roleId;
+    private String roleId;
 
-    public Person(long id, String login, String fio, String telephone, String address, LocalDate birthday, byte[] avatar, long role) {
-        this.id = id;
+    public Person() {
+    }
+
+    public Person(String id, String login, String fio, String telephone, String address, String birthday, byte[] avatar, String role) {
+        super(id);
         this.login = login;
         this.fio = fio;
         this.telephone = telephone;
@@ -26,7 +26,7 @@ public class Person {
         this.avatar = avatar;
     }
 
-    public Person(String login, String fio, String telephone, String address, LocalDate birthday, byte[] avatar, long role) {
+    public Person(String login, String fio, String telephone, String address, String birthday, byte[] avatar, String role) {
         this.login = login;
         this.fio = fio;
         this.telephone = telephone;
@@ -36,7 +36,7 @@ public class Person {
         this.avatar = avatar;
     }
 
-    public Person(String login, String fio, long role) {
+    public Person(String login, String fio, String role) {
         this.login = login;
         this.fio = fio;
         this.roleId = role;
@@ -46,9 +46,6 @@ public class Person {
 
     public String getFio() {
         return fio;
-    }
-    public long getId() {
-        return id;
     }
 
     public byte[] getAvatar() {
@@ -83,17 +80,10 @@ public class Person {
         return address;
     }
 
-    public LocalDate getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public long getRole() {
-        return roleId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public void setLogin(String login) {
         this.login = login;
@@ -111,12 +101,16 @@ public class Person {
         this.address = address;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-    public void setRole(long role) {
-        this.roleId = role;
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     @Override
@@ -124,8 +118,8 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id &&
-                roleId == person.roleId &&
+        return getFirebaseId().equals(person.getFirebaseId()) &&
+                roleId.equals(person.roleId) &&
                 Objects.equals(login, person.login) &&
                 Objects.equals(fio, person.fio) &&
                 Objects.equals(telephone, person.telephone) &&
@@ -135,7 +129,24 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, fio, telephone, address, birthday, roleId);
+        return Objects.hash(getFirebaseId(), login, fio, telephone, address, birthday, roleId);
+    }
+
+    public String getSurnameWithInitials(){
+        return getSurname() + " " + getName().substring(0, 1) + ". " + getPatronymic().substring(0, 1) + ".";
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "login='" + login + '\'' +
+                ", fio='" + fio + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", address='" + address + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", avatar=" + Arrays.toString(avatar) +
+                ", roleId='" + roleId + '\'' +
+                '}';
     }
 
     //endregion

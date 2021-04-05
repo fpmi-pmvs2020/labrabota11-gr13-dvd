@@ -15,10 +15,10 @@ public class GraphicResult implements Serializable {
 
 
     public static class Result implements Serializable {
-        public int personId;
+        public String personId;
         public String fileString;
 
-        public int getPersonId() {
+        public String getPersonId() {
             return personId;
         }
 

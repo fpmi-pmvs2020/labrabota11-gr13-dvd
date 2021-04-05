@@ -1,26 +1,21 @@
 package com.task.fbresult.model;
 
-public class DutyType {
-    private long id;
+public class DutyType extends FBModel{
     private String title;
 
     public DutyType(String title) {
         this.title = title;
     }
 
-    public DutyType(long id, String title) {
-        this.id = id;
+    public DutyType() {
+    }
+
+    public DutyType(String id, String title) {
+        super(id);
         this.title = title;
     }
 
     //region get/set
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;

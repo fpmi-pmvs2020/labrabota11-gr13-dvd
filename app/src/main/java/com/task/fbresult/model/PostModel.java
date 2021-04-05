@@ -4,9 +4,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,17 +19,21 @@ public class PostModel {
         this.rowWidth = rowWidth;
         this.rowHeight = rowHeight;
         this.records = records.stream()
-                .map(e -> new People(e.getPersonId(),e.getFrom().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+"Z", e.getTo().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+"Z"))
+                .map(
+                        e -> new People(e.getFirebaseId(),e.fromAsLocalDateTime()
+                                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+"Z",
+                                e.toAsLocalDateTime()
+                                        .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+"Z"))
                 .collect(Collectors.toList());
 
     }
 
     class People{
-        public long personId;
+        public String personId;
         public String from;
         public String to;
 
-        public People(long personId, String from, String to) {
+        public People(String personId, String from, String to) {
             this.personId = personId;
             this.from = from;
             this.to = to;

@@ -1,62 +1,62 @@
 package com.task.fbresult.model;
 
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Duty implements Serializable {
-
-    private long id;
-    private LocalDateTime from;
-    private LocalDateTime to;
-    private long type;
+public class Duty extends FBModel implements Serializable, Parcelable {
+    private String from;
+    private String to;
+    private String typeId;
     private int maxPeople;
 
-    public Duty(long id, LocalDateTime from, LocalDateTime to, long type, int maxPeople) {
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.type = type;
+    public Duty() {
+    }
+
+    public Duty(String id, LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+        super(id);
+        this.from = from.toString();
+        this.to = to.toString();
+        this.typeId = type;
         this.maxPeople = maxPeople;
     }
 
-    public Duty(LocalDateTime from, LocalDateTime to, long type, int maxPeople) {
-        this.from = from;
-        this.to = to;
-        this.type = type;
+    public Duty(LocalDateTime from, LocalDateTime to, String type, int maxPeople) {
+        this.from = from.toString();
+        this.to = to.toString();
+        this.typeId = type;
         this.maxPeople = maxPeople;
     }
 
     //region get/set
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(LocalDateTime from) {
+    public void setFrom(String from) {
         this.from = from;
     }
 
-    public LocalDateTime getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(LocalDateTime to) {
+    public void setTo(String to) {
         this.to = to;
     }
 
-    public long getType() {
-        return type;
+    public String getTypeId() {
+        return typeId;
     }
 
-    public void setType(long type) {
-        this.type = type;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 
     public int getMaxPeople() {
@@ -66,5 +66,49 @@ public class Duty implements Serializable {
     public void setMaxPeople(int maxPeople) {
         this.maxPeople = maxPeople;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public LocalDateTime fromAsLocalDateTime(){
+        return LocalDateTime.parse(from);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public LocalDateTime toAsLocalDateTime(){
+        return LocalDateTime.parse(to);
+    }
+
+    @Override
+    public String toString() {
+        return "Duty{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", typeId='" + typeId + '\'' +
+                ", maxPeople=" + maxPeople +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeSerializable(this);
+    }
+
+    public static final Parcelable.Creator<Duty> CREATOR = new Parcelable.Creator<Duty>() {
+
+        @Override
+        public Duty createFromParcel(Parcel source) {
+            return (Duty)source.readSerializable();
+        }
+
+        @Override
+        public Duty[] newArray(int size) {
+            return new Duty[size];
+        }
+    };
+
     //endregion
 }

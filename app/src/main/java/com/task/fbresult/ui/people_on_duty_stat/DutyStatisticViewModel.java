@@ -12,6 +12,7 @@ import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.GraphicResult;
 import com.task.fbresult.model.HourlyGraphicResult;
 import com.task.fbresult.util.DAORequester;
+import com.task.fbresult.util.FBUtils;
 import com.task.fbresult.util.WebUtils;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import io.reactivex.functions.Consumer;
 public class DutyStatisticViewModel extends ViewModel {
 
     private HourlyGraphicResult allResult;
-    private MutableLiveData<Map<Integer, List<Bitmap>>> hourlyResult;
+    private MutableLiveData<Map<String, List<Bitmap>>> hourlyResult;
 
 
     public void loadData(Duty duty) {
@@ -36,7 +37,7 @@ public class DutyStatisticViewModel extends ViewModel {
     public DutyStatisticViewModel() {
     }
 
-    public MutableLiveData<Map<Integer, List<Bitmap>>> getGraphic(Duty duty) {
+    public MutableLiveData<Map<String, List<Bitmap>>> getGraphic(Duty duty) {
         if (allResult == null) {
             allResult = new HourlyGraphicResult();
             hourlyResult = new MutableLiveData<>();
@@ -62,7 +63,7 @@ public class DutyStatisticViewModel extends ViewModel {
     public void requestHourlyDate(int hourIndex) {
         if (allResult == null || allResult.timeMap == null || allResult.timeMap.size() <= hourIndex)
             return;
-        Map<Integer, List<Bitmap>> collect = allResult.timeMap.get(hourIndex).stream()
+        Map<String, List<Bitmap>> collect = allResult.timeMap.get(hourIndex).stream()
                 .collect(Collectors.groupingBy(
                         GraphicResult.Result::getPersonId,
                         Collectors.mapping(
@@ -70,7 +71,7 @@ public class DutyStatisticViewModel extends ViewModel {
                                 Collectors.toList()
                         )));
 
-        collect.put(0, List.of(allResult.minuteRuleString()));
+        collect.put(FBUtils.getCurrentUserAsPerson().getFirebaseId(), List.of(allResult.minuteRuleString()));
         hourlyResult.postValue(collect);
     }
 }

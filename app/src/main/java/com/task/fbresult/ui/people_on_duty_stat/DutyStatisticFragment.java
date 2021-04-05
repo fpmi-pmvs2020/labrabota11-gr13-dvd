@@ -64,13 +64,13 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
         model.getGraphic(duty).observe(getViewLifecycleOwner(), (graphicResult) -> {
             for (PeopleAdapter.Item i : adapter.items){
                 //if(i.people.getPersonId() == 0) i.images = graphicResult.;
-                i.images = graphicResult.get((int)i.people.getPersonId()).get(0);
+                i.images = graphicResult.get(i.people.getPersonId()).get(0);
             }
 
             adapter.notifyDataSetChanged();
         });
 
-        seekBar.setMax((int)Duration.between(duty.getTo(),duty.getFrom()).abs().toHours());
+        seekBar.setMax((int)Duration.between(duty.toAsLocalDateTime(),duty.fromAsLocalDateTime()).abs().toHours());
         seekBar.setProgress(0);
         return view;
     }
@@ -83,8 +83,8 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        from.setText(duty.getFrom().plus(Duration.ofHours(progress)).format(DateTimeFormatter.ofPattern("HH:mm")));
-        to.setText(duty.getFrom().plus(Duration.ofHours(progress+1)).format(DateTimeFormatter.ofPattern("HH:mm")));
+        from.setText(duty.fromAsLocalDateTime().plus(Duration.ofHours(progress)).format(DateTimeFormatter.ofPattern("HH:mm")));
+        to.setText(duty.fromAsLocalDateTime().plus(Duration.ofHours(progress+1)).format(DateTimeFormatter.ofPattern("HH:mm")));
         model.requestHourlyDate(progress);
     }
 

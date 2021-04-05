@@ -2,6 +2,9 @@ package com.task.fbresult.ui.user_duties;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +33,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import lombok.var;
+
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class UserDutiesFragment extends Fragment {
+    private static final String DUTIES_KEY = "duties";
 
     private UserDutiesViewModel userDutiesViewModel;
     View root;
@@ -46,10 +52,27 @@ public class UserDutiesFragment extends Fragment {
         userDutiesViewModel =
                 new ViewModelProvider(this).get(UserDutiesViewModel.class);
         root = inflater.inflate(R.layout.fragment_person_duties, container, false);
-        duties = loadDuties();
-        configureRecycler();
-        configureSpinner();
-        showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
+        Handler handler = new Handler(this.getActivity().getMainLooper(), msg -> {
+            if (msg.what == 1) {
+                Bundle data = msg.getData();
+                duties =  data.getParcelableArrayList(DUTIES_KEY);
+            }
+            configureRecycler();
+            configureSpinner();
+            showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
+            return true;
+        });
+
+        new Thread(()-> {
+            Message message = handler.obtainMessage(1);
+            Bundle data = new Bundle();
+            var duties = loadDuties();
+            data.putParcelableArrayList(DUTIES_KEY, (ArrayList<? extends Parcelable>) duties);
+            message.setData(data);
+            handler.sendMessage(message);
+
+        }).start();
+
         return root;
     }
 
@@ -107,14 +130,14 @@ public class UserDutiesFragment extends Fragment {
     private List<Duty> getNextDuties(){
         LocalDateTime localDateTime = LocalDateTime.now();
         return duties.stream()
-                .filter(duty->duty.getFrom().isAfter(localDateTime))
+                .filter(duty->duty.fromAsLocalDateTime().isAfter(localDateTime))
                 .collect(Collectors.toList());
     }
 
     private List<Duty>getPastDuties(){
         LocalDateTime localDateTime = LocalDateTime.now();
         return duties.stream()
-                .filter(duty->duty.getFrom().isBefore(localDateTime))
+                .filter(duty->duty.fromAsLocalDateTime().isBefore(localDateTime))
                 .collect(Collectors.toList());
     }
 

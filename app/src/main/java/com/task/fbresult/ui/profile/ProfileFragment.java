@@ -3,14 +3,12 @@ package com.task.fbresult.ui.profile;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +24,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.task.fbresult.MainActivity;
 import com.task.fbresult.R;
-import com.task.fbresult.db.dao.PersonDao;
+import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.dialogs.DialogBuilder;
 import com.task.fbresult.dialogs.DialogBuilderFactory;
 import com.task.fbresult.dialogs.DialogType;
@@ -40,12 +36,12 @@ import com.task.fbresult.util.ImgUtils;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
@@ -218,7 +214,7 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
     }
 
     private void updateUser(){
-        new PersonDao().update(currentUser);
+        new FBPersonDao().update(currentUser);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -239,7 +235,7 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
                 etName.setText(currentUser.getFio());
                 etAddress.setText(currentUser.getAddress());
                 tvEmail.setText(currentUser.getLogin());
-                tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(currentUser.getBirthday()));
+                tvBirthDate.setText(LocalDateTimeHelper.getFormattedDate(LocalDate.parse(currentUser.getBirthday())));
                 byte[] avatarBytes = currentUser.getAvatar();
                 if(avatarBytes!=null) {
                     Bitmap imgAvatar = ImgUtils.getByteArrayAsBitmap(avatarBytes);

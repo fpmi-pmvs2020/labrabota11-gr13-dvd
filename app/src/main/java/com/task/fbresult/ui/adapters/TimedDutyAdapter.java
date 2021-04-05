@@ -15,7 +15,6 @@ import com.task.fbresult.ui.holders.TimeViewHolder;
 import com.task.fbresult.util.LocalDateTimeHelper;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +48,7 @@ public class TimedDutyAdapter extends DutyAdapter {
         List<Duty>result = new ArrayList<>();
         LocalDate lastDate = LocalDate.of(1,1,1);
         for(int i = 0;i<items.size();i++){
-            LocalDate itemDate = items.get(i).getFrom().toLocalDate();
+            LocalDate itemDate = items.get(i).fromAsLocalDateTime().toLocalDate();
             if(!itemDate.isEqual(lastDate)){
                 if(lastMonth!=itemDate.getMonthValue()){
                     lastMonth = itemDate.getMonthValue();

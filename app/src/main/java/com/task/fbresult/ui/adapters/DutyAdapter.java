@@ -31,7 +31,8 @@ public class DutyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public List<Duty> items;
     private final Person currentUser = FBUtils.getCurrentUserAsPerson();
 
-    public DutyAdapter(Context context,@NonNull List<Duty> items,@Nullable NodeListener listener) {
+    public DutyAdapter(Context context, @NonNull List<Duty> items,
+                       @Nullable NodeListener listener) {
         inflater = LayoutInflater.from(context);
         this.items = items;
         this.listener = listener;
@@ -51,12 +52,12 @@ public class DutyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         DutyViewHolder holder = (DutyViewHolder)viewHolder;
 
         holder.title.setText(dutyType.getTitle());
-        holder.from.setText(LocalDateTimeHelper.getFormattedTime(duty.getFrom()));
-        holder.to.setText(LocalDateTimeHelper.getFormattedTime(duty.getTo()));
+        holder.from.setText(LocalDateTimeHelper.getFormattedTime(duty.fromAsLocalDateTime()));
+        holder.to.setText(LocalDateTimeHelper.getFormattedTime(duty.toAsLocalDateTime()));
         holder.max.setText(String.valueOf(duty.getMaxPeople()));
         List<PeopleOnDuty>peopleOnDuties = DAORequester.getPeopleOnDuty(duty);
         for(PeopleOnDuty peopleOnDuty:peopleOnDuties){
-            if(peopleOnDuty.getPersonId() == currentUser.getId()) {
+            if(peopleOnDuty.getPersonId().equals(currentUser.getFirebaseId())) {
                 holder.checkMark.setVisibility(View.VISIBLE);
                 break;
             }

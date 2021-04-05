@@ -2,6 +2,7 @@ package com.task.fbresult;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +26,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.task.fbresult.db.DBFillers;
 import com.task.fbresult.db.DBHelper;
+import com.task.fbresult.db.fbdao.FBDutyDao;
+import com.task.fbresult.model.Duty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,27 +42,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DBHelper.getInstance(this, null);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("shared",MODE_PRIVATE);
-        if(!sharedPreferences.contains("dbIsFilled")) {
-            DBFillers.fillData();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("dbIsFilled",true);
-            editor.apply();
-        }
+        /*SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
+        if (!sharedPreferences.contains("dbIsFilled")) {
+            new Thread(() -> {
+                DBFillers.fillData();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("dbIsFilled", true);
+                editor.apply();
+            }).start();
+        }*/
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             startSignInWindow();
-        }else{
+        } else {
             configureScreen();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == SIGN_IN_CODE) {
+        if (requestCode == SIGN_IN_CODE) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if (response == null)
                 finish();
@@ -70,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void configureScreen(){
-        if(navigationView == null) {
+    private void configureScreen() {
+        if (navigationView == null) {
             setContentView(R.layout.activity_main);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 SIGN_IN_CODE);
     }
 
-    private void configureMenuOf(NavigationView navigationView){
+    private void configureMenuOf(NavigationView navigationView) {
         View headerView = navigationView.getHeaderView(0);
         TextView tvPersonTitle = headerView.findViewById(R.id.tvPersonTitle);
         tvPersonTitle.setText(auth.getCurrentUser().getDisplayName());

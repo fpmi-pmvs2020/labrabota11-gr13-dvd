@@ -6,7 +6,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.R;
-import com.task.fbresult.db.dao.DutyTypesDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.DutyType;
 import com.task.fbresult.model.Person;
@@ -23,71 +22,72 @@ public class DutyFormatter {
     private final Duty duty;
     private final Resources resources;
 
-    public DutyFormatter(Duty duty, Resources resources){
+    public DutyFormatter(Duty duty, Resources resources) {
         this.duty = duty;
         this.resources = resources;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getStartTime(){
-        LocalTime localTime = duty.getFrom().toLocalTime();
+    public String getStartTime() {
+        LocalTime localTime = duty.fromAsLocalDateTime().toLocalTime();
         return getFormattedTime(localTime);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getFinishTime(){
-        LocalTime localTime = duty.getTo().toLocalTime();
+    public String getFinishTime() {
+        LocalTime localTime = duty.toAsLocalDateTime().toLocalTime();
         return getFormattedTime(localTime);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getDate() {
-        LocalDate dutyDate = duty.getFrom().toLocalDate();
+        LocalDate dutyDate = duty.fromAsLocalDateTime().toLocalDate();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM");
         return dutyDate.format(dateTimeFormatter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String getFormattedTime(LocalTime localTime){
+    private String getFormattedTime(LocalTime localTime) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return localTime.format(dateTimeFormatter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getDaysLeftAsString(){
+    public String getDaysLeftAsString() {
         DutyManager dutyManager = new DutyManager(duty);
         long daysBetween = dutyManager.getDaysLeft();
-        if(daysBetween == 0)
+        if (daysBetween == 0)
             return resources.getString(R.string.today);
         else
-            return String.format(resources.getString(R.string.days_left),daysBetween);
+            return String.format(resources.getString(R.string.days_left), daysBetween);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getDayOfWeek(){
-        LocalDateTime localDateTime = duty.getFrom();
+    public String getDayOfWeek() {
+        LocalDateTime localDateTime = duty.fromAsLocalDateTime();
         Locale currentLocale = resources.getConfiguration().locale;
-        return localDateTime.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE,currentLocale);
+        return localDateTime.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, currentLocale);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getPartnersAsString(){
+    public String getPartnersAsString() {
         DutyManager dutyManager = new DutyManager(duty);
-        List<Person>partners = dutyManager.getPartners();
+        List<Person> partners = dutyManager.getPartners();
         StringBuilder stringBuilder = new StringBuilder();
-        for(Person partner:partners)
-            stringBuilder.append(partner.getName()+" "+partner.getSurname()+", ");
-        if(stringBuilder.length() == 0)
+        for (Person partner : partners)
+            stringBuilder.append(partner.getName() + " " + partner.getSurname() + ", ");
+        if (stringBuilder.length() == 0)
             return resources.getString(R.string.no_partners);
-        return stringBuilder.substring(0,stringBuilder.length()-2);
+        return stringBuilder.substring(0, stringBuilder.length() - 2);
     }
 
-    public String getTitle(){
-        List<DutyType>types = new DutyTypesDao().get(DutyTypesDao.GET_BY_ID_QUERY+duty.getType());
-        return types.get(0).getTitle();
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String getTitle() {
+        DutyType type = DAORequester.getDutyType(duty);
+        return type.getTitle();
     }
 
-    public String getMaxPeople(){
+    public String getMaxPeople() {
         return String.valueOf(duty.getMaxPeople());
     }
 }

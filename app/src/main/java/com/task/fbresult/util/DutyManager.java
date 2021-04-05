@@ -1,6 +1,7 @@
 package com.task.fbresult.util;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -9,9 +10,10 @@ import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.var;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -27,9 +29,9 @@ public class DutyManager {
         Person currentUser = FBUtils.getCurrentUserAsPerson();
         List<PeopleOnDuty>peopleOnDuties = DAORequester.getPeopleOnDuty(duty);
         List<PeopleOnDuty>currentUserOnDuty = peopleOnDuties.stream()
-                .filter(peopleOnDuty -> peopleOnDuty.getPersonId() == currentUser.getId())
+                .filter(peopleOnDuty -> peopleOnDuty.getPersonId().equals(currentUser.getFirebaseId()))
                 .collect(Collectors.toList());
-        peopleOnDuties.removeIf(peopleOnDuty -> peopleOnDuty.getPersonId() == currentUser.getId());
+        peopleOnDuties.removeIf(peopleOnDuty -> peopleOnDuty.getPersonId().equals(currentUser.getFirebaseId()));
         List<PeopleOnDuty>partnersOnDuty = getWhoWorksWithUser(peopleOnDuties,currentUserOnDuty);
         return DAORequester.getPersonsInPeopleOnDuties(partnersOnDuty);
     }
@@ -53,14 +55,20 @@ public class DutyManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean doWorkOnTheSameTime(PeopleOnDuty first, PeopleOnDuty second){
-        LocalDateTimeInterval firstInterval = new LocalDateTimeInterval(first.getFrom(),first.getTo());
-        LocalDateTimeInterval secondInterval = new LocalDateTimeInterval(second.getFrom(),second.getTo());
+        LocalDateTimeInterval firstInterval = new LocalDateTimeInterval(
+                first.fromAsLocalDateTime(),
+                first.toAsLocalDateTime()
+        );
+        LocalDateTimeInterval secondInterval = new LocalDateTimeInterval(
+                second.fromAsLocalDateTime(),
+                second.toAsLocalDateTime()
+        );
         return firstInterval.intersects(secondInterval);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public long getDaysLeft(){
-        LocalDate dutyDate = duty.getFrom().toLocalDate();
+        LocalDate dutyDate = duty.fromAsLocalDateTime().toLocalDate();
         LocalDate todayDate = LocalDate.now();
         return DAYS.between(todayDate,dutyDate);
     }

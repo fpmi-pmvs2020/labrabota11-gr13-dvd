@@ -35,7 +35,7 @@ public abstract class FBDao<T extends FBModel> {
         ArrayList<T> result = new ArrayList<>();
         var query = reference.child(getTableName()).orderByValue();
         for (var entry : constraints.entrySet()) {
-            query = FBUtils.buildQueryWithConstraints(query, entry.getKey(), entry.getValue());
+            query = FBUtils.buildQueryWithConstraints(query.getRef(), entry.getKey(), entry.getValue());
         }
         var task = query.get();
         while (!task.isComplete()) ;

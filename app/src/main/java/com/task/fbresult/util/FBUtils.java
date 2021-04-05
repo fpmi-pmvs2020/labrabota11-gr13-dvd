@@ -1,6 +1,7 @@
 package com.task.fbresult.util;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.fbdao.ConstraintPair;
@@ -20,8 +21,8 @@ public class FBUtils {
         return new FBPersonDao().get(constraints).get(0);
     }
 
-    public static Query buildQueryWithConstraints(Query query, String parameterName, ConstraintPair constraintPair){
-            query = query.orderByChild(parameterName);
+    public static Query buildQueryWithConstraints(DatabaseReference reference, String parameterName, ConstraintPair constraintPair){
+            var query = reference.orderByChild(parameterName);
             switch (constraintPair.getConstraintType()) {
                 case EQUALS:
                     query = query.equalTo(constraintPair.getParamValue());

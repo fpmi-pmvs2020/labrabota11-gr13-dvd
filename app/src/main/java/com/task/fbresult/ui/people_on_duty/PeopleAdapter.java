@@ -4,36 +4,29 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.task.fbresult.R;
-import com.task.fbresult.db.dao.DutyTypesDao;
-import com.task.fbresult.db.dao.PersonDao;
+import com.task.fbresult.db.DBHelper;
+import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.adapters.NodeListener;
-import com.task.fbresult.util.ScreenUtils;
+import com.task.fbresult.util.DAORequester;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
@@ -84,12 +77,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         else if (item.state.contains(PeopleOnDutyState.IN_FUTURE))
             holder.markInFuture();
 
-        long personId = item.people.getPersonId();
-        Person person = (new PersonDao().get(String.format(PersonDao.GET_USER_WITH_ID, personId))).get(0);
+        Person person = DAORequester.getPersonInPeopleOnDuty(item.people);
 
-        holder.title.setText(person.getSurname() + " " + person.getName().substring(0, 1) + ". " + person.getPatronymic().substring(0, 1) + ".");
-        holder.from.setText(item.people.getFrom().format(formatter));
-        holder.to.setText(item.people.getTo().format(formatter));
+        holder.title.setText(person.getSurnameWithInitials());
+        holder.from.setText(item.people.fromAsLocalDateTime().format(formatter));
+        holder.to.setText(item.people.toAsLocalDateTime().format(formatter));
 
     }
 

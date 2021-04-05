@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.task.fbresult.DutyActivity;
 import com.task.fbresult.R;
-import com.task.fbresult.db.dao.DutyDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.DutyType;
 import com.task.fbresult.model.GraphicResult;
-import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.ui.adapters.NodeListener;
 import com.task.fbresult.util.DAORequester;
 
@@ -36,11 +31,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -71,7 +64,7 @@ public class DutyFragment extends Fragment implements NodeListener{
 
         View dutyInfo = inflateCurrentDuty(this.duty);
         dutyHolder.addView(dutyInfo, 1);
-        setDayText(view, this.duty.getFrom());
+        setDayText(view, this.duty.fromAsLocalDateTime());
 
         List<PeopleAdapter.Item> orderedListOfPerson = PeopleProviders.getOrderedListOfPerson(this.duty);
 
@@ -86,7 +79,7 @@ public class DutyFragment extends Fragment implements NodeListener{
         DutyFragmentViewModel model = new ViewModelProvider(this).get(DutyFragmentViewModel.class);
         model.getGraphic(duty).observe(getViewLifecycleOwner(), (graphicResult) -> {
 
-            Map<Integer, List<Bitmap>> map = graphicResult.list.stream()
+            Map<String, List<Bitmap>> map = graphicResult.list.stream()
                     .collect(Collectors.groupingBy(
                             GraphicResult.Result::getPersonId,
                             Collectors.mapping(
@@ -96,7 +89,7 @@ public class DutyFragment extends Fragment implements NodeListener{
                     ));
 
             for (PeopleAdapter.Item i : adapter.items)
-                i.images = map.get((int)i.people.getPersonId()).get(0);
+                i.images = map.get(i.people.getPersonId()).get(0);
 
             adapter.notifyDataSetChanged();
         });
@@ -108,7 +101,7 @@ public class DutyFragment extends Fragment implements NodeListener{
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void nodeClicked(int indexOf) {
-        Toast.makeText(getContext(), adapter.items.get(indexOf).people.getFrom().toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), adapter.items.get(indexOf).people.getFrom(), Toast.LENGTH_LONG).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -144,12 +137,12 @@ public class DutyFragment extends Fragment implements NodeListener{
         TextView from = currentDuty.findViewById(R.id.tvDutyStartTime);
         TextView to = currentDuty.findViewById(R.id.tvDutyEndTime);
         TextView max = currentDuty.findViewById(R.id.tvDutyAmounts);
-
+//TODO: can throw error
         DutyType dutyType = DAORequester.getDutyType(duty);
         title.setText(dutyType.getTitle());
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
-        from.setText(duty.getFrom().format(formatter));
-        to.setText(duty.getTo().format(formatter));
+        from.setText(duty.fromAsLocalDateTime().format(formatter));
+        to.setText(duty.toAsLocalDateTime().format(formatter));
         max.setText(String.valueOf(duty.getMaxPeople()));
         return currentDuty;
     }
@@ -166,11 +159,11 @@ public class DutyFragment extends Fragment implements NodeListener{
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void run() {
-            Duration between = Duration.between(LocalDateTime.now(), duty.getFrom());
+            Duration between = Duration.between(LocalDateTime.now(), duty.fromAsLocalDateTime());
 
             if (between.isNegative()) {
-                if (!Duration.between(LocalDateTime.now(), duty.getTo()).isNegative()) {
-                    leftTime.setText("Remaining time" + getRemainingTime(LocalDateTime.now(), duty.getTo()));
+                if (!Duration.between(LocalDateTime.now(), duty.toAsLocalDateTime()).isNegative()) {
+                    leftTime.setText("Remaining time" + getRemainingTime(LocalDateTime.now(), duty.toAsLocalDateTime()));
                     leftTimeHandler.postDelayed(this, 200);
                 } else {
                     leftTime.setText("Ended");
@@ -178,7 +171,7 @@ public class DutyFragment extends Fragment implements NodeListener{
                 return;
             }
 
-            leftTime.setText(getRemainingTime(LocalDateTime.now(), duty.getFrom()));
+            leftTime.setText(getRemainingTime(LocalDateTime.now(), duty.fromAsLocalDateTime()));
             leftTimeHandler.postDelayed(this, 200);
         }
     };

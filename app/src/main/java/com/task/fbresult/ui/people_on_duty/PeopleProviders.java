@@ -4,8 +4,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.task.fbresult.db.dao.PeopleOnDutyDao;
-import com.task.fbresult.db.dao.PersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
@@ -33,7 +31,7 @@ public class PeopleProviders {
                 ).collect(Collectors.toList());
         Set<com.task.fbresult.ui.people_on_duty.PeopleOnDutyState> set = new HashSet<>();
         set.add(com.task.fbresult.ui.people_on_duty.PeopleOnDutyState.TITLE);
-        items.add(0, new com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item(new PeopleOnDuty(0,0,0, LocalDateTime.now(),LocalDateTime.now()),set));
+        items.add(0, new com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item(new PeopleOnDuty("","",LocalDateTime.now(),LocalDateTime.now()),set));
         return items;
 
     }
@@ -42,7 +40,7 @@ public class PeopleProviders {
     private static com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item mapWith(PeopleOnDuty people){
         com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item ans = new com.task.fbresult.ui.people_on_duty.PeopleAdapter.Item(people, new HashSet<>());
         Person currentUser = FBUtils.getCurrentUserAsPerson();
-        if(currentUser.getId() == people.getPersonId()){
+        if(currentUser.getFirebaseId().equals(people.getPersonId())){
             ans.state.add(com.task.fbresult.ui.people_on_duty.PeopleOnDutyState.ME);
         }
 
@@ -54,7 +52,7 @@ public class PeopleProviders {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static PeopleOnDutyState getPeopleOnDutyState(PeopleOnDuty people){
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTimeInterval interval = new LocalDateTimeInterval(people.getFrom(),people.getTo());
+        LocalDateTimeInterval interval = new LocalDateTimeInterval(people.fromAsLocalDateTime(),people.toAsLocalDateTime());
         int pointPosition = interval.getPointPosition(now);
         return getDutyState(pointPosition);
     }

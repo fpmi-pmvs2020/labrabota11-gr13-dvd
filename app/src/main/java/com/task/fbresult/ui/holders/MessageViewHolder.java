@@ -24,13 +24,13 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements View.O
         super(view);
         this.listener = listener;
 
-        title = view.findViewById(R.id.tvMessageTitle);
-        author = view.findViewById(R.id.tvMessageAuthor);
-        recipient = view.findViewById(R.id.tvMessageRecipient)
-        from = view.findViewById(R.id.tvMessageStartTime);
-        to = view.findViewById(R.id.tvMessageEndTime);
-        date = view.findViewById(R.id.tvMessageDate);
-        checkMark = view.findViewById(R.id.imgViewMessageCheckMark);
+//        title = view.findViewById(R.id.tvMessageTitle);
+//        author = view.findViewById(R.id.tvMessageAuthor);
+//        recipient = view.findViewById(R.id.tvMessageRecipient);
+//        from = view.findViewById(R.id.tvMessageStartTime);
+//        to = view.findViewById(R.id.tvMessageEndTime);
+//        date = view.findViewById(R.id.tvMessageDate);
+//        checkMark = view.findViewById(R.id.imgViewMessageCheckMark);
         view.setOnClickListener(this);
 
     }

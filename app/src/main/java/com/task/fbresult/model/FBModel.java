@@ -1,6 +1,8 @@
 package com.task.fbresult.model;
 
-public abstract class FBModel {
+import java.io.Serializable;
+
+public abstract class FBModel implements Serializable {
     private String firebaseId;
 
     public FBModel() {

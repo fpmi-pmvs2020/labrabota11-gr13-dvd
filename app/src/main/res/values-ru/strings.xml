@@ -63,5 +63,8 @@
         <item>прошедшие</item>
         <item>все</item>
     </string-array>
+    <string name="action_exchange">"Замениться "</string>
+    <string name="goalPerson">Человек для замены</string>
+    <string name="myDuties">Ваше дежурство</string>
 
 </resources>

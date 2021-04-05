@@ -1,34 +1,47 @@
 package com.task.fbresult;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.task.fbresult.dialogs.ExchangeDialogBuilder;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.ui.people_on_duty.DutyPagerAdapter;
+
+import java.io.Serializable;
+
+import lombok.var;
 
 
 public class DutyActivity extends AppCompatActivity {
 
     public static final String DUTY_PARAMETERS = "duty_key";
+    private Duty duty;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duty);
+
+        Bundle extras = getIntent().getExtras();
+        duty = (Duty) extras.getSerializable(DutyActivity.DUTY_PARAMETERS);
 
         Toolbar toolbar = findViewById(R.id.duty_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        DutyPagerAdapter adapter = new DutyPagerAdapter(this, getSupportFragmentManager(), getIntent().getExtras());
+        DutyPagerAdapter adapter = new DutyPagerAdapter(this, getSupportFragmentManager(), extras);
         ViewPager viewPager = findViewById(R.id.duty_pager);
         viewPager.setAdapter(adapter);
 
@@ -37,18 +50,23 @@ public class DutyActivity extends AppCompatActivity {
 
     }
 
-    public static void getInstance(Duty duty, Context context){
+    public static void getInstance(Duty duty, Context context) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(DutyActivity.DUTY_PARAMETERS,duty);
-        context.startActivity(new Intent(context,DutyActivity.class).putExtras(bundle));
+        bundle.putSerializable(DutyActivity.DUTY_PARAMETERS, duty);
+        context.startActivity(new Intent(context, DutyActivity.class).putExtras(bundle));
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+            case R.id.action_exchange:
+                Toast.makeText(getApplicationContext(), "exchange selected " + duty.getMaxPeople(), Toast.LENGTH_LONG).show();
+                var builder = new ExchangeDialogBuilder(this, duty);
+                AlertDialog dialog = builder.build(null, null, () -> {
+                });
+                dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
+                dialog.show();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -57,7 +75,7 @@ public class DutyActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.duty, menu);
         return true;
     }
 

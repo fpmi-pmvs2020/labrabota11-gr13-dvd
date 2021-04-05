@@ -55,10 +55,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         MyMessage myMessage = items.get(position);
         MessageViewHolder holder = (MessageViewHolder) viewHolder;
 
-        holder.title.setText(dutyType.getTitle());
-        holder.from.setText(LocalDateTimeHelper.getFormattedTime(myMessage.fromAsLocalDateTime()));
-        holder.to.setText(LocalDateTimeHelper.getFormattedTime(myMessage.toAsLocalDateTime()));
-        holder.max.setText(String.valueOf(myMessage.getMaxPeople()));
+//        holder.title.setText(dutyType.getTitle());
+//        holder.from.setText(LocalDateTimeHelper.getFormattedTime(myMessage.fromAsLocalDateTime()));
+//        holder.to.setText(LocalDateTimeHelper.getFormattedTime(myMessage.toAsLocalDateTime()));
+//        holder.max.setText(String.valueOf(myMessage.getMaxPeople()));
         if (myMessage.isChecked()) {
             holder.checkMark.setVisibility(View.VISIBLE);
         }

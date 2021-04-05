@@ -4,8 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.task.fbresult.db.dao.DutyDao;
-import com.task.fbresult.db.dao.PersonDao;
+import com.task.fbresult.db.fbdao.FBDutyDao;
+import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
@@ -20,13 +20,13 @@ public class PeopleOnDutyGenerator {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<PeopleOnDuty> generate(){
-        PersonDao personDao = new PersonDao();
         List<PeopleOnDuty> ans = new ArrayList<>();
-        DutyDao dutyDao = new DutyDao();
+        FBDutyDao dutyDao = new FBDutyDao();
+        FBPersonDao personDao = new FBPersonDao();
 
 
-        List<Duty>duties = dutyDao.get(DutyDao.GET_ALL_QUERY);
-        List<Person>persons = personDao.get(PersonDao.GET_ALL_QUERY);
+        List<Duty>duties = dutyDao.getAll();
+        List<Person>persons = personDao.getAll();
         Random random = new Random();
         for (Duty duty:duties) {
             TreeSet<Integer> peopleIndexes = new TreeSet<>();
@@ -37,10 +37,10 @@ public class PeopleOnDutyGenerator {
                 }while (peopleIndexes.contains(index));
                 peopleIndexes.add(index);
                 PeopleOnDuty peopleOnDuty = new PeopleOnDuty(
-                        persons.get(index).getId(),
-                        duty.getId(),
-                        duty.getFrom(),
-                        duty.getTo()
+                        persons.get(index).getFirebaseId(),
+                        duty.getFirebaseId(),
+                        duty.fromAsLocalDateTime(),
+                        duty.toAsLocalDateTime()
                 );
                 ans.add(peopleOnDuty);
             }

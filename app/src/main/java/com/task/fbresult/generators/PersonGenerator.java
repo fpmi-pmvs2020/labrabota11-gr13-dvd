@@ -1,20 +1,14 @@
 package com.task.fbresult.generators;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
-import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import com.task.fbresult.db.dao.RoleDao;
+import com.task.fbresult.db.fbdao.FBRoleDao;
 import com.task.fbresult.model.Person;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,9 +42,9 @@ public class PersonGenerator {
                             patronimic[random.nextInt(patronimic.length)],
                     tel,
                     "minsk",
-                    LocalDate.now(),
+                    LocalDate.now().toString(),
                     null,
-                    new RoleDao().get(RoleDao.GET_ALL_QUERY).stream().findAny().get().getId()
+                    new FBRoleDao().getAll().stream().findAny().get().getFirebaseId()
             );
             ans.add(person);
         }

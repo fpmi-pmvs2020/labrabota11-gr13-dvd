@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.task.fbresult.db.dao.DutyTypesDao;
+import com.task.fbresult.db.fbdao.FBDutyTypesDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.DutyType;
 
@@ -20,7 +20,7 @@ public class DutyGenerator {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Duty> generate(){
         List<Duty> ans = new ArrayList<>();
-        List<DutyType>dutyTypes = (new DutyTypesDao()).get(DutyTypesDao.GET_ALL_QUERY);
+        List<DutyType>dutyTypes = (new FBDutyTypesDao()).getAll();
         for(int i=0; i< DUTY_AMOUNTS; i++){
 
             Month month = getMonth();
@@ -30,8 +30,8 @@ public class DutyGenerator {
             Duty duty = new Duty(
                     LocalDateTime.of(LocalDateTime.now().getYear(), month, day, 19, 0,0),
                     LocalDateTime.of(LocalDateTime.now().getYear(), month, day, 23, 59,0),
-                    dutyTypes.get(typeIndex).getId(),
-                    random.nextInt(5)
+                    dutyTypes.get(typeIndex).getFirebaseId(),
+                    random.nextInt(4)+1
             );
 
             ans.add(duty);

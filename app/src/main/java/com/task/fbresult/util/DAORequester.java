@@ -68,26 +68,37 @@ public class DAORequester {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static Duty getFirstOfNextDutiesOfPerson(Person person) {
-        String todayDateAsString = LocalDateTimeHelper.getTodayDateAsString();
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(PER_ON_DUTY_PERSON_ID_COLUMN,new ConstraintPair(person.getFirebaseId(),ConstraintType.EQUALS));
-        constraints.put(PER_ON_DUTY_FROM_COLUMN,new ConstraintPair(todayDateAsString,ConstraintType.GREATER));
-        List<PeopleOnDuty> peopleOnDuties = new FBPeopleOnDutyDao().get(constraints);
+        List<PeopleOnDuty> peopleOnDuties = getFuturePeopleOnDutyOfPerson(person);
 
         if (peopleOnDuties.isEmpty())
             return null;
         else {
-/*            peopleOnDuties = peopleOnDuties.stream()
-                    .filter(peopleOnDuty -> peopleOnDuty.getFrom().compareTo(todayDateAsString) > 0)
-                    .collect(Collectors.toList());*/
             peopleOnDuties.sort((o1, o2) -> o1.getFrom().compareTo(o2.getFrom()));
             return getDutyWithPeopleOnDuty(peopleOnDuties.get(0));
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<PeopleOnDuty>getFuturePeopleOnDutyOfPerson(Person person){
+        String todayDateAsString = LocalDateTimeHelper.getTodayDateAsString();
+        var constraints = new HashMap<String, ConstraintPair>();
+        constraints.put(PER_ON_DUTY_PERSON_ID_COLUMN,new ConstraintPair(person.getFirebaseId(),ConstraintType.EQUALS));
+        constraints.put(PER_ON_DUTY_FROM_COLUMN,new ConstraintPair(todayDateAsString,ConstraintType.GREATER));
+        return new FBPeopleOnDutyDao().get(constraints);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private static Duty getDutyWithPeopleOnDuty(PeopleOnDuty peopleOnDuty) {
         return new FBDutyDao().getWithId(peopleOnDuty.getDutyId());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<Duty> getFuturePeopleOnDutiesOfPerson(Person person){
+        var peopleOnDuties = getFuturePeopleOnDutyOfPerson(person);
+        var result = new ArrayList<Duty>();
+        for(var peopleOnDuty:peopleOnDuties)
+            result.add(getDutyWithPeopleOnDuty(peopleOnDuty));
+        return result;
     }
 
     public static List<Person> getPersonsInPeopleOnDuties(List<PeopleOnDuty> peopleOnDutyList) {

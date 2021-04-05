@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.task.fbresult.R;
 import com.task.fbresult.ui.adapters.NodeListener;
 
-public class DutyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class DutyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     public TextView title;
     public TextView tag;
@@ -29,7 +29,6 @@ public class DutyViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         to = view.findViewById(R.id.tvDutyEndTime);
         max = view.findViewById(R.id.tvDutyAmounts);
         checkMark = view.findViewById(R.id.imgViewCheckMark);
-
         view.setOnClickListener(this);
 
     }

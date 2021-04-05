@@ -24,6 +24,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.task.fbresult.db.DBFillers;
 import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.fbdao.FBDutyDao;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         auth = FirebaseAuth.getInstance();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference().keepSynced(true);
         if (auth.getCurrentUser() == null) {
             startSignInWindow();
         } else {

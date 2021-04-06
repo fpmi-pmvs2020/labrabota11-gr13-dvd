@@ -16,12 +16,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.task.fbresult.dialogs.ExchangeDialogBuilder;
+import com.task.fbresult.dialogs.ExchangeOnCurrentDialogBuilder;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.people_on_duty.DutyPagerAdapter;
 import com.task.fbresult.util.FBUtils;
-
-import java.io.Serializable;
 
 import lombok.var;
 
@@ -68,14 +67,10 @@ public class DutyActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_exchange:
 
-                if(isYouAreOnThisDuty()){
-                    Toast.makeText(getApplicationContext(), R.string.already_on_this_duty, Toast.LENGTH_LONG).show();
+                if(itIsCurrentUserDuty()){
+                    showExchangeOnMyDialog();
                 }else{
-                    var builder = new ExchangeDialogBuilder(this, duty);
-                    AlertDialog dialog = builder.build(null, null, () -> {
-                    });
-                    dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
-                    dialog.show();
+                    showExchangeOnOtherDialog();
                 }
                 return true;
             case android.R.id.home:
@@ -87,13 +82,29 @@ public class DutyActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void showExchangeOnMyDialog() {
+        var builder = new ExchangeOnCurrentDialogBuilder(this, duty);
+        AlertDialog dialog = builder.build(null, null, () -> {
+        });
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
+        dialog.show();
+    }
+
+    private void showExchangeOnOtherDialog(){
+        var builder = new ExchangeDialogBuilder(this, duty);
+        AlertDialog dialog = builder.build(null, null, () -> {
+        });
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
+        dialog.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.duty, menu);
         return true;
     }
 
-    private boolean isYouAreOnThisDuty(){
+    private boolean itIsCurrentUserDuty(){
         Person current = FBUtils.getCurrentUserAsPerson();
         return FBUtils.personIsOnDuty(current, duty);
     }

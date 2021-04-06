@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.R;
 import com.task.fbresult.db.fbdao.FBMessageDao;
-import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.PeopleOnDuty;
@@ -25,17 +23,15 @@ import com.task.fbresult.util.MessageUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 
 import static android.content.ContentValues.TAG;
 
 public class ExchangeDialogBuilder extends DialogBuilder {
 
-    private final Duty currentDuty;
+    protected Duty currentDuty;
     private Spinner spMyDuty;
     private Spinner spGoalPerson;
     private List<PersonWithDuty> persons;
@@ -99,7 +95,7 @@ public class ExchangeDialogBuilder extends DialogBuilder {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String getDutyDayAndTime(PeopleOnDuty duty) {
+    protected String getDutyDayAndTime(PeopleOnDuty duty) {
         String date = duty.fromAsLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE);
         String from = duty.getFrom().split("T")[1];
         String to = duty.getTo().split("T")[1];
@@ -126,17 +122,11 @@ public class ExchangeDialogBuilder extends DialogBuilder {
 
     }
 
-    private MyMessage writeMessage(PersonWithDuty personWithDuty, PeopleOnDuty myDuty){
-        return new MyMessage(
-                myDuty.getPersonId(),
-                personWithDuty.person.getFirebaseId(),
-                personWithDuty.peopleOnDuty.getDutyId(),
-                personWithDuty.peopleOnDuty.getFrom(),
-                personWithDuty.peopleOnDuty.getTo()
-        );
+    private MyMessage writeMessage(PersonWithDuty personWithDuty, PeopleOnDuty meOnDuty){
+        return new MyMessage(meOnDuty, personWithDuty.peopleOnDuty);
     }
 
-    private void tryToSendMessage(MyMessage message){
+    protected void tryToSendMessage(MyMessage message){
         if(!MessageUtils.equalsMessageExists(message)){
             sendMessage(message);
         }else{
@@ -144,7 +134,7 @@ public class ExchangeDialogBuilder extends DialogBuilder {
         }
     }
 
-    private void sendMessage(MyMessage message){
+    protected void sendMessage(MyMessage message){
         FBMessageDao dao = new FBMessageDao();
         dao.save(message);
     }

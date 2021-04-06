@@ -70,6 +70,7 @@
         <item>Отправленные неотвеченные</item>
     </string-array>
 
+    <string name="my_duty_title">Мое дежурство:</string>
     <string name="action_exchange">"Замениться "</string>
     <string name="goalPerson">Человек для замены</string>
     <string name="myDuties">Ваше дежурство</string>
@@ -85,5 +86,6 @@
     <string name="message_status_wait">Ожидает ответ</string>
     <string name="confirm_warning">Внимание!</string>
     <string name="confirm_warning_text">Это действие не может быть отменено. Продолжить?</string>
+    <string name="goalPeopleOnDuty">Дежурство:</string>
 
 </resources>

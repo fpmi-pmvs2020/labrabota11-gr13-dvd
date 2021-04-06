@@ -159,7 +159,6 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
         List<MyMessage> myMessages = DAORequester.getPersonToOtherMessages(currentUser);
         List<MyMessage> incomingMessages = DAORequester.getPersonIncomingMessages(currentUser);
         myMessages.addAll(incomingMessages);
-        myMessages.sort((first, second) -> first.getFrom().compareTo(second.getFrom()));
         return myMessages;
     }
 

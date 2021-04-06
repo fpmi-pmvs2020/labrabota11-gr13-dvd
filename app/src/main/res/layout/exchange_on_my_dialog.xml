@@ -5,6 +5,35 @@
     android:padding="10dp"
     android:background="@color/gypsum"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tvMyDutyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/my_duty_title"
+        android:textColor="@color/coral"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMyDuty"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/dark_blue"
+        android:background="@drawable/bottom_border_dark_line"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvMyDutyTitle"/>
+
     <TextView
         android:id="@+id/tvExchangeGoalPersonTitle"
         android:layout_width="wrap_content"
@@ -15,10 +44,10 @@
         android:textColor="@color/coral"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvMyDuty" />
 
     <Spinner
-        android:id="@+id/spExchangeGoalPerson"
+        android:id="@+id/spExchangeGoalPersonMyDuty"
         android:layout_width="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -33,19 +62,19 @@
         app:layout_constraintTop_toBottomOf="@id/tvExchangeGoalPersonTitle" />
 
     <TextView
-        android:id="@+id/tvMyDutyTitle"
+        android:id="@+id/tvExchangeGoalPersonOnDutyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
-        android:text="@string/myDuties"
+        android:text="@string/goalPeopleOnDuty"
         android:textColor="@color/coral"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spExchangeGoalPerson" />
+        app:layout_constraintTop_toBottomOf="@id/spExchangeGoalPersonMyDuty" />
 
     <Spinner
-        android:id="@+id/spMyDutyToChange"
+        android:id="@+id/spExchangeGoalPersonOnDuty"
         android:layout_width="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -53,9 +82,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/dark_blue"
+
         android:background="@drawable/bottom_border_blue_line"
         android:padding="10dp"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/tvMyDutyTitle"/>
+        app:layout_constraintTop_toBottomOf="@id/tvExchangeGoalPersonOnDutyTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

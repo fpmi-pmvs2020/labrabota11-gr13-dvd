@@ -2,6 +2,9 @@ package com.task.fbresult.db.fbdao;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -43,50 +46,43 @@ public abstract class FBDao<T extends FBModel> {
     }
 
     public List<T> getAll() {
-        AtomicBoolean flag = new AtomicBoolean(false);
         ArrayList<T> result = new ArrayList<>();
-        reference.child(getTableName()).get()
-                .addOnSuccessListener(dataSnapshot -> {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        result.add(snapshot.getValue(getModelClass()));
-                    }
-                    flag.set(true);
-                });
-        while (!flag.get()) ;
+        var task = reference.child(getTableName()).get();
+        while (!task.isComplete()) ;
+        var dataSnapshot = task.getResult();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            result.add(snapshot.getValue(getModelClass()));
+        }
         return result;
     }
 
     public void clean() {
-        AtomicBoolean isCompleted = new AtomicBoolean(false);
         DatabaseReference tableReference = reference.child(getTableName());
-        tableReference.removeValue()
-                .addOnSuccessListener(
-                        aVoid -> {
-                            Log.d(LOG_TAG, "--- Cleaning in " + getTableName() + " performed ");
-                            isCompleted.set(true);
-                        }
-                );
-        while (!isCompleted.get()) ;
+        tableReference.removeValue().addOnCompleteListener(
+                task1 -> Log.d(LOG_TAG, "--- Cleaning in " + getTableName() + " performed ")
+        );
     }
 
     public void save(T t) {
         DatabaseReference tableReference = reference.child(getTableName());
         DatabaseReference objReference = tableReference.push();
         t.setFirebaseId(objReference.getKey());
-        objReference.setValue(t);
-        Log.d(LOG_TAG, "--- Insert in " + getTableName() + ": key: " + t.getFirebaseId());
+        objReference.setValue(t)
+                .addOnCompleteListener(
+                        task -> Log.d(LOG_TAG, "--- Insert in " + getTableName() + ": key: " + t.getFirebaseId())
+                );
+
     }
 
     public void update(T t) {
         DatabaseReference objReference = reference.child(getTableName()).child(t.getFirebaseId());
-        objReference.setValue(t);
-        Log.d(LOG_TAG, getTableName() + "--- update in " + t);
+        objReference.setValue(t).addOnCompleteListener(task -> Log.d(LOG_TAG, getTableName() + "--- update in " + t));
+
     }
 
     public void delete(T t) {
         DatabaseReference objReference = reference.child(getTableName()).child(t.getFirebaseId());
-        objReference.removeValue();
-        Log.d(LOG_TAG, getTableName() + "--- delete in :" + t);
+        objReference.removeValue().addOnCompleteListener(task -> Log.d(LOG_TAG, getTableName() + "--- delete in :" + t));
     }
 
     abstract String getTableName();

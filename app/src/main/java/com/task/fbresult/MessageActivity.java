@@ -18,8 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.task.fbresult.db.fbdao.FBMessageDao;
+import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
 import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
+import com.task.fbresult.util.FBUtils;
+
+import lombok.var;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -93,7 +98,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void updateMessageStatus(MessageState status){
         message.setMessageState(status);
-        //todo database saving
+        new FBMessageDao().update(message);
     }
 
     private void showConfirmDialog(String title, String message, DialogInterface.OnClickListener positiveListener) {
@@ -155,8 +160,9 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private boolean isMessageForMe() {
-        //TODO after updating message
-        return true;
+        var currentPerson = FBUtils.getCurrentUserAsPerson();
+        var recipientPeopleOnDuty = new FBPeopleOnDutyDao().getWithId(message.getRecipientOnDutyId());
+        return recipientPeopleOnDuty.getPersonId().equals(currentPerson.getFirebaseId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

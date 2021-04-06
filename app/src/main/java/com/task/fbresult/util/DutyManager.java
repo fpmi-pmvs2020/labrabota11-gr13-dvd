@@ -47,24 +47,11 @@ public class DutyManager {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private boolean workOnTimeWithPersonIntervals(List<PeopleOnDuty>intervals, PeopleOnDuty person){
         List<PeopleOnDuty> currentIntervals = intervals.stream()
-                .filter(peopleOnDuty -> doWorkOnTheSameTime(peopleOnDuty,person))
+                .filter(peopleOnDuty -> DutyUtils.doWorkOnTheSameTime(peopleOnDuty,person))
                 .collect(Collectors.toList());
         return !currentIntervals.isEmpty();
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private boolean doWorkOnTheSameTime(PeopleOnDuty first, PeopleOnDuty second){
-        LocalDateTimeInterval firstInterval = new LocalDateTimeInterval(
-                first.fromAsLocalDateTime(),
-                first.toAsLocalDateTime()
-        );
-        LocalDateTimeInterval secondInterval = new LocalDateTimeInterval(
-                second.fromAsLocalDateTime(),
-                second.toAsLocalDateTime()
-        );
-        return firstInterval.intersects(secondInterval);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public long getDaysLeft(){

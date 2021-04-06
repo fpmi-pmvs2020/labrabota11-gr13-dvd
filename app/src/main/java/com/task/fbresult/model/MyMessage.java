@@ -4,77 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
-
-import lombok.Builder;
+import java.util.Objects;
 
 public class MyMessage extends FBModel implements Serializable, Parcelable {
+    private String authorOnDutyId;
+    private String recipientOnDutyId;
     private String authorId;
     private String recipientId;
-
-    private String dutyId;
-
-    private String from;
-    private String to;
     private MessageState messageState = MessageState.SENT;
-
-
-    public MessageState getMessageState() {
-        return messageState;
-    }
-
-    public void setMessageState(MessageState messageState) {
-        this.messageState = messageState;
-    }
-
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public MyMessage(String authorId, String recipientId, String dutyId, String from, String to) {
-        this.authorId = authorId;
-        this.recipientId = recipientId;
-        this.dutyId = dutyId;
-        this.from = from;
-        this.to = to;
-    }
-
-    public MyMessage(String firebaseId, String authorId, String recipientId, String dutyId, String from, String to) {
-        super(firebaseId);
-        this.authorId = authorId;
-        this.recipientId = recipientId;
-        this.dutyId = dutyId;
-        this.from = from;
-        this.to = to;
-    }
-
-    public MyMessage(String authorId, String recipientId, String dutyId) {
-        this.authorId = authorId;
-        this.recipientId = recipientId;
-        this.dutyId = dutyId;
-    }
-
-    public MyMessage(String firebaseId, String authorId, String recipientId, String dutyId) {
-        super(firebaseId);
-        this.authorId = authorId;
-        this.recipientId = recipientId;
-        this.dutyId = dutyId;
-    }
-
-    public MyMessage() {
-    }
 
     public String getAuthorId() {
         return authorId;
@@ -92,12 +29,38 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
         this.recipientId = recipientId;
     }
 
-    public String getDutyId() {
-        return dutyId;
+    public MessageState getMessageState() {
+        return messageState;
     }
 
-    public void setDutyId(String dutyId) {
-        this.dutyId = dutyId;
+    public void setMessageState(MessageState messageState) {
+        this.messageState = messageState;
+    }
+
+    public MyMessage(PeopleOnDuty authorOnDuty, PeopleOnDuty recipientOnDuty) {
+        this.authorOnDutyId = authorOnDuty.getFirebaseId();
+        this.recipientOnDutyId = recipientOnDuty.getFirebaseId();
+        this.authorId = authorOnDuty.getPersonId();
+        this.recipientId = recipientOnDuty.getFirebaseId();
+    }
+
+    public MyMessage() {
+    }
+
+    public String getAuthorOnDutyId() {
+        return authorOnDutyId;
+    }
+
+    public void setAuthorOnDutyId(String authorOnDutyId) {
+        this.authorOnDutyId = authorOnDutyId;
+    }
+
+    public String getRecipientOnDutyId() {
+        return recipientOnDutyId;
+    }
+
+    public void setRecipientOnDutyId(String recipientOnDutyId) {
+        this.recipientOnDutyId = recipientOnDutyId;
     }
 
     @Override
@@ -122,4 +85,19 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
             return new MyMessage[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MyMessage myMessage = (MyMessage) o;
+        return Objects.equals(authorOnDutyId, myMessage.authorOnDutyId) &&
+                Objects.equals(recipientOnDutyId, myMessage.recipientOnDutyId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), authorOnDutyId, recipientOnDutyId);
+    }
 }

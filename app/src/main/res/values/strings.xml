@@ -12,6 +12,7 @@
     <string name="menu_home">Main</string>
     <string name="menu_duties">My duties</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_message">Messages</string>
     <string name="menu_logout">Logout</string>
     <string name="logout_title">Account</string>
     <string name="mainDutyTitle">The nearest duty</string>
@@ -65,6 +66,12 @@
         <item>past</item>
         <item>all</item>
     </string-array>
+
+    <string-array name="message_types">
+        <item>sent</item>
+        <item>received</item>
+    </string-array>
     <string name="myDuties">Choice your duty</string>
+    <string name="duty_date">Duty date:</string>
 
 </resources>

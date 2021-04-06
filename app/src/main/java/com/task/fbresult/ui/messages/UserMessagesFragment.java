@@ -15,16 +15,17 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.task.fbresult.DutyActivity;
+import com.task.fbresult.MessageActivity;
 import com.task.fbresult.R;
 import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.adapters.MessageAdapter;
+import com.task.fbresult.ui.adapters.NodeListener;
 import com.task.fbresult.ui.adapters.TimedDutyAdapter;
 import com.task.fbresult.util.DAORequester;
 import com.task.fbresult.util.FBUtils;
@@ -36,11 +37,12 @@ import java.util.stream.Collectors;
 
 import lombok.var;
 
+import static android.os.Looper.getMainLooper;
+
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class UserMessagesFragment extends Fragment {
+public class UserMessagesFragment extends Fragment implements NodeListener {
     private static final String MESSAGES_KEY = "messages";
 
-    private UserMessagesViewModel userMessagesViewModel;
     View root;
 
     Spinner spinner;
@@ -48,50 +50,39 @@ public class UserMessagesFragment extends Fragment {
 
     List<MyMessage> messages;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        userMessagesViewModel =
-                new ViewModelProvider(this).get(UserMessagesViewModel.class);
-        root = inflater.inflate(R.layout.fragment_person_duties, container, false);
-        Handler handler = new Handler(this.getActivity().getMainLooper(), msg -> {
-            if (msg.what == 1) {
-                Bundle data = msg.getData();
-                messages =  data.getParcelableArrayList(MESSAGES_KEY);
-            }
-            configureRecycler();
-            configureSpinner();
-            showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
-            return true;
-        });
 
-        new Thread(()-> {
-            Message message = handler.obtainMessage(1);
-            Bundle data = new Bundle();
-            var duties = loadMessages();
-            data.putParcelableArrayList(MESSAGES_KEY, (ArrayList<? extends Parcelable>) duties);
-            message.setData(data);
-            handler.sendMessage(message);
-
-        }).start();
-
+        root = inflater.inflate(R.layout.fragment_person_messages, container, false);
+        thread.start();
         return root;
+
     }
 
-    private void configureRecycler(){
-        messagesRecycler = root.findViewById(R.id.recPersonDuties);
+    private final Handler messageHandler = new Handler(getMainLooper(), msg -> {
+        if (msg.what == 1) {
+            Bundle data = msg.getData();
+            messages = data.getParcelableArrayList(MESSAGES_KEY);
+        }
+        configureRecycler();
+        configureSpinner();
+        showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
+        return true;
+    });
+
+    private void configureRecycler() {
+        messagesRecycler = root.findViewById(R.id.recPersonMessages);
         messagesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        MessageAdapter messageAdapter = new MessageAdapter(getContext(), new ArrayList<>(), indexOf -> {
-            TimedDutyAdapter adapter = (TimedDutyAdapter) messagesRecycler.getAdapter();
-            Duty selectedDuty = Objects.requireNonNull(adapter).items.get(indexOf);
-            loadDutyActivity(selectedDuty);
-        });
+        MessageAdapter messageAdapter = new MessageAdapter(getContext(), new ArrayList<>(), this);
         messagesRecycler.setAdapter(messageAdapter);
     }
 
-    private void configureSpinner(){
-        spinner = root.findViewById(R.id.spnDutyType);
+
+    private void configureSpinner() {
+        spinner = root.findViewById(R.id.spnMessageType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.duty_interval_types, R.layout.spinner_item);
+                R.array.message_types, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
@@ -108,14 +99,14 @@ public class UserMessagesFragment extends Fragment {
         });
     }
 
-    private void showDutiesBelongsSpinnerPosition(int spnPosition){
+    private void showDutiesBelongsSpinnerPosition(int spnPosition) {
         MessageAdapter messageAdapter = (MessageAdapter) messagesRecycler.getAdapter();
-        changeMessagesOnAdapterBelongsSpnPosition(messageAdapter,spnPosition);
+        changeMessagesOnAdapterBelongsSpnPosition(messageAdapter, spnPosition);
         messageAdapter.notifyDataSetChanged();
     }
 
-    private void changeMessagesOnAdapterBelongsSpnPosition(MessageAdapter messageAdapter, int spnPosition){
-        switch (spnPosition){
+    private void changeMessagesOnAdapterBelongsSpnPosition(MessageAdapter messageAdapter, int spnPosition) {
+        switch (spnPosition) {
             case 0:
                 messageAdapter.setItems(getIncomingMessages());
                 break;
@@ -125,30 +116,50 @@ public class UserMessagesFragment extends Fragment {
         }
     }
 
-    private List<MyMessage> getUserToOthersMessages(){
+    private List<MyMessage> getIncomingMessages() {
+        var currentPerson = FBUtils.getCurrentUserAsPerson();
+        return messages.stream()
+                .filter(message -> message.getRecipientId().equals(currentPerson.getFirebaseId()))
+                .collect(Collectors.toList());
+    }
+
+    private List<MyMessage> getUserToOthersMessages() {
         var currentPerson = FBUtils.getCurrentUserAsPerson();
         return messages.stream()
                 .filter(message -> message.getAuthorId().equals(currentPerson.getFirebaseId()))
                 .collect(Collectors.toList());
     }
 
-    private List<MyMessage> getIncomingMessages(){
-        var currentPerson = FBUtils.getCurrentUserAsPerson();
-        return messages.stream()
-                .filter(message->message.getRecipientId().equals(currentPerson.getFirebaseId()))
-                .collect(Collectors.toList());
-    }
 
-    private void loadDutyActivity(Duty duty){
-        DutyActivity.getInstance(duty,getContext());
-    }
+    Thread thread = new Thread(() -> {
+        Message message = messageHandler.obtainMessage(1);
+        Bundle data = new Bundle();
+        var mess = loadMessages();
+        data.putParcelableArrayList(MESSAGES_KEY, (ArrayList<? extends Parcelable>) mess);
+        message.setData(data);
+        messageHandler.sendMessage(message);
+
+    });
+
 
     private List<MyMessage> loadMessages() {
         Person currentUser = FBUtils.getCurrentUserAsPerson();
-        List<MyMessage>myMessages = DAORequester.getPersonToOtherMessages(currentUser);
-        List<MyMessage>incomingMessages = DAORequester.getPersonIncomingMessages(currentUser);
+        List<MyMessage> myMessages = DAORequester.getPersonToOtherMessages(currentUser);
+        List<MyMessage> incomingMessages = DAORequester.getPersonIncomingMessages(currentUser);
         myMessages.addAll(incomingMessages);
-        myMessages.sort((first,second)->first.getFrom().compareTo(second.getFrom()));
+        myMessages.sort((first, second) -> first.getFrom().compareTo(second.getFrom()));
         return myMessages;
     }
+
+    @Override
+    public void nodeClicked(int indexOf) {
+        MessageAdapter adapter = (MessageAdapter) messagesRecycler.getAdapter();
+        MyMessage selectedDuty = Objects.requireNonNull(adapter).items.get(indexOf);
+        loadMessageActivity(selectedDuty);
+    }
+
+    private void loadMessageActivity(MyMessage message) {
+        MessageActivity.getInstance(message, getContext());
+    }
+
 }

@@ -63,8 +63,16 @@
         <item>прошедшие</item>
         <item>все</item>
     </string-array>
+
+    <string-array name="message_types">
+        <item>Отправлено</item>
+        <item>Получено</item>
+    </string-array>
+
     <string name="action_exchange">"Замениться "</string>
     <string name="goalPerson">Человек для замены</string>
     <string name="myDuties">Ваше дежурство</string>
+    <string name="menu_message">Сообщения</string>
+    <string name="duty_date">Дата дежурства</string>
 
 </resources>

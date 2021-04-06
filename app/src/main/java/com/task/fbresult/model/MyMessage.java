@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
+import lombok.Builder;
+
 public class MyMessage extends FBModel implements Serializable, Parcelable {
     private String authorId;
     private String recipientId;
@@ -14,8 +16,8 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
     private String from;
     private String to;
 
-    private boolean accepted = false;
     private boolean checked = false;
+    private boolean accepted = false;
 
 
     public boolean isAccepted() {
@@ -78,6 +80,9 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
         this.authorId = authorId;
         this.recipientId = recipientId;
         this.dutyId = dutyId;
+    }
+
+    public MyMessage() {
     }
 
     public String getAuthorId() {

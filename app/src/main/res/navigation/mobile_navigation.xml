@@ -22,4 +22,11 @@
         android:name="com.task.fbresult.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_messages"
+        android:name="com.task.fbresult.ui.messages.UserMessagesFragment"
+        android:label="@string/menu_message"
+        tools:layout="@layout/fragment_person_messages"/>
+
 </navigation>

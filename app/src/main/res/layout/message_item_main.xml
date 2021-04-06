@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_border_blue_line"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tvMessageTittle"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_margin="7dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="@color/dark_blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imgViewCheckMark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgViewCrossMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvMessageTittle" />
+
+
+    <ImageView
+        android:id="@+id/imgViewCheckMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/check_mark"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvMessageTittle" />
+
+    <ImageView
+        android:id="@+id/imgViewCheckMarkGreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/check_mark_green"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvMessageTittle" />
+
+    <TextView
+        android:id="@+id/tvDutyStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:textColor="@color/light_blue"
+        app:layout_constraintStart_toEndOf="@+id/tvTimeTip"
+        app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
+
+    <TextView
+        android:id="@+id/tvDutyEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/light_blue"
+        app:layout_constraintStart_toEndOf="@+id/tvDutyStartTime"
+        app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
+
+    <TextView
+        android:id="@+id/tvTimeTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/duty_time"
+        android:textColor="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMessageTittle" />
+
+    <TextView
+        android:id="@+id/tvPositionsAmountTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/duty_date"
+        android:textColor="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="@+id/tvTimeTip"
+        app:layout_constraintTop_toBottomOf="@+id/tvTimeTip" />
+
+    <TextView
+        android:id="@+id/tvDutyDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/light_blue"
+        app:layout_constraintEnd_toEndOf="@+id/tvDutyEndTime"
+        app:layout_constraintTop_toTopOf="@+id/tvPositionsAmountTip" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

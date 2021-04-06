@@ -12,8 +12,10 @@ import android.widget.SpinnerAdapter;
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.R;
+import com.task.fbresult.db.fbdao.FBMessageDao;
 import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.util.DAORequester;
@@ -112,9 +114,28 @@ public class ExchangeDialogBuilder extends DialogBuilder {
     void setData(String[] values) {
         PersonWithDuty personWithDuty = persons.get((int) spGoalPerson.getSelectedItemId());
         PeopleOnDuty peopleOnDuty = personDuties.get((int) spMyDuty.getSelectedItemId());
+
+        MyMessage message = writeMessage(personWithDuty, peopleOnDuty);
+
+        sendMessage(message);
         Log.i(TAG, "person with duty " + personWithDuty);
         Log.i(TAG, "my duty " + peopleOnDuty);
 
+    }
+
+    private MyMessage writeMessage(PersonWithDuty personWithDuty, PeopleOnDuty people){
+        return new MyMessage(
+                people.getPersonId(),
+                personWithDuty.person.getFirebaseId(),
+                personWithDuty.peopleOnDuty.getDutyId(),
+                personWithDuty.peopleOnDuty.getFrom(),
+                personWithDuty.peopleOnDuty.getTo()
+        );
+    }
+
+    private void sendMessage(MyMessage message){
+        FBMessageDao dao = new FBMessageDao();
+        dao.save(message);
     }
 
     @RequiredArgsConstructor

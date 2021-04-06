@@ -39,7 +39,6 @@ import lombok.var;
 public class UserDutiesFragment extends Fragment {
     private static final String DUTIES_KEY = "duties";
 
-    private UserDutiesViewModel userDutiesViewModel;
     View root;
 
     Spinner spinner;
@@ -49,8 +48,7 @@ public class UserDutiesFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        userDutiesViewModel =
-                new ViewModelProvider(this).get(UserDutiesViewModel.class);
+
         root = inflater.inflate(R.layout.fragment_person_duties, container, false);
         Handler handler = new Handler(this.getActivity().getMainLooper(), msg -> {
             if (msg.what == 1) {

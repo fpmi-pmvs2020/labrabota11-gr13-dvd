@@ -8,7 +8,7 @@
     tools:context=".ui.user_duties.UserDutiesFragment">
 
     <Spinner
-        android:id="@+id/spnDutyType"
+        android:id="@+id/spnMessageType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="20dp"
-        android:entries="@array/duty_interval_types" />
+        android:entries="@array/message_types" />
 
     <View
         android:id="@+id/spnLine"
@@ -31,4 +31,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/spnLine"
         android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recPersonMessages"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="198dp"
+        android:text="fuck" />
 </RelativeLayout>

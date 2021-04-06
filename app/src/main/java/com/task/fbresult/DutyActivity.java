@@ -17,7 +17,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.task.fbresult.dialogs.ExchangeDialogBuilder;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.people_on_duty.DutyPagerAdapter;
+import com.task.fbresult.util.FBUtils;
 
 import java.io.Serializable;
 
@@ -65,12 +67,16 @@ public class DutyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_exchange:
-                Toast.makeText(getApplicationContext(), "exchange selected " + duty.getMaxPeople(), Toast.LENGTH_LONG).show();
-                var builder = new ExchangeDialogBuilder(this, duty);
-                AlertDialog dialog = builder.build(null, null, () -> {
-                });
-                dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
-                dialog.show();
+
+                if(isYouAreOnThisDuty()){
+                    Toast.makeText(getApplicationContext(), R.string.already_on_this_duty, Toast.LENGTH_LONG).show();
+                }else{
+                    var builder = new ExchangeDialogBuilder(this, duty);
+                    AlertDialog dialog = builder.build(null, null, () -> {
+                    });
+                    dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
+                    dialog.show();
+                }
                 return true;
             case android.R.id.home:
                 //do whatever
@@ -85,6 +91,11 @@ public class DutyActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.duty, menu);
         return true;
+    }
+
+    private boolean isYouAreOnThisDuty(){
+        Person current = FBUtils.getCurrentUserAsPerson();
+        return FBUtils.personIsOnDuty(current, duty);
     }
 
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -118,9 +119,7 @@ public class ExchangeDialogBuilder extends DialogBuilder {
         PeopleOnDuty myDuty = personDuties.get((int) spMyDuty.getSelectedItemId());
 
         MyMessage message = writeMessage(goalPersonAndDuty, myDuty);
-        if(!MessageUtils.equalsMessageExists(message))
-            sendMessage(message);
-        //TODO: toast with warning
+        tryToSendMessage(message);
 
         Log.i(TAG, "person with duty " + goalPersonAndDuty);
         Log.i(TAG, "my duty " + myDuty);
@@ -135,6 +134,14 @@ public class ExchangeDialogBuilder extends DialogBuilder {
                 personWithDuty.peopleOnDuty.getFrom(),
                 personWithDuty.peopleOnDuty.getTo()
         );
+    }
+
+    private void tryToSendMessage(MyMessage message){
+        if(!MessageUtils.equalsMessageExists(message)){
+            sendMessage(message);
+        }else{
+            Toast.makeText(context, R.string.message_already_sent, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void sendMessage(MyMessage message){

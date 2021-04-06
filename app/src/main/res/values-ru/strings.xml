@@ -74,5 +74,7 @@
     <string name="myDuties">Ваше дежурство</string>
     <string name="menu_message">Сообщения</string>
     <string name="duty_date">Дата дежурства</string>
+    <string name="message_already_sent">Запрос уже отправлен!</string>
+    <string name="already_on_this_duty">Вы уже на этом дежурстве</string>
 
 </resources>

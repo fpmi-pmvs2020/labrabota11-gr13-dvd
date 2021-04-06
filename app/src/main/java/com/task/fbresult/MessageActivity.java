@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.task.fbresult.dialogs.ExchangeDialogBuilder;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.ui.adapters.MessageAdapter;
 import com.task.fbresult.ui.holders.MessageViewHolder;
@@ -52,14 +53,22 @@ public class MessageActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        markAsChecked();
+    }
+
+    private void markAsChecked(){
+        if(message.getMessageState() == MessageState.SENT)
+            message.setMessageState(MessageState.READ);
     }
 
     private void confirmExchange(){
-
+        if(message.getMessageState() == MessageState.READ)
+            message.setMessageState(MessageState.ACCEPTED);
     }
 
     private void refuseExchange(){
-
+        if(message.getMessageState() == MessageState.SENT)
+            message.setMessageState(MessageState.DECLINED);
     }
 
     private void setButtonsEnable(boolean isEnable){
@@ -71,7 +80,6 @@ public class MessageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                //do whatever
                 finish();
                 System.out.println("");
                 return true;

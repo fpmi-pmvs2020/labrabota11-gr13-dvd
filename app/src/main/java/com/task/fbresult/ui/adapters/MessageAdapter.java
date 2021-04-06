@@ -68,15 +68,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.toTime.setText(myMessage.getTo().split("T")[1]);
         holder.fromTime.setText(myMessage.getFrom().split("T")[1]);
         holder.date.setText(myMessage.getFrom().split("T")[0]);
+        switch (myMessage.getMessageState()){
 
-        if (myMessage.getMessageState() == MessageState.READ) {
-            holder.checkMark.setVisibility(View.VISIBLE);
-        } else {
-            if (myMessage.getMessageState() == MessageState.ACCEPTED) {
+            case READ:
+                holder.checkMark.setVisibility(View.VISIBLE);
+                break;
+            case ACCEPTED:
                 setAccepted(holder);
-            } else {
+                break;
+            case DECLINED:
                 setRefused(holder);
-            }
         }
 
     }
@@ -84,7 +85,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private void setAccepted(MessageViewHolder holder) {
         holder.checkMark.setVisibility(View.INVISIBLE);
         holder.checkMarkGreen.setVisibility(View.VISIBLE);
-        holder.crossMark.setVisibility(View.INVISIBLE);
     }
 
     private void setRefused(MessageViewHolder holder) {

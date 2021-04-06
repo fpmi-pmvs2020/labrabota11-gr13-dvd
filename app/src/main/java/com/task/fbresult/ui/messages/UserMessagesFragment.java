@@ -108,10 +108,10 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
     private void changeMessagesOnAdapterBelongsSpnPosition(MessageAdapter messageAdapter, int spnPosition) {
         switch (spnPosition) {
             case 0:
-                messageAdapter.setItems(getIncomingMessages());
+                messageAdapter.setItems(getUserToOthersMessages());
                 break;
             case 1:
-                messageAdapter.setItems(getUserToOthersMessages());
+                messageAdapter.setItems(getIncomingMessages());
                 break;
         }
     }

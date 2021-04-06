@@ -27,6 +27,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 
 import static android.content.ContentValues.TAG;
 
@@ -61,8 +62,8 @@ public class ExchangeDialogBuilder extends DialogBuilder {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void fillGoalPersonSpinner() {
-        List<PeopleOnDuty> peopleOnDuty = DAORequester.getPeopleOnDuty(currentDuty);
-        persons = peopleOnDuty.stream()
+        List<PeopleOnDuty> peopleOnDuties = DAORequester.getPeopleOnDuty(currentDuty);
+        persons = peopleOnDuties.stream()
                 .map(PersonWithDuty::new)
                 .collect(Collectors.toList());
 

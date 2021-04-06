@@ -1,8 +1,6 @@
 package com.task.fbresult;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,10 +23,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.task.fbresult.db.DBFillers;
-import com.task.fbresult.db.DBHelper;
-import com.task.fbresult.db.fbdao.FBDutyDao;
-import com.task.fbresult.model.Duty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_logout)
+                    R.id.nav_home, R.id.nav_gallery, R.id.nav_messages, R.id.nav_profile, R.id.nav_logout)
                     .setDrawerLayout(drawer)
                     .build();
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

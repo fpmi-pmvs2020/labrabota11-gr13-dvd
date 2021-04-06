@@ -7,6 +7,10 @@ import java.io.Serializable;
 
 import lombok.Builder;
 
+enum MessageState {
+    SENT,READ,ACCEPTED,DECLINED
+};
+
 public class MyMessage extends FBModel implements Serializable, Parcelable {
     private String authorId;
     private String recipientId;
@@ -16,25 +20,16 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
     private String from;
     private String to;
 
-    private boolean checked = false;
-    private boolean accepted = false;
-
-
-    public boolean isAccepted() {
-        return accepted;
+    public MessageState getMessageState() {
+        return messageState;
     }
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public void setMessageState(MessageState messageState) {
+        this.messageState = messageState;
     }
 
-    public boolean isChecked() {
-        return checked;
-    }
+    private MessageState messageState = MessageState.SENT;
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
 
     public String getFrom() {
         return from;

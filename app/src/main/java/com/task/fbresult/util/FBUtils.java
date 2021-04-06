@@ -7,6 +7,7 @@ import com.task.fbresult.db.DBHelper;
 import com.task.fbresult.db.fbdao.ConstraintPair;
 import com.task.fbresult.db.fbdao.ConstraintType;
 import com.task.fbresult.db.fbdao.FBPersonDao;
+import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.Person;
 
 import java.util.HashMap;
@@ -20,6 +21,11 @@ public class FBUtils {
                 DBHelper.PERSON_LOGIN_COLUMN,
                 new ConstraintPair(login, ConstraintType.EQUALS)
         ).get(0);
+    }
+
+    public static boolean personIsOnDuty(Person person, Duty duty){
+        var persons = DAORequester.getPersonsOnDuty(duty);
+        return persons.contains(person);
     }
 
     public static Query buildQueryWithConstraints(DatabaseReference reference, String parameterName, ConstraintPair constraintPair){

@@ -20,6 +20,7 @@ import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.util.DAORequester;
 import com.task.fbresult.util.FBUtils;
+import com.task.fbresult.util.MessageUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -117,16 +118,10 @@ public class ExchangeDialogBuilder extends DialogBuilder {
         PeopleOnDuty myDuty = personDuties.get((int) spMyDuty.getSelectedItemId());
 
         MyMessage message = writeMessage(goalPersonAndDuty, myDuty);
-        var myMessages = DAORequester.getPersonToOtherMessages(FBUtils.getCurrentUserAsPerson());
-        boolean wasEqualsMessage = false;
-        for(var myMessage:myMessages){
-            if(myMessage.getDutyId().equals(message.getDutyId())){
-                wasEqualsMessage = true;
-                break;
-            }
-        }
-        if(!wasEqualsMessage)
+        if(!MessageUtils.equalsMessageExists(message))
             sendMessage(message);
+        //TODO: toast with warning
+
         Log.i(TAG, "person with duty " + goalPersonAndDuty);
         Log.i(TAG, "my duty " + myDuty);
 

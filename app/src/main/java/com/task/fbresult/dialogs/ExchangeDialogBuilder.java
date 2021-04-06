@@ -112,13 +112,13 @@ public class ExchangeDialogBuilder extends DialogBuilder {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     void setData(String[] values) {
-        PersonWithDuty personWithDuty = persons.get((int) spGoalPerson.getSelectedItemId());
+        PersonWithDuty goalPersonAndDuty = persons.get((int) spGoalPerson.getSelectedItemId());
         PeopleOnDuty myDuty = personDuties.get((int) spMyDuty.getSelectedItemId());
 
-        MyMessage message = writeMessage(personWithDuty, myDuty);
+        MyMessage message = writeMessage(goalPersonAndDuty, myDuty);
 
         sendMessage(message);
-        Log.i(TAG, "person with duty " + personWithDuty);
+        Log.i(TAG, "person with duty " + goalPersonAndDuty);
         Log.i(TAG, "my duty " + myDuty);
 
     }

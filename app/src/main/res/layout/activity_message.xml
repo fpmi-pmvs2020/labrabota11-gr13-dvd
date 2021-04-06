@@ -15,5 +15,16 @@
         android:background="@color/gypsum"
         android:paddingBottom="40dp">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/message_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/Theme.FBResult.AppBarOverlay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/Theme.FBResult.PopupOverlay" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

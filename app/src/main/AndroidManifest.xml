@@ -17,6 +17,10 @@
             android:theme="@style/Theme.FBResult.NoActionBar">
         </activity>
         <activity
+            android:name=".MessageActivity"
+            android:theme="@style/Theme.FBResult.NoActionBar">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.FBResult.NoActionBar">

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -38,7 +39,10 @@ public class DutyActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.duty_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
 
         DutyPagerAdapter adapter = new DutyPagerAdapter(this, getSupportFragmentManager(), extras);
@@ -67,10 +71,14 @@ public class DutyActivity extends AppCompatActivity {
                 });
                 dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
                 dialog.show();
-
-            default:
-                return super.onOptionsItemSelected(item);
+                return true;
+            case android.R.id.home:
+                //do whatever
+                finish();
+                System.out.println("");
+                return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

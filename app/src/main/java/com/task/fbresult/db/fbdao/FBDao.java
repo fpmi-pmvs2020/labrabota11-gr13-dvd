@@ -26,17 +26,13 @@ public abstract class FBDao<T extends FBModel> {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
     public T getWithId(String firebaseId) {
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(getIdColumn(), new ConstraintPair(firebaseId, ConstraintType.EQUALS));
-        return get(constraints).get(0);
+        return get(getIdColumn(), new ConstraintPair(firebaseId, ConstraintType.EQUALS)).get(0);
     }
 
-    public List<T> get(Map<String, ConstraintPair> constraints) {
+    public List<T> get(String parameterName, ConstraintPair constraintPair) {
         ArrayList<T> result = new ArrayList<>();
-        var query = reference.child(getTableName()).orderByValue();
-        for (var entry : constraints.entrySet()) {
-            query = FBUtils.buildQueryWithConstraints(query.getRef(), entry.getKey(), entry.getValue());
-        }
+        var ref = reference.child(getTableName());
+        var query = FBUtils.buildQueryWithConstraints(ref, parameterName, constraintPair);
         var task = query.get();
         while (!task.isComplete()) ;
         DataSnapshot mainSnapshot = task.getResult();

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import lombok.var;
 
@@ -33,9 +34,10 @@ import static com.task.fbresult.db.DBHelper.PER_ON_DUTY_PERSON_ID_COLUMN;
 
 public class DAORequester {
     public static List<PeopleOnDuty> getPeopleOnDuty(Duty duty) {
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(PER_ON_DUTY_DUTY_ID_COLUMN,new ConstraintPair(duty.getFirebaseId(), ConstraintType.EQUALS));
-        return new FBPeopleOnDutyDao().get(constraints);
+        return new FBPeopleOnDutyDao().get(
+                PER_ON_DUTY_DUTY_ID_COLUMN,
+                new ConstraintPair(duty.getFirebaseId(), ConstraintType.EQUALS)
+        );
     }
 
     public static DutyType getDutyType(Duty duty) {
@@ -49,15 +51,17 @@ public class DAORequester {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Duty> getPersonDuties(Person person) {
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(PER_ON_DUTY_PERSON_ID_COLUMN,new ConstraintPair(person.getFirebaseId(), ConstraintType.EQUALS));
-        List<PeopleOnDuty> peopleOnDuties = new FBPeopleOnDutyDao().get(constraints);
+        List<PeopleOnDuty> peopleOnDuties = new FBPeopleOnDutyDao().get(
+                PER_ON_DUTY_PERSON_ID_COLUMN,
+                new ConstraintPair(person.getFirebaseId(), ConstraintType.EQUALS)
+        );
         List<Duty> result = new ArrayList<>();
         FBDutyDao dutyDao = new FBDutyDao();
-        var dutyConstraints = new HashMap<String, ConstraintPair>();
         for (PeopleOnDuty peopleOnDuty : peopleOnDuties) {
-            dutyConstraints.put(DUTY_ID_COLUMN,new ConstraintPair(peopleOnDuty.getDutyId(),ConstraintType.EQUALS));
-            List<Duty> duties = dutyDao.get(dutyConstraints);
+            List<Duty> duties = dutyDao.get(
+                    DUTY_ID_COLUMN,
+                    new ConstraintPair(peopleOnDuty.getDutyId(),ConstraintType.EQUALS)
+            );
             result.addAll(duties);
         }
         return result;
@@ -78,10 +82,17 @@ public class DAORequester {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<PeopleOnDuty> getFuturePeopleOnDutiesOfPerson(Person person){
         String todayDateAsString = LocalDateTimeHelper.getTodayDateAsString();
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(PER_ON_DUTY_PERSON_ID_COLUMN,new ConstraintPair(person.getFirebaseId(),ConstraintType.EQUALS));
-        constraints.put(PER_ON_DUTY_FROM_COLUMN,new ConstraintPair(todayDateAsString,ConstraintType.GREATER));
-        return new FBPeopleOnDutyDao().get(constraints);
+        var personsOnDuties = getPeopleOnDutiesOfPerson(person);
+        return personsOnDuties.stream()
+                .filter(peopleOnDuty -> peopleOnDuty.getFrom().compareTo(todayDateAsString)>0)
+                .collect(Collectors.toList());
+    }
+
+    private static List<PeopleOnDuty>getPeopleOnDutiesOfPerson(Person person){
+        return new FBPeopleOnDutyDao().get(
+                PER_ON_DUTY_PERSON_ID_COLUMN,
+                new ConstraintPair(person.getFirebaseId(),ConstraintType.EQUALS)
+        );
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -116,14 +127,16 @@ public class DAORequester {
     }
 
     public static List<MyMessage> getPersonToOtherMessages(Person currentUser) {
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(MESSAGES_AUTHOR_COLUMN,new ConstraintPair(currentUser.getFirebaseId(),ConstraintType.EQUALS));
-        return new FBMessageDao().get(constraints);
+        return new FBMessageDao().get(
+                MESSAGES_AUTHOR_COLUMN,
+                new ConstraintPair(currentUser.getFirebaseId(),ConstraintType.EQUALS)
+        );
     }
 
     public static List<MyMessage> getPersonIncomingMessages(Person currentUser) {
-        var constraints = new HashMap<String, ConstraintPair>();
-        constraints.put(MESSAGES_RECIPIENT_COLUMN,new ConstraintPair(currentUser.getFirebaseId(),ConstraintType.EQUALS));
-        return new FBMessageDao().get(constraints);
+        return new FBMessageDao().get(
+                MESSAGES_RECIPIENT_COLUMN,
+                new ConstraintPair(currentUser.getFirebaseId(),ConstraintType.EQUALS)
+        );
     }
 }

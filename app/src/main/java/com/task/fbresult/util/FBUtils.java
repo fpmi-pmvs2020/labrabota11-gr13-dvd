@@ -16,13 +16,14 @@ import lombok.var;
 public class FBUtils {
     public static Person getCurrentUserAsPerson() {
         String login = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        var constraints = new HashMap<String,ConstraintPair>();
-        constraints.put(DBHelper.PERSON_LOGIN_COLUMN,new ConstraintPair(login, ConstraintType.EQUALS));
-        return new FBPersonDao().get(constraints).get(0);
+        return new FBPersonDao().get(
+                DBHelper.PERSON_LOGIN_COLUMN,
+                new ConstraintPair(login, ConstraintType.EQUALS)
+        ).get(0);
     }
 
     public static Query buildQueryWithConstraints(DatabaseReference reference, String parameterName, ConstraintPair constraintPair){
-            var query = reference.orderByChild(parameterName);
+        var query = reference.orderByChild(parameterName);
             switch (constraintPair.getConstraintType()) {
                 case EQUALS:
                     query = query.equalTo(constraintPair.getParamValue());

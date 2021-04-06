@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.task.fbresult.R;
 import com.task.fbresult.db.fbdao.FBDutyDao;
 import com.task.fbresult.db.fbdao.FBPersonDao;
+import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
@@ -68,26 +69,25 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.fromTime.setText(myMessage.getFrom().split("T")[1]);
         holder.date.setText(myMessage.getFrom().split("T")[0]);
 
-        if (myMessage.isChecked()) {
+        if (myMessage.getMessageState() == MessageState.READ) {
             holder.checkMark.setVisibility(View.VISIBLE);
-        }else{
-            if (myMessage.isAccepted()) {
+        } else {
+            if (myMessage.getMessageState() == MessageState.ACCEPTED) {
                 setAccepted(holder);
-            }
-            else {
+            } else {
                 setRefused(holder);
             }
         }
 
     }
 
-    private void setAccepted(MessageViewHolder holder){
+    private void setAccepted(MessageViewHolder holder) {
         holder.checkMark.setVisibility(View.INVISIBLE);
         holder.checkMarkGreen.setVisibility(View.VISIBLE);
         holder.crossMark.setVisibility(View.INVISIBLE);
     }
 
-    private void setRefused(MessageViewHolder holder){
+    private void setRefused(MessageViewHolder holder) {
         holder.checkMark.setVisibility(View.INVISIBLE);
         holder.crossMark.setVisibility(View.VISIBLE);
     }

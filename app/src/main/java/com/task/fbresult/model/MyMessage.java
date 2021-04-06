@@ -7,10 +7,6 @@ import java.io.Serializable;
 
 import lombok.Builder;
 
-enum MessageState {
-    SENT,READ,ACCEPTED,DECLINED
-};
-
 public class MyMessage extends FBModel implements Serializable, Parcelable {
     private String authorId;
     private String recipientId;

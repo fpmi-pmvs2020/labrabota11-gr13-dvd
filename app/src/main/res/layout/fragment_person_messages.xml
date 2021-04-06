@@ -25,11 +25,20 @@
         android:layout_below="@+id/spnDutyType"
         android:background="@color/light_blue" />
 
+    <View
+        android:id="@+id/spnBorderLine"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/dark_blue"
+        android:layout_below="@id/spnMessageType" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recPersonMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spnMessageType"
+        android:layout_below="@+id/spnBorderLine"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp" />
 

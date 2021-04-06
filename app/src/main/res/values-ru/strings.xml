@@ -67,6 +67,7 @@
     <string-array name="message_types">
         <item>Отправлено</item>
         <item>Получено</item>
+        <item>Отправленные неотвеченные</item>
     </string-array>
 
     <string name="action_exchange">"Замениться "</string>

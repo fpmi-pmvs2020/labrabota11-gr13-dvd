@@ -117,8 +117,16 @@ public class ExchangeDialogBuilder extends DialogBuilder {
         PeopleOnDuty myDuty = personDuties.get((int) spMyDuty.getSelectedItemId());
 
         MyMessage message = writeMessage(goalPersonAndDuty, myDuty);
-
-        sendMessage(message);
+        var myMessages = DAORequester.getPersonToOtherMessages(FBUtils.getCurrentUserAsPerson());
+        boolean wasEqualsMessage = false;
+        for(var myMessage:myMessages){
+            if(myMessage.getDutyId().equals(message.getDutyId())){
+                wasEqualsMessage = true;
+                break;
+            }
+        }
+        if(!wasEqualsMessage)
+            sendMessage(message);
         Log.i(TAG, "person with duty " + goalPersonAndDuty);
         Log.i(TAG, "my duty " + myDuty);
 

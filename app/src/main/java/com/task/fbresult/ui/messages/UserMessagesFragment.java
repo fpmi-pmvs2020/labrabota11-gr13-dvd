@@ -18,15 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.task.fbresult.DutyActivity;
 import com.task.fbresult.MessageActivity;
 import com.task.fbresult.R;
-import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.ui.adapters.MessageAdapter;
 import com.task.fbresult.ui.adapters.NodeListener;
-import com.task.fbresult.ui.adapters.TimedDutyAdapter;
 import com.task.fbresult.util.DAORequester;
 import com.task.fbresult.util.FBUtils;
 
@@ -111,15 +109,29 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
                 messageAdapter.setItems(getUserToOthersMessages());
                 break;
             case 1:
-                messageAdapter.setItems(getIncomingMessages());
+                messageAdapter.setItems(getIncomingNotAnsweredMessages());
                 break;
+            case 2:
+                messageAdapter.setItems(getUserToOthersNotAnsweredMessages());
         }
     }
 
-    private List<MyMessage> getIncomingMessages() {
+    private List<MyMessage> getIncomingNotAnsweredMessages() {
         var currentPerson = FBUtils.getCurrentUserAsPerson();
         return messages.stream()
                 .filter(message -> message.getRecipientId().equals(currentPerson.getFirebaseId()))
+                .filter(message ->
+                        message.getMessageState() == MessageState.SENT
+                                || message.getMessageState() == MessageState.READ)
+                .collect(Collectors.toList());
+    }
+
+    private List<MyMessage> getUserToOthersNotAnsweredMessages(){
+        var messages = getUserToOthersMessages();
+        return messages.stream()
+                .filter(myMessage ->
+                        myMessage.getMessageState() == MessageState.READ
+                                || myMessage.getMessageState() == MessageState.SENT)
                 .collect(Collectors.toList());
     }
 

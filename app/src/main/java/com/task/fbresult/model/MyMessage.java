@@ -15,6 +15,8 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
 
     private String from;
     private String to;
+    private MessageState messageState = MessageState.SENT;
+
 
     public MessageState getMessageState() {
         return messageState;
@@ -23,8 +25,6 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
     public void setMessageState(MessageState messageState) {
         this.messageState = messageState;
     }
-
-    private MessageState messageState = MessageState.SENT;
 
 
     public String getFrom() {

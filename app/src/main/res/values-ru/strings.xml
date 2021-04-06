@@ -76,5 +76,13 @@
     <string name="duty_date">Дата дежурства</string>
     <string name="message_already_sent">Запрос уже отправлен!</string>
     <string name="already_on_this_duty">Вы уже на этом дежурстве</string>
+    <string name="message_from">От:</string>
+    <string name="message_to">Кому:</string>
+    <string name="message_when">Время дежурства:</string>
+    <string name="message_status_declined">Отклонено</string>
+    <string name="message_status_confirm">"Подтверждено "</string>
+    <string name="message_status_wait">Ожидает ответ</string>
+    <string name="confirm_warning">Внимание!</string>
+    <string name="confirm_warning_text">Это действие не может быть отменено. Продолжить?</string>
 
 </resources>

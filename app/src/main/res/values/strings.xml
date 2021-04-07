@@ -89,4 +89,14 @@
     <string name="goalPeopleOnDuty">Current Duty time:</string>
     <string name="not_equals_interval_length">Lengths of intervals were not equals! Try again</string>
 
+    <string name="alert_reason">Alert reason:</string>
+    <string-array name="alert_reasons">
+        <item>Fire</item>
+        <item>Meeting</item>
+    </string-array>
+    <string name="alert_custom">Custom</string>
+    <string name="alert_from_list">From list</string>
+    <string name="alert_description">Description:</string>
+    <string name="choice_alert_type">Choice Alert Type</string>
+    <string name="create_alert">Create Alert!</string>
 </resources>

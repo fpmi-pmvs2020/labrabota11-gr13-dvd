@@ -87,6 +87,11 @@
     <string name="confirm_warning">Внимание!</string>
     <string name="confirm_warning_text">Это действие не может быть отменено. Продолжить?</string>
     <string name="goalPeopleOnDuty">Дежурство:</string>
-    <string name="not_equals_interval_length">Длины интервалов не совпадают! Попробуйте снова</string>
+    <string name="alert_reason">Причина тревоги:</string>
+    <string name="alert_custom">Особое</string>
+    <string name="alert_from_list">Из списка</string>
+    <string name="alert_description">"Описание "</string>
+    <string name="choice_alert_type">Выберите тип тревоги</string>
+    <string name="create_alert">Создайте оповещение</string>
 
 </resources>

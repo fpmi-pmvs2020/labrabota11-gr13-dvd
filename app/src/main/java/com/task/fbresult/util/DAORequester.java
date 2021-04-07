@@ -96,7 +96,7 @@ public class DAORequester {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private static Duty getDutyWithPeopleOnDuty(PeopleOnDuty peopleOnDuty) {
+    public static Duty getDutyWithPeopleOnDuty(PeopleOnDuty peopleOnDuty) {
         return new FBDutyDao().getWithId(peopleOnDuty.getDutyId());
     }
 

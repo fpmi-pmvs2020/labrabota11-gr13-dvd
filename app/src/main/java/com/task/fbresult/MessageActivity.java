@@ -18,10 +18,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.task.fbresult.db.fbdao.FBDutyTypesDao;
 import com.task.fbresult.db.fbdao.FBMessageDao;
 import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
+import com.task.fbresult.db.fbdao.FBPersonDao;
+import com.task.fbresult.model.Duty;
 import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
+import com.task.fbresult.model.PeopleOnDuty;
+import com.task.fbresult.model.Person;
+import com.task.fbresult.util.DAORequester;
 import com.task.fbresult.util.FBUtils;
 
 import lombok.var;
@@ -46,7 +52,7 @@ public class MessageActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, MessageActivity.class).putExtras(bundle));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
@@ -140,14 +146,35 @@ public class MessageActivity extends AppCompatActivity {
         declineBt.setOnClickListener(this::refuseExchange);
     }
 
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initUI() {
-        //todo after updating message
-        tvSenderDutyType.setText("");
-        tvSenderDutyTime.setText("");
-        tvSenderFio.setText("");
-        tvSenderTime.setText("");
-        tvReceiverFio.setText("");
-        tvReceiverTime.setText("");
+        FBPeopleOnDutyDao peopleOnDutyDao = new FBPeopleOnDutyDao();
+        PeopleOnDuty senderPeopleOnDuty = peopleOnDutyDao.getWithId(message.getAuthorOnDutyId());
+        PeopleOnDuty recipientPeopleOnDuty = peopleOnDutyDao.getWithId(message.getRecipientId());
+        Duty senderDuty = DAORequester.getDutyWithPeopleOnDuty(senderPeopleOnDuty);
+        tvSenderDutyType.setText(new FBDutyTypesDao().getWithId(senderDuty.getTypeId()).getTitle());
+        String[] froms = senderDuty.getFrom().split("T");
+        tvSenderDutyTime.setText(froms[0] + " " + froms[1] + " - " + senderDuty.getTo().split("T")[1]);
+
+
+        tvSenderFio.setText(getPersonById(senderPeopleOnDuty.getPersonId()).getFio());
+        tvReceiverFio.setText(getPersonById(recipientPeopleOnDuty.getPersonId()).getFio());
+
+        setPersonTime(senderPeopleOnDuty,tvSenderTime);
+        setPersonTime(recipientPeopleOnDuty,tvReceiverTime);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setPersonTime(PeopleOnDuty personOnDuty, TextView textView) {
+
+        String from = personOnDuty.getFrom().split("T")[1];
+        String to = personOnDuty.getTo().split("T")[1];
+        textView.setText(from + " - " + to);
+    }
+
+    private Person getPersonById(String id){
+        return new FBPersonDao().getWithId(id);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

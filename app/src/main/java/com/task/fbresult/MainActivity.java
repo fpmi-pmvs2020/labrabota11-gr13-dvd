@@ -1,5 +1,9 @@
 package com.task.fbresult;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,9 +24,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.task.fbresult.dialogs.AlertDialogBuilder;
+import com.task.fbresult.service.AutoLoadingBroadcastReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +57,41 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseDatabase.getInstance().getReference().keepSynced(true);
+        startNotificationAlarm();
+
         if (auth.getCurrentUser() == null) {
             startSignInWindow();
         } else {
             configureScreen();
+            configureAlertButton();
         }
     }
+
+    private void configureAlertButton() {
+        FloatingActionButton button = findViewById(R.id.alertFAB);
+        button.setOnClickListener(this::alertButtonAction);
+    }
+
+    private void alertButtonAction(View view){
+        AlertDialog alertDialog = new AlertDialogBuilder(this)
+                .build(getString(R.string.create_alert), null, () -> {
+        });
+        alertDialog.show();
+    }
+
+    private void startNotificationAlarm() {
+        long time = System.currentTimeMillis() + 5000;
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AutoLoadingBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        am.cancel(pendingIntent);
+
+        am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+
+    }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

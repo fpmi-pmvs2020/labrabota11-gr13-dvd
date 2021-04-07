@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:rsb="http://schemas.android.com/tools"
     android:padding="10dp"
     android:background="@color/gypsum"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -11,9 +12,10 @@
         android:id="@+id/tvMyDutyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/my_duty_title"
+        android:textAlignment="center"
         android:textColor="@color/coral"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,16 +37,72 @@
         app:layout_constraintTop_toBottomOf="@id/tvMyDutyTitle"/>
 
     <TextView
+        android:id="@+id/tvMyDutyFrom"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/coral"
+        app:layout_constraintTop_toBottomOf="@id/tvMyDuty"/>
+
+    <TextView
+        android:id="@+id/tvTimeSeparator"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_height="wrap_content"
+        android:text=" - "
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/tvMyDutyFrom"
+        app:layout_constraintEnd_toStartOf="@id/tvMyDutyTo"
+        android:textColor="@color/coral"
+        app:layout_constraintTop_toTopOf="@id/tvMyDutyFrom"/>
+
+    <TextView
+        android:id="@+id/tvMyDutyTo"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/coral"
+        app:layout_constraintTop_toTopOf="@id/tvMyDutyFrom"/>
+
+    <org.florescu.android.rangeseekbar.RangeSeekBar
+        android:id="@+id/sbMyDutyTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvMyDutyFrom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <View
+        android:id="@+id/msgBorderLine"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/dark_blue"
+        app:layout_constraintTop_toBottomOf="@id/sbMyDutyTime" />
+
+    <TextView
         android:id="@+id/tvExchangeGoalPersonTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:text="@string/goalPerson"
         android:textColor="@color/coral"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMyDuty" />
+        app:layout_constraintTop_toBottomOf="@id/msgBorderLine" />
 
     <Spinner
         android:id="@+id/spExchangeGoalPersonMyDuty"
@@ -87,5 +145,52 @@
         android:padding="10dp"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/tvExchangeGoalPersonOnDutyTitle" />
+
+    <TextView
+        android:id="@+id/tvOtherDutyFrom"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/coral"
+        app:layout_constraintTop_toBottomOf="@id/spExchangeGoalPersonOnDuty"/>
+
+    <TextView
+        android:id="@+id/tvOtherTimeSeparator"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_height="wrap_content"
+        android:text=" - "
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/tvOtherDutyFrom"
+        app:layout_constraintEnd_toStartOf="@id/tvOtherDutyTo"
+        android:textColor="@color/coral"
+        app:layout_constraintTop_toTopOf="@id/tvOtherDutyFrom"/>
+
+    <TextView
+        android:id="@+id/tvOtherDutyTo"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/coral"
+        app:layout_constraintTop_toTopOf="@id/tvOtherDutyFrom"/>
+
+    <org.florescu.android.rangeseekbar.RangeSeekBar
+        android:id="@+id/sbOtherDutyTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvOtherDutyFrom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

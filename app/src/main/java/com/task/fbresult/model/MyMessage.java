@@ -1,7 +1,12 @@
 package com.task.fbresult.model;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
+
+import com.task.fbresult.util.LocalDateTimeInterval;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,6 +17,43 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
     private String authorId;
     private String recipientId;
     private MessageState messageState = MessageState.SENT;
+    private String myDutyFrom;
+    private String myDutyTo;
+
+    private String otherDutyFrom;
+    private String otherDutyTo;
+
+    public String getMyDutyFrom() {
+        return myDutyFrom;
+    }
+
+    public void setMyDutyFrom(String myDutyFrom) {
+        this.myDutyFrom = myDutyFrom;
+    }
+
+    public String getMyDutyTo() {
+        return myDutyTo;
+    }
+
+    public void setMyDutyTo(String myDutyTo) {
+        this.myDutyTo = myDutyTo;
+    }
+
+    public String getOtherDutyFrom() {
+        return otherDutyFrom;
+    }
+
+    public void setOtherDutyFrom(String otherDutyFrom) {
+        this.otherDutyFrom = otherDutyFrom;
+    }
+
+    public String getOtherDutyTo() {
+        return otherDutyTo;
+    }
+
+    public void setOtherDutyTo(String otherDutyTo) {
+        this.otherDutyTo = otherDutyTo;
+    }
 
     public String getAuthorId() {
         return authorId;
@@ -37,11 +79,17 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
         this.messageState = messageState;
     }
 
-    public MyMessage(PeopleOnDuty authorOnDuty, PeopleOnDuty recipientOnDuty) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public MyMessage(PeopleOnDuty authorOnDuty, PeopleOnDuty recipientOnDuty,
+                     LocalDateTimeInterval myDutyInterval,LocalDateTimeInterval otherDutyInterval) {
         this.authorOnDutyId = authorOnDuty.getFirebaseId();
         this.recipientOnDutyId = recipientOnDuty.getFirebaseId();
         this.authorId = authorOnDuty.getPersonId();
         this.recipientId = recipientOnDuty.getFirebaseId();
+        this.myDutyFrom = myDutyInterval.getStart().toString();
+        this.myDutyTo = myDutyInterval.getEnd().toString();
+        this.otherDutyFrom = otherDutyInterval.getStart().toString();
+        this.otherDutyTo = otherDutyInterval.getEnd().toString();
     }
 
     public MyMessage() {
@@ -90,7 +138,6 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         MyMessage myMessage = (MyMessage) o;
         return Objects.equals(authorOnDutyId, myMessage.authorOnDutyId) &&
                 Objects.equals(recipientOnDutyId, myMessage.recipientOnDutyId);

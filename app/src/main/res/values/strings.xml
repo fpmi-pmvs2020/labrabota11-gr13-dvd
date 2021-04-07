@@ -76,7 +76,7 @@
     <string name="myDuties">Choice your duty</string>
     <string name="duty_date">Duty date:</string>
 
-    <string name="message_already_sent">Message already sent!</string>
+    <string name="message_already_sent">Message on this duty already sent!</string>
     <string name="already_on_this_duty">You are already on this duty!</string>
     <string name="message_from">From:</string>
     <string name="message_to">To:</string>
@@ -87,5 +87,6 @@
     <string name="confirm_warning">Warning!</string>
     <string name="confirm_warning_text">This action can\'t be canceled. Continue?</string>
     <string name="goalPeopleOnDuty">Current Duty time:</string>
+    <string name="not_equals_interval_length">Lengths of intervals were not equals! Try again</string>
 
 </resources>

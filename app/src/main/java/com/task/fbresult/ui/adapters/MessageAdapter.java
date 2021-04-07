@@ -30,7 +30,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     protected final LayoutInflater inflater;
     private final NodeListener listener;
     public List<MyMessage> items;
-    private final Person currentUser = FBUtils.getCurrentUserAsPerson();
 
     public MessageAdapter(Context context, @NonNull List<MyMessage> items,
                           @Nullable NodeListener listener) {

@@ -8,20 +8,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.R;
 import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.model.Duty;
-import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
 import com.task.fbresult.util.DAORequester;
-import com.task.fbresult.util.DutyUtils;
 import com.task.fbresult.util.FBUtils;
-import com.task.fbresult.util.MessageUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +31,8 @@ public class ExchangeOnCurrentDialogBuilder extends ExchangeDialogBuilder {
     private TextView tvMyDuty;
 
     private List<Person> persons;
-    private List<PeopleOnDuty> peopleOnDuties;
+
+    private PeopleOnDuty myPeopleOnDuty;
 
     public ExchangeOnCurrentDialogBuilder(Context context, Duty currentDuty) {
         super(context, currentDuty);
@@ -53,14 +50,17 @@ public class ExchangeOnCurrentDialogBuilder extends ExchangeDialogBuilder {
         spGoalPerson = mainWindow.findViewById(R.id.spExchangeGoalPersonMyDuty);
         spGoalPersonOnDuty = mainWindow.findViewById(R.id.spExchangeGoalPersonOnDuty);
         tvMyDuty = mainWindow.findViewById(R.id.tvMyDuty);
+        configureSeekBars();
         setCurrentDutyInfo();
         fillGoalPersonsSpinner();
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setCurrentDutyInfo() {
-        var currentPeopleOnDuty = getCurrentPeopleOnDuty();
-        tvMyDuty.setText(getDutyDayAndTime(currentPeopleOnDuty));
+        myPeopleOnDuty = getCurrentPeopleOnDuty();
+        myDutySeekBarConfiguration.updateWithDiapason(myPeopleOnDuty);
+        tvMyDuty.setText(getDutyDayAndTime(myPeopleOnDuty));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -71,6 +71,7 @@ public class ExchangeOnCurrentDialogBuilder extends ExchangeDialogBuilder {
                 .findFirst()
                 .get();
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void fillGoalPersonsSpinner() {
@@ -101,15 +102,13 @@ public class ExchangeOnCurrentDialogBuilder extends ExchangeDialogBuilder {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updatePersonsWithDuties(int position) {
         var person = persons.get(position);
+        goalPeopleOnDuties = DAORequester.getFuturePeopleOnDutiesOfPerson(person);
 
-        peopleOnDuties = DAORequester.getFuturePeopleOnDutiesOfPerson(person);
-
-        List<String> peopleOnDutiesWithTime = peopleOnDuties.stream()
+        List<String> peopleOnDutiesWithTime = goalPeopleOnDuties.stream()
                 .map(this::getDutyDayAndTime)
                 .collect(Collectors.toList());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, peopleOnDutiesWithTime);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spGoalPersonOnDuty.setAdapter(adapter);
+        spGoalPersonOnDuty.setAdapter(getAdapterOf(peopleOnDutiesWithTime));
+        configureSpinner(spGoalPersonOnDuty, goalPeopleOnDuties,otherDutySeekBarConfiguration);
     }
 
     @Override
@@ -121,14 +120,7 @@ public class ExchangeOnCurrentDialogBuilder extends ExchangeDialogBuilder {
     @Override
     void setData(String[] values) {
         var selectedPeopleOnDuty
-                = peopleOnDuties.get((int) spGoalPersonOnDuty.getSelectedItemId());
-        var currentPeopleOnDuty = getCurrentPeopleOnDuty();
-        if (DutyUtils.doWorkOnTheSameTime(currentPeopleOnDuty, selectedPeopleOnDuty)) {
-            Toast.makeText(context, context.getText(R.string.already_on_this_duty), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        MyMessage message = new MyMessage(currentPeopleOnDuty, selectedPeopleOnDuty);
-        tryToSendMessage(message);
+                = goalPeopleOnDuties.get((int) spGoalPersonOnDuty.getSelectedItemId());
+        tryToSendMessageWith(selectedPeopleOnDuty,myPeopleOnDuty);
     }
 }

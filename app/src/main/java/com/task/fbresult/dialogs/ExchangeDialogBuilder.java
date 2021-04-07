@@ -203,7 +203,7 @@ public class ExchangeDialogBuilder extends DialogBuilder {
     }
 
     @RequiredArgsConstructor
-    final static class SeekBarConfiguration {
+    protected final static class SeekBarConfiguration {
         public RangeSeekBar<Integer> rangeSeekBar;
         private TextView tvFrom;
         private TextView tvTo;

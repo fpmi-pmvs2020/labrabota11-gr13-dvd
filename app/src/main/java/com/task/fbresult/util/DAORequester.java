@@ -12,7 +12,9 @@ import com.task.fbresult.db.fbdao.FBMessageDao;
 import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
 import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.DutyIntervalData;
 import com.task.fbresult.model.DutyType;
+import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
 import com.task.fbresult.model.PeopleOnDuty;
 import com.task.fbresult.model.Person;
@@ -60,7 +62,7 @@ public class DAORequester {
         for (PeopleOnDuty peopleOnDuty : peopleOnDuties) {
             List<Duty> duties = dutyDao.get(
                     DUTY_ID_COLUMN,
-                    new ConstraintPair(peopleOnDuty.getDutyId(),ConstraintType.EQUALS)
+                    new ConstraintPair(peopleOnDuty.getDutyId(), ConstraintType.EQUALS)
             );
             result.addAll(duties);
         }
@@ -80,18 +82,18 @@ public class DAORequester {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static List<PeopleOnDuty> getFuturePeopleOnDutiesOfPerson(Person person){
+    public static List<PeopleOnDuty> getFuturePeopleOnDutiesOfPerson(Person person) {
         String todayDateAsString = LocalDateTimeHelper.getTodayDateAsString();
         var personsOnDuties = getPeopleOnDutiesOfPerson(person);
         return personsOnDuties.stream()
-                .filter(peopleOnDuty -> peopleOnDuty.getFrom().compareTo(todayDateAsString)>0)
+                .filter(peopleOnDuty -> peopleOnDuty.getFrom().compareTo(todayDateAsString) > 0)
                 .collect(Collectors.toList());
     }
 
-    private static List<PeopleOnDuty>getPeopleOnDutiesOfPerson(Person person){
+    private static List<PeopleOnDuty> getPeopleOnDutiesOfPerson(Person person) {
         return new FBPeopleOnDutyDao().get(
                 PER_ON_DUTY_PERSON_ID_COLUMN,
-                new ConstraintPair(person.getFirebaseId(),ConstraintType.EQUALS)
+                new ConstraintPair(person.getFirebaseId(), ConstraintType.EQUALS)
         );
     }
 
@@ -101,10 +103,10 @@ public class DAORequester {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static List<Duty> getFutureDutiesOfPerson(Person person){
+    public static List<Duty> getFutureDutiesOfPerson(Person person) {
         var peopleOnDuties = getFuturePeopleOnDutiesOfPerson(person);
         var result = new ArrayList<Duty>();
-        for(var peopleOnDuty:peopleOnDuties)
+        for (var peopleOnDuty : peopleOnDuties)
             result.add(getDutyWithPeopleOnDuty(peopleOnDuty));
         return result;
     }
@@ -129,14 +131,22 @@ public class DAORequester {
     public static List<MyMessage> getPersonToOtherMessages(Person currentUser) {
         return new FBMessageDao().get(
                 MESSAGES_AUTHOR_COLUMN,
-                new ConstraintPair(currentUser.getFirebaseId(),ConstraintType.EQUALS)
+                new ConstraintPair(currentUser.getFirebaseId(), ConstraintType.EQUALS)
         );
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static List<MyMessage> getPersonIncomingMessages(Person currentUser) {
         return new FBMessageDao().get(
                 MESSAGES_RECIPIENT_COLUMN,
-                new ConstraintPair(currentUser.getFirebaseId(),ConstraintType.EQUALS)
-        );
+                new ConstraintPair(currentUser.getFirebaseId(), ConstraintType.EQUALS)
+        ).stream()
+                .filter(myMessage -> myMessage.getMessageState() != MessageState.ACCEPTED &&
+                        myMessage.getMessageState() != MessageState.DECLINED)
+                .collect(Collectors.toList());
+    }
+
+    public static Person getPersonFromIntervalData(DutyIntervalData dutyIntervalData) {
+        return new FBPersonDao().getWithId(dutyIntervalData.getPersonId());
     }
 }

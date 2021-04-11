@@ -65,6 +65,7 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
         }
         configureRecycler();
         configureSpinner();
+
         showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
         return true;
     });
@@ -119,14 +120,15 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
     private List<MyMessage> getIncomingNotAnsweredMessages() {
         var currentPerson = FBUtils.getCurrentUserAsPerson();
         return messages.stream()
-                .filter(message -> message.getRecipientId().equals(currentPerson.getFirebaseId()))
+                .filter(message -> message.getRecipientIntervalData().getPersonId()
+                        .equals(currentPerson.getFirebaseId()))
                 .filter(message ->
                         message.getMessageState() == MessageState.SENT
                                 || message.getMessageState() == MessageState.READ)
                 .collect(Collectors.toList());
     }
 
-    private List<MyMessage> getUserToOthersNotAnsweredMessages(){
+    private List<MyMessage> getUserToOthersNotAnsweredMessages() {
         var messages = getUserToOthersMessages();
         return messages.stream()
                 .filter(myMessage ->
@@ -138,7 +140,8 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
     private List<MyMessage> getUserToOthersMessages() {
         var currentPerson = FBUtils.getCurrentUserAsPerson();
         return messages.stream()
-                .filter(message -> message.getAuthorId().equals(currentPerson.getFirebaseId()))
+                .filter(message -> message.getAuthorIntervalData().getPersonId()
+                        .equals(currentPerson.getFirebaseId()))
                 .collect(Collectors.toList());
     }
 
@@ -153,6 +156,12 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
 
     });
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(messagesRecycler!=null)
+            messagesRecycler.getAdapter().notifyDataSetChanged();
+    }
 
     private List<MyMessage> loadMessages() {
         Person currentUser = FBUtils.getCurrentUserAsPerson();
@@ -166,7 +175,10 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
     public void nodeClicked(int indexOf) {
         MessageAdapter adapter = (MessageAdapter) messagesRecycler.getAdapter();
         MyMessage selectedDuty = Objects.requireNonNull(adapter).items.get(indexOf);
-        loadMessageActivity(selectedDuty);
+        if(selectedDuty.getMessageState()!=MessageState.ACCEPTED
+                && selectedDuty.getMessageState() != MessageState.DECLINED) {
+            loadMessageActivity(selectedDuty);
+        }
     }
 
     private void loadMessageActivity(MyMessage message) {

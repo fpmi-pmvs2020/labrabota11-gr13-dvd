@@ -38,10 +38,8 @@ public class DBHelper{
 
     public static final String MESSAGES_TABLE =                         "Messages";
     public static final String MESSAGES_ID_COLUMN =                     "firebaseId";
-    public static final String MESSAGES_AUTHOR_COLUMN =                 "authorId";
-    public static final String MESSAGES_RECIPIENT_COLUMN =              "recipientId";
-    public static final String MESSAGES_AUTHOR_ON_DUTY_ID_COLUMN =      "authorOnDutyId";
-    public static final String MESSAGES_RECIPIENT_ON_DUTY_ID_COLUMN =   "recipientOnDutyId";
+    public static final String MESSAGES_AUTHOR_COLUMN =                 "authorIntervalData/personId";
+    public static final String MESSAGES_RECIPIENT_COLUMN =              "recipientIntervalData/personId";
     public static final String MESSAGES_DUTY_ID_COLUMN =                "dutyId";
 
     //endregion fields

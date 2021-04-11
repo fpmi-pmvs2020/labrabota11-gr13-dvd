@@ -1,74 +1,39 @@
 package com.task.fbresult.model;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.RequiresApi;
-
-import com.task.fbresult.util.LocalDateTimeInterval;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class MyMessage extends FBModel implements Serializable, Parcelable {
-    private String authorOnDutyId;
-    private String recipientOnDutyId;
-    private String authorId;
-    private String recipientId;
+    DutyIntervalData authorIntervalData;
+    DutyIntervalData recipientIntervalData;
     private MessageState messageState = MessageState.SENT;
-    private String myDutyFrom;
-    private String myDutyTo;
 
-    private String otherDutyFrom;
-    private String otherDutyTo;
-
-    public String getMyDutyFrom() {
-        return myDutyFrom;
+    public MyMessage(){
+        super();
     }
 
-    public void setMyDutyFrom(String myDutyFrom) {
-        this.myDutyFrom = myDutyFrom;
+    public MyMessage(DutyIntervalData authorIntervalData, DutyIntervalData recipientIntervalData) {
+        this.authorIntervalData = authorIntervalData;
+        this.recipientIntervalData = recipientIntervalData;
     }
 
-    public String getMyDutyTo() {
-        return myDutyTo;
+    public DutyIntervalData getAuthorIntervalData() {
+        return authorIntervalData;
     }
 
-    public void setMyDutyTo(String myDutyTo) {
-        this.myDutyTo = myDutyTo;
+    public void setAuthorIntervalData(DutyIntervalData authorIntervalData) {
+        this.authorIntervalData = authorIntervalData;
     }
 
-    public String getOtherDutyFrom() {
-        return otherDutyFrom;
+    public DutyIntervalData getRecipientIntervalData() {
+        return recipientIntervalData;
     }
 
-    public void setOtherDutyFrom(String otherDutyFrom) {
-        this.otherDutyFrom = otherDutyFrom;
-    }
-
-    public String getOtherDutyTo() {
-        return otherDutyTo;
-    }
-
-    public void setOtherDutyTo(String otherDutyTo) {
-        this.otherDutyTo = otherDutyTo;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
-    public String getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(String recipientId) {
-        this.recipientId = recipientId;
+    public void setRecipientIntervalData(DutyIntervalData recipientIntervalData) {
+        this.recipientIntervalData = recipientIntervalData;
     }
 
     public MessageState getMessageState() {
@@ -77,38 +42,6 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
 
     public void setMessageState(MessageState messageState) {
         this.messageState = messageState;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public MyMessage(PeopleOnDuty authorOnDuty, PeopleOnDuty recipientOnDuty,
-                     LocalDateTimeInterval myDutyInterval,LocalDateTimeInterval otherDutyInterval) {
-        this.authorOnDutyId = authorOnDuty.getFirebaseId();
-        this.recipientOnDutyId = recipientOnDuty.getFirebaseId();
-        this.authorId = authorOnDuty.getPersonId();
-        this.recipientId = recipientOnDuty.getFirebaseId();
-        this.myDutyFrom = myDutyInterval.getStart().toString();
-        this.myDutyTo = myDutyInterval.getEnd().toString();
-        this.otherDutyFrom = otherDutyInterval.getStart().toString();
-        this.otherDutyTo = otherDutyInterval.getEnd().toString();
-    }
-
-    public MyMessage() {
-    }
-
-    public String getAuthorOnDutyId() {
-        return authorOnDutyId;
-    }
-
-    public void setAuthorOnDutyId(String authorOnDutyId) {
-        this.authorOnDutyId = authorOnDutyId;
-    }
-
-    public String getRecipientOnDutyId() {
-        return recipientOnDutyId;
-    }
-
-    public void setRecipientOnDutyId(String recipientOnDutyId) {
-        this.recipientOnDutyId = recipientOnDutyId;
     }
 
     @Override
@@ -139,12 +72,20 @@ public class MyMessage extends FBModel implements Serializable, Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MyMessage myMessage = (MyMessage) o;
-        return Objects.equals(authorOnDutyId, myMessage.authorOnDutyId) &&
-                Objects.equals(recipientOnDutyId, myMessage.recipientOnDutyId);
+        return Objects.equals(
+                authorIntervalData.getPeopleOnDutyId(),
+                myMessage.getAuthorIntervalData().getPeopleOnDutyId()) &&
+                Objects.equals(
+                        recipientIntervalData.getPeopleOnDutyId(),
+                        myMessage.getRecipientIntervalData().getPeopleOnDutyId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), authorOnDutyId, recipientOnDutyId);
+        return Objects.hash(
+                super.hashCode(),
+                authorIntervalData.getPeopleOnDutyId(),
+                recipientIntervalData.getPeopleOnDutyId()
+        );
     }
 }

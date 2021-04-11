@@ -29,7 +29,7 @@ import java.util.List;
 import io.reactivex.functions.Consumer;
 
 
-@RequiresApi(api = Build.VERSION_CODES.O)
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class AutoLoadingBroadcastReceiver extends BroadcastReceiver {
 
     private static final int NOTIFY_ID = 12;
@@ -79,8 +79,8 @@ public class AutoLoadingBroadcastReceiver extends BroadcastReceiver {
                 .setContentTitle(title)
                 .setVibrate(vibrate)
                 .setContentText(content)
-                .setFlag(Notification.FLAG_INSISTENT, true)
-                .setFlag(Notification.FLAG_SHOW_LIGHTS, true)
+/*                .setFlag(Notification.FLAG_INSISTENT, true)
+                .setFlag(Notification.FLAG_SHOW_LIGHTS, true)*/
                 .setLights(Color.RED, 1,0)
                 .setSound(ringURI)
                 .setDefaults(Notification.DEFAULT_SOUND)

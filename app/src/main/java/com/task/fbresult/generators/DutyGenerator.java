@@ -31,7 +31,7 @@ public class DutyGenerator {
                     LocalDateTime.of(LocalDateTime.now().getYear(), month, day, 19, 0,0),
                     LocalDateTime.of(LocalDateTime.now().getYear(), month, day, 23, 59,0),
                     dutyTypes.get(typeIndex).getFirebaseId(),
-                    random.nextInt(4)+1
+                    random.nextInt(2)+1
             );
 
             ans.add(duty);

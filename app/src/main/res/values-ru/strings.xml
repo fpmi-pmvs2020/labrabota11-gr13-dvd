@@ -93,5 +93,13 @@
     <string name="alert_description">"Описание "</string>
     <string name="choice_alert_type">Выберите тип тревоги</string>
     <string name="create_alert">Создайте оповещение</string>
-
+    <string name="duty_type">Тип дежурства:</string>
+    <string name="duty_link">Подробнее</string>
+    <string name="your_duty">Ваше</string>
+    <string name="other_duty">Замена</string>
+    <string name="onDuty">Дежурный</string>
+    <string name="not_equals_interval_length">Интервалы не совпадают, попробуйте снова</string>
+    <string name="full_duty_time">Полное время дежурства:</string>
+    <string name="you_work_on_the_same_time">Вы уже дежурите на этом интервале!</string>
+    <string name="in_credit">в кредит</string>
 </resources>

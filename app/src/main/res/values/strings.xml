@@ -99,4 +99,12 @@
     <string name="alert_description">Description:</string>
     <string name="choice_alert_type">Choice Alert Type</string>
     <string name="create_alert">Create Alert!</string>
+    <string name="duty_type">Type of duty:</string>
+    <string name="duty_link">More</string>
+    <string name="your_duty">Your</string>
+    <string name="other_duty">Other</string>
+    <string name="onDuty">Duty</string>
+    <string name="full_duty_time">Full time of duty:</string>
+    <string name="you_work_on_the_same_time">You already work on that duty interval!</string>
+    <string name="in_credit">in credit</string>
 </resources>

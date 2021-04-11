@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,10 +25,15 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.task.fbresult.db.DBFillers;
+import com.task.fbresult.db.fbdao.FBDutyDao;
+import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
 import com.task.fbresult.dialogs.AlertDialogBuilder;
 import com.task.fbresult.service.AutoLoadingBroadcastReceiver;
 
@@ -40,23 +46,21 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private NavigationView navigationView;
 
+    static {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference().keepSynced(true);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
-        if (!sharedPreferences.contains("dbIsFilled")) {
-            new Thread(() -> {
-                DBFillers.fillData();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("dbIsFilled", true);
-                editor.apply();
-            }).start();
-        }*/
+        /*new Thread(() -> {
+            DBFillers.fillData();
+        }).start();*/
 
         auth = FirebaseAuth.getInstance();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        FirebaseDatabase.getInstance().getReference().keepSynced(true);
+
         startNotificationAlarm();
 
         if (auth.getCurrentUser() == null) {
@@ -72,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(this::alertButtonAction);
     }
 
-    private void alertButtonAction(View view){
+    private void alertButtonAction(View view) {
         AlertDialog alertDialog = new AlertDialogBuilder(this)
                 .build(getString(R.string.create_alert), null, () -> {
-        });
+                });
         alertDialog.show();
     }
 
@@ -90,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
 
     }
-
 
 
     @Override
@@ -151,12 +154,15 @@ public class MainActivity extends AppCompatActivity {
 
         MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_logout);
         menuItem.setOnMenuItemClickListener(item -> {
-            AuthUI.getInstance().signOut(this);
-            auth.signOut();
-            finishAndRemoveTask();
-            finish();
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(task -> {
+                        //startSignInWindow();
+                        finishAndRemoveTask();
+                    });
             return true;
         });
+
     }
 
     @Override

@@ -36,6 +36,7 @@ import com.task.fbresult.db.fbdao.FBDutyDao;
 import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
 import com.task.fbresult.dialogs.AlertDialogBuilder;
 import com.task.fbresult.service.AutoLoadingBroadcastReceiver;
+import com.task.fbresult.util.FBUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*new Thread(() -> {
-            DBFillers.fillData();
-        }).start();*/
+//        new Thread(() -> {
+//            DBFillers.fillData();
+//        }).start();
 
+//        admin1@mail иванов в с
         auth = FirebaseAuth.getInstance();
 
         startNotificationAlarm();
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     private void startNotificationAlarm() {
         long time = System.currentTimeMillis() + 5000;
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

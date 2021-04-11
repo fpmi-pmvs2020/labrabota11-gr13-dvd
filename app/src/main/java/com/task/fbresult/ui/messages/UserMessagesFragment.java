@@ -53,7 +53,7 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
                              ViewGroup container, Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_person_messages, container, false);
-        thread.start();
+        new Thread(updateMessage).start();
         return root;
 
     }
@@ -64,7 +64,11 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
             messages = data.getParcelableArrayList(MESSAGES_KEY);
         }
         configureRecycler();
-        configureSpinner();
+        if(spinner != null){
+            spinner.setSelection(spinner.getSelectedItemPosition());
+        }else{
+            configureSpinner();
+        }
 
         showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
         return true;
@@ -79,6 +83,7 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
 
 
     private void configureSpinner() {
+
         spinner = root.findViewById(R.id.spnMessageType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.message_types, R.layout.spinner_item);
@@ -146,7 +151,7 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
     }
 
 
-    Thread thread = new Thread(() -> {
+    Runnable updateMessage = () -> {
         Message message = messageHandler.obtainMessage(1);
         Bundle data = new Bundle();
         var mess = loadMessages();
@@ -154,13 +159,15 @@ public class UserMessagesFragment extends Fragment implements NodeListener {
         message.setData(data);
         messageHandler.sendMessage(message);
 
-    });
+    };
 
     @Override
     public void onResume() {
         super.onResume();
-        if(messagesRecycler!=null)
-            messagesRecycler.getAdapter().notifyDataSetChanged();
+        if(messagesRecycler!=null){
+            new Thread(updateMessage).start();
+//            showDutiesBelongsSpinnerPosition(spinner.getSelectedItemPosition());
+        }
     }
 
     private List<MyMessage> loadMessages() {

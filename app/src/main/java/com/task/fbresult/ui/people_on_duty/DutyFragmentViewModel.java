@@ -38,14 +38,14 @@ public class DutyFragmentViewModel extends ViewModel {
     }
 
     Consumer<GraphicResult> successHandler = (result) ->{
-        Log.d("myLog", "Downloading success: " + result);
+        Log.i("myLog", "Downloading success: " + result);
         graphic.postValue(result);
     };
 
 
 
     Consumer<Throwable> errorHandler = (error) ->{
-        Log.d("myLog", "Downloading failed: " + error);
+        Log.i("myLog", "Downloading failed: " + error);
         error.printStackTrace();
     };
 

@@ -71,7 +71,7 @@ public class DutyStatisticViewModel extends ViewModel {
                                 Collectors.toList()
                         )));
 
-        collect.put(FBUtils.getCurrentUserAsPerson().getFirebaseId(), List.of(allResult.minuteRuleString()));
+        collect.put("", List.of(allResult.minuteRuleString()));
         hourlyResult.postValue(collect);
     }
 }

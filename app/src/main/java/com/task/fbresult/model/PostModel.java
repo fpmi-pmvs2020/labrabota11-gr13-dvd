@@ -20,7 +20,7 @@ public class PostModel {
         this.rowHeight = rowHeight;
         this.records = records.stream()
                 .map(
-                        e -> new People(e.getFirebaseId(),e.fromAsLocalDateTime()
+                        e -> new People(e.getPersonId(),e.fromAsLocalDateTime()
                                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+"Z",
                                 e.toAsLocalDateTime()
                                         .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+"Z"))

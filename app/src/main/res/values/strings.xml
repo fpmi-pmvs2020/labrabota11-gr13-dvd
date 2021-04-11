@@ -107,4 +107,7 @@
     <string name="full_duty_time">Full time of duty:</string>
     <string name="you_work_on_the_same_time">You already work on that duty interval!</string>
     <string name="in_credit">in credit</string>
+
+    <string name="change_notification_title">You have unread request for change</string>
+    <string name="alert_notificatio_title">Allert</string>
 </resources>

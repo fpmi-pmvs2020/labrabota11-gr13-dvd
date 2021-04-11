@@ -63,7 +63,7 @@ public class DutyStatisticFragment extends Fragment implements NodeListener, See
         model = new ViewModelProvider(this).get(DutyStatisticViewModel.class);
         model.getGraphic(duty).observe(getViewLifecycleOwner(), (graphicResult) -> {
             for (PeopleAdapter.Item i : adapter.items){
-                //if(i.people.getPersonId() == 0) i.images = graphicResult.;
+//                if(i.people.getPersonId().equals("")) i.images = graphicResult.;
                 i.images = graphicResult.get(i.people.getPersonId()).get(0);
             }
 

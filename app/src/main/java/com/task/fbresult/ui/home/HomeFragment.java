@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
                 if (msg.what == 1) {
                     Bundle data = msg.getData();
                     Duty firstDuty = (Duty) data.get(FIRST_DUTY_KEY);
-                    System.out.println(firstDuty.toString());
+//                    System.out.println(firstDuty.toString());
                     View child = getViewWithFirstDuty(firstDuty);
                     child.setOnClickListener(v -> loadDutyActivity(firstDuty));
                     linearLayout.addView(child);

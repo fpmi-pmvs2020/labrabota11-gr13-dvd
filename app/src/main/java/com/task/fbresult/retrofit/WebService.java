@@ -42,7 +42,7 @@ public interface WebService {
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://192.168.0.199:8081")
+                .baseUrl("http://168.235.81.127:8081")
                 .build();
 
         return retrofit.create(WebService.class);

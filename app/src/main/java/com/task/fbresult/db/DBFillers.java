@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.db.fbdao.FBDutyDao;
 import com.task.fbresult.db.fbdao.FBDutyTypesDao;
+import com.task.fbresult.db.fbdao.FBMessageDao;
 import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
 import com.task.fbresult.db.fbdao.FBPersonDao;
 import com.task.fbresult.db.fbdao.FBRoleDao;
@@ -22,20 +23,22 @@ public class DBFillers {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void fillData() {
         FBDutyDao dutyDao = new FBDutyDao();
-        FBDutyTypesDao dutyTypesDao = new FBDutyTypesDao();
+//        FBDutyTypesDao dutyTypesDao = new FBDutyTypesDao();
         FBPeopleOnDutyDao peopleOnDutyDao = new FBPeopleOnDutyDao();
-        FBPersonDao personDao = new FBPersonDao();
-        FBRoleDao roleDao = new FBRoleDao();
+//        FBPersonDao personDao = new FBPersonDao();
+//        FBRoleDao roleDao = new FBRoleDao();
 
         dutyDao.clean();
-        dutyTypesDao.clean();
+//        dutyTypesDao.clean();
         peopleOnDutyDao.clean();
-        personDao.clean();
-        roleDao.clean();
+//        personDao.clean();
+//        roleDao.clean();
 
-        RoleGenerator.generate().forEach(roleDao::save);
-        DutyTypesGenerator.generate().forEach(dutyTypesDao::save);
-        PersonGenerator.generate().forEach(personDao::save);
+        FBMessageDao dao = new FBMessageDao();
+        dao.clean();
+//        RoleGenerator.generate().forEach(roleDao::save);
+//        DutyTypesGenerator.generate().forEach(dutyTypesDao::save);
+//        PersonGenerator.generate().forEach(personDao::save);
         DutyGenerator.generate().forEach(dutyDao::save);
         PeopleOnDutyGenerator.generate().forEach(peopleOnDutyDao::save);
         Log.d("DBFiller","db was filled!");

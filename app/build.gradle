@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config:20.0.4'
@@ -61,6 +60,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
 
     implementation 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
+    implementation 'com.edmodo:rangebar:1.0.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'

@@ -102,4 +102,10 @@
     <string name="full_duty_time">Полное время дежурства:</string>
     <string name="you_work_on_the_same_time">Вы уже дежурите на этом интервале!</string>
     <string name="in_credit">в кредит</string>
+    <string-array name="alert_reasons">
+        <item>Пожар</item>
+        <item>Встреча</item>
+    </string-array>
+    <string name="change_notification_title">У вас есть непрочитанный запрос на замену</string>
+    <string name="alert_notificatio_title">Тревога</string>
 </resources>

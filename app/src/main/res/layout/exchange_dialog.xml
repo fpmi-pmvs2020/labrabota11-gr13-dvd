@@ -67,7 +67,7 @@
         android:textColor="@color/coral"
         app:layout_constraintTop_toTopOf="@id/tvOtherDutyFrom"/>
 
-    <org.florescu.android.rangeseekbar.RangeSeekBar
+    <com.edmodo.rangebar.RangeBar
         android:id="@+id/sbOtherDutyTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
         android:textColor="@color/coral"
         app:layout_constraintTop_toTopOf="@id/tvMyDutyFrom"/>
 
-    <org.florescu.android.rangeseekbar.RangeSeekBar
+    <com.edmodo.rangebar.RangeBar
         android:id="@+id/sbMyDutyTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

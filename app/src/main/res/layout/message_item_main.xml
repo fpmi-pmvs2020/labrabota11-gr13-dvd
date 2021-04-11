@@ -14,7 +14,7 @@
         android:layout_margin="7dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/dark_blue"
         android:textSize="18sp"
@@ -66,7 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:textColor="@color/light_blue"
-        app:layout_constraintStart_toEndOf="@+id/tvDutyStartTime"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvTimeTip" />
 
     <TextView

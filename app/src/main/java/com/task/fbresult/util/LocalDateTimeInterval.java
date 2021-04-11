@@ -4,17 +4,19 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.task.fbresult.model.DutyIntervalData;
+import com.task.fbresult.model.PeopleOnDuty;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import lombok.var;
 
 public class LocalDateTimeInterval {
     LocalDateTime start;
     LocalDateTime end;
 
-    public LocalDateTimeInterval(){
-
-    }
 
     public LocalDateTimeInterval(LocalDateTime start, LocalDateTime end) {
         this.start = start;
@@ -29,6 +31,20 @@ public class LocalDateTimeInterval {
                 || contains(anotherInterval.end.minusMinutes(1));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static LocalDateTimeInterval of(DutyIntervalData dutyIntervalData) {
+        var from = LocalDateTimeHelper.parseString(dutyIntervalData.getFrom());
+        var to = LocalDateTimeHelper.parseString(dutyIntervalData.getTo());
+        return new LocalDateTimeInterval(from, to);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static LocalDateTimeInterval of(PeopleOnDuty peopleOnDuty){
+        var from = LocalDateTimeHelper.parseString(peopleOnDuty.getFrom());
+        var to = LocalDateTimeHelper.parseString(peopleOnDuty.getTo());
+        return new LocalDateTimeInterval(from, to);
+    }
+
 
     public LocalDateTime getStart() {
         return start;
@@ -40,12 +56,15 @@ public class LocalDateTimeInterval {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public int getHoursBetween() {
-        return (int) Duration.between(end, start).abs().toHours();
+        var temp = end.getHour() - start.getHour();
+        temp = end.getMinute() != 0 ? temp + 1 : temp;
+        return temp;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean contains(LocalDateTime localTime) {
-        return (localTime.isBefore(end) && localTime.isAfter(start));
+        return (localTime.isBefore(end) && localTime.isAfter(start)
+                || localTime.isEqual(end) || localTime.isEqual(start));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

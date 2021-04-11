@@ -58,7 +58,8 @@ public class DutyActivity extends AppCompatActivity {
     public static void getInstance(Duty duty, Context context) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(DutyActivity.DUTY_PARAMETERS, duty);
-        context.startActivity(new Intent(context, DutyActivity.class).putExtras(bundle));
+        context.startActivity(new Intent(context, DutyActivity.class)
+                .putExtras(bundle).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @SuppressLint("NonConstantResourceId")

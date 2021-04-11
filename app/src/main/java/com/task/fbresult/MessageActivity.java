@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -18,33 +19,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.task.fbresult.db.fbdao.FBDutyTypesDao;
 import com.task.fbresult.db.fbdao.FBMessageDao;
-import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
-import com.task.fbresult.db.fbdao.FBPersonDao;
-import com.task.fbresult.model.Duty;
+import com.task.fbresult.model.DutyIntervalData;
 import com.task.fbresult.model.MessageState;
 import com.task.fbresult.model.MyMessage;
-import com.task.fbresult.model.PeopleOnDuty;
-import com.task.fbresult.model.Person;
-import com.task.fbresult.util.DAORequester;
-import com.task.fbresult.util.FBUtils;
+import com.task.fbresult.util.IntervalViewGenerator;
+import com.task.fbresult.util.MessageUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import lombok.var;
+
+import static com.task.fbresult.util.FBUtils.removeFromPeopleOnDutyInterval;
+import static com.task.fbresult.util.FBUtils.saveNewPersonOnDutyInterval;
+import static com.task.fbresult.util.MessageUtils.removeMessagesOfPersonOnExcept;
 
 public class MessageActivity extends AppCompatActivity {
 
     public static final String MESSAGE_PARAMETERS = "message_key";
     private MyMessage message;
     private TextView tvMessageStatus;
-    private TextView tvReceiverTime;
-    private TextView tvReceiverFio;
-    private TextView tvSenderTime;
-    private TextView tvSenderFio;
-    private TextView tvSenderDutyTime;
-    private TextView tvSenderDutyType;
+    private TextView tvMessageActivityTitle;
     private FloatingActionButton acceptBt;
     private FloatingActionButton declineBt;
+
 
     public static void getInstance(MyMessage message, Context context) {
         Bundle bundle = new Bundle();
@@ -52,7 +52,7 @@ public class MessageActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, MessageActivity.class).putExtras(bundle));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
@@ -67,7 +67,9 @@ public class MessageActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        markAsChecked();
+        if (!MessageUtils.currentPersonIsAuthorOf(message))
+            markAsChecked();
+
         getUI();
         initUI();
         tryToUpdateMessageStatusUI();
@@ -78,15 +80,31 @@ public class MessageActivity extends AppCompatActivity {
             message.setMessageState(MessageState.READ);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void confirmExchange(View view) {
         if (message.getMessageState() == MessageState.READ)
             showConfirmDialog(getString(R.string.confirm_warning),
                     getString(R.string.confirm_warning_text),
                     (dialog, button) -> {
                         updateMessageStatus(MessageState.ACCEPTED);
+                        configureChangesInDB();
                         tryToUpdateMessageStatusUI();
                     });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void configureChangesInDB() {
+        var authorIntervalData = message.getAuthorIntervalData();
+        var recipientIntervalData = message.getRecipientIntervalData();
+        configureNewPersonOnDuty(authorIntervalData, recipientIntervalData.getPersonId());
+        configureNewPersonOnDuty(recipientIntervalData, authorIntervalData.getPersonId());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void configureNewPersonOnDuty(DutyIntervalData dutyIntervalData, String newPersonId) {
+        saveNewPersonOnDutyInterval(dutyIntervalData, newPersonId);
+        removeFromPeopleOnDutyInterval(dutyIntervalData);
+        removeMessagesOfPersonOnExcept(dutyIntervalData, message);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -99,10 +117,9 @@ public class MessageActivity extends AppCompatActivity {
                         tryToUpdateMessageStatusUI();
                     });
         }
-
     }
 
-    private void updateMessageStatus(MessageState status){
+    private void updateMessageStatus(MessageState status) {
         message.setMessageState(status);
         new FBMessageDao().update(message);
     }
@@ -117,13 +134,8 @@ public class MessageActivity extends AppCompatActivity {
                 }).show();
     }
 
-    private void setButtonVisibility(boolean isVisible) {
-        int value;
-        if (isVisible) {
-            value = View.VISIBLE;
-        } else {
-            value = View.INVISIBLE;
-        }
+    private void setButtonsVisibility(boolean isVisible) {
+        int value = isVisible ? View.VISIBLE : View.INVISIBLE;
 
         acceptBt.setEnabled(isVisible);
         declineBt.setEnabled(isVisible);
@@ -132,12 +144,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void getUI() {
-        tvSenderDutyType = findViewById(R.id.dutySenderType);
-        tvSenderDutyTime = findViewById(R.id.dutySenderTime);
-        tvSenderFio = findViewById(R.id.message_sender_fio);
-        tvSenderTime = findViewById(R.id.message_sender_duty_time);
-        tvReceiverFio = findViewById(R.id.message_receiver_fio);
-        tvReceiverTime = findViewById(R.id.message_receiver_duty_time);
+        tvMessageActivityTitle = findViewById(R.id.tvMessageActivityTitle);
         tvMessageStatus = findViewById(R.id.message_status);
         acceptBt = findViewById(R.id.accept_message_button);
         declineBt = findViewById(R.id.decline_message_button);
@@ -147,34 +154,37 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     private void initUI() {
-        FBPeopleOnDutyDao peopleOnDutyDao = new FBPeopleOnDutyDao();
-        PeopleOnDuty senderPeopleOnDuty = peopleOnDutyDao.getWithId(message.getAuthorOnDutyId());
-        PeopleOnDuty recipientPeopleOnDuty = peopleOnDutyDao.getWithId(message.getRecipientId());
-        Duty senderDuty = DAORequester.getDutyWithPeopleOnDuty(senderPeopleOnDuty);
-        tvSenderDutyType.setText(new FBDutyTypesDao().getWithId(senderDuty.getTypeId()).getTitle());
-        String[] froms = senderDuty.getFrom().split("T");
-        tvSenderDutyTime.setText(froms[0] + " " + froms[1] + " - " + senderDuty.getTo().split("T")[1]);
+        boolean currentPersonIsAuthor = MessageUtils.currentPersonIsAuthorOf(message);
+        var intervalsList = new ArrayList<DutyIntervalData>();
+        intervalsList.add(message.getAuthorIntervalData());
 
-
-        tvSenderFio.setText(getPersonById(senderPeopleOnDuty.getPersonId()).getFio());
-        tvReceiverFio.setText(getPersonById(recipientPeopleOnDuty.getPersonId()).getFio());
-
-        setPersonTime(senderPeopleOnDuty,tvSenderTime);
-        setPersonTime(recipientPeopleOnDuty,tvReceiverTime);
+        if (message.getRecipientIntervalData().getPeopleOnDutyId() != null)
+            intervalsList.add(message.getRecipientIntervalData());
+        else
+            tvMessageActivityTitle.setText(getString(R.string.in_credit).toUpperCase());
+        if (!currentPersonIsAuthor)
+            Collections.reverse(intervalsList);
+        pushViewsOf(intervalsList);
     }
 
-    @SuppressLint("SetTextI18n")
-    private void setPersonTime(PeopleOnDuty personOnDuty, TextView textView) {
-
-        String from = personOnDuty.getFrom().split("T")[1];
-        String to = personOnDuty.getTo().split("T")[1];
-        textView.setText(from + " - " + to);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void pushViewsOf(List<DutyIntervalData> dutyIntervalData) {
+        var intervalsLayout = (LinearLayout) findViewById(R.id.intervalsLayout);
+        for (int i = 0; i < dutyIntervalData.size(); i++) {
+            var data = dutyIntervalData.get(i);
+            var view = getViewOf(data, i == 0);
+            intervalsLayout.addView(view);
+        }
     }
 
-    private Person getPersonById(String id){
-        return new FBPersonDao().getWithId(id);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private View getViewOf(DutyIntervalData dutyIntervalData, boolean isYour) {
+        return IntervalViewGenerator.getViewOf(
+                dutyIntervalData,
+                getBaseContext(),
+                isYour);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -182,14 +192,12 @@ public class MessageActivity extends AppCompatActivity {
         if (isMessageForMe()) {
             updateMessageStatusUI();
         } else {
-            setButtonVisibility(false);
+            setButtonsVisibility(false);
         }
     }
 
     private boolean isMessageForMe() {
-        var currentPerson = FBUtils.getCurrentUserAsPerson();
-        var recipientPeopleOnDuty = new FBPeopleOnDutyDao().getWithId(message.getRecipientOnDutyId());
-        return recipientPeopleOnDuty.getPersonId().equals(currentPerson.getFirebaseId());
+        return !MessageUtils.currentPersonIsAuthorOf(message);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -200,18 +208,17 @@ public class MessageActivity extends AppCompatActivity {
                 tvMessageStatus.setText(R.string.message_status_wait);
                 break;
             case ACCEPTED:
-                setButtonVisibility(false);
+                setButtonsVisibility(false);
                 tvMessageStatus.setText(R.string.message_status_confirm);
                 tvMessageStatus.setTextColor(getColor(R.color.green));
                 break;
             case DECLINED:
-                setButtonVisibility(false);
+                setButtonsVisibility(false);
                 tvMessageStatus.setText(R.string.message_status_declined);
                 tvMessageStatus.setTextColor(getColor(R.color.red));
                 break;
         }
     }
-
 
 
     @SuppressLint("NonConstantResourceId")

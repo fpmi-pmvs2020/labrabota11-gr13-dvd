@@ -72,7 +72,7 @@
         android:textColor="@color/coral"
         app:layout_constraintTop_toTopOf="@id/tvMyDutyFrom"/>
 
-    <org.florescu.android.rangeseekbar.RangeSeekBar
+    <com.edmodo.rangebar.RangeBar
         android:id="@+id/sbMyDutyTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,9 +88,33 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="23dp"
         android:background="@color/dark_blue"
         app:layout_constraintTop_toBottomOf="@id/sbMyDutyTime" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/in_credit"
+        android:textSize="14sp"
+        android:textColor="@color/dark_blue"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toBottomOf="@id/cbInCredit"
+        app:layout_constraintEnd_toStartOf="@id/cbInCredit"
+        android:layout_marginEnd="5dp"
+        />
+
+    <CheckBox
+        android:id="@+id/cbInCredit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/dark_blue"
+        app:layout_constraintTop_toBottomOf="@id/msgBorderLine"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <TextView
         android:id="@+id/tvExchangeGoalPersonTitle"
@@ -102,7 +126,7 @@
         android:textColor="@color/coral"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/msgBorderLine" />
+        app:layout_constraintTop_toBottomOf="@id/cbInCredit" />
 
     <Spinner
         android:id="@+id/spExchangeGoalPersonMyDuty"
@@ -182,7 +206,7 @@
         android:textColor="@color/coral"
         app:layout_constraintTop_toTopOf="@id/tvOtherDutyFrom"/>
 
-    <org.florescu.android.rangeseekbar.RangeSeekBar
+    <com.edmodo.rangebar.RangeBar
         android:id="@+id/sbOtherDutyTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

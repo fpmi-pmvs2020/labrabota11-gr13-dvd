@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,24 +36,33 @@ import com.task.fbresult.db.DBFillers;
 import com.task.fbresult.db.fbdao.FBDutyDao;
 import com.task.fbresult.db.fbdao.FBPeopleOnDutyDao;
 import com.task.fbresult.dialogs.AlertDialogBuilder;
+import com.task.fbresult.model.Person;
 import com.task.fbresult.service.AutoLoadingBroadcastReceiver;
 import com.task.fbresult.util.FBUtils;
+import com.task.fbresult.util.WebUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import io.reactivex.functions.Consumer;
+import lombok.var;
+
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class MainActivity extends AppCompatActivity {
     private static final int SIGN_IN_CODE = 1;
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseAuth auth;
     private NavigationView navigationView;
+    private String alertToken;
+
 
     static {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         FirebaseDatabase.getInstance().getReference().keepSynced(true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,15 +73,31 @@ public class MainActivity extends AppCompatActivity {
 //        admin1@mail иванов в с
         auth = FirebaseAuth.getInstance();
 
-        startNotificationAlarm();
 
         if (auth.getCurrentUser() == null) {
             startSignInWindow();
         } else {
             configureScreen();
             configureAlertButton();
+            tryRegisterUser();
         }
     }
+
+    private void tryRegisterUser() {
+        Person currentUser = FBUtils.getCurrentUserAsPerson();
+        WebUtils.registerUser(currentUser, handleToken, (e) -> {
+            Log.d("web error", e.getMessage());
+        });
+
+    }
+    Consumer<Map<String, String>> handleToken = (response) -> {
+        String key = "key";
+        if (response.containsKey(key)) {
+            alertToken = response.get(key);
+            startNotificationAlarm();
+            configureAlertButton();
+        }
+    };
 
     private void configureAlertButton() {
         FloatingActionButton button = findViewById(R.id.alertFAB);
@@ -81,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private void alertButtonAction(View view) {
         AlertDialog alertDialog = new AlertDialogBuilder(this)
                 .build(getString(R.string.create_alert), null, () -> {
-                });
+                }, alertToken);
         alertDialog.show();
     }
 
@@ -90,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         long time = System.currentTimeMillis() + 5000;
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AutoLoadingBroadcastReceiver.class);
+        intent.putExtra("token", alertToken);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
         am.cancel(pendingIntent);
@@ -107,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             else {
                 configureScreen();
+                tryRegisterUser();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

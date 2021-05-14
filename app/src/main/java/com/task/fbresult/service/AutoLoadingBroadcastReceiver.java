@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,16 +20,17 @@ import androidx.annotation.RequiresApi;
 
 import com.task.fbresult.MainActivity;
 import com.task.fbresult.R;
-import com.task.fbresult.model.AlertDTO;
+import com.task.fbresult.model.AlertInputDTO;
+import com.task.fbresult.model.AlertNotificationDTO;
 import com.task.fbresult.model.Person;
+import com.task.fbresult.util.DAORequester;
 import com.task.fbresult.util.FBUtils;
 import com.task.fbresult.util.WebUtils;
 
-import java.io.Serializable;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
-import io.reactivex.internal.operators.single.SingleDoAfterTerminate;
+import lombok.var;
 
 
 @RequiresApi(api = Build.VERSION_CODES.R)
@@ -39,47 +41,68 @@ public class AutoLoadingBroadcastReceiver extends BroadcastReceiver {
     public static final String CURRENT_USER_TAG = "current_fb_user";
     private static final String channelId = "Your_channel_id";
     final String LOG_TAG = "myReceiverLogs";
+
     private Context context;
     private Person currentUser;
+    private String alertToken;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, "on receive", Toast.LENGTH_SHORT).show();
         this.context = context;
         Log.d(LOG_TAG, "onReceive " + intent.getAction());
 
+        alertToken = intent.getExtras().getString("token");
         setCurrentUser(intent);
-        Log.d(LOG_TAG, "onReceive user " + currentUser);
-        //TODO uncomment
 
-//        checkAlert();
-//        checkNewChangeMessage();
-//        setNext(context, intent);
-        createNotification("","",0); //delete it (only for testing)
+        Log.d(LOG_TAG, "onReceive token " + alertToken);
+        Log.d(LOG_TAG, "onReceive user " + currentUser);
+
+
+        checkAlert();
+        checkNewChangeMessage();
+        setNext(context, intent);
     }
 
-    private void setCurrentUser(Intent intent){
+
+    private void setCurrentUser(Intent intent) {
         currentUser = FBUtils.getCurrentUserAsPerson();
     }
+
     private void checkNewChangeMessage() {
-        if(isNewUnreadChangeMessage()){
+        if (isNewUnreadChangeMessage() && !isNotificationWithChangeMessageExist()) {
             createNotification(context.getString(R.string.change_notification_title), "", 1);
         }
     }
 
-    private boolean isNewUnreadChangeMessage() {
-        //todo check from db
-
+    private boolean isNotificationWithChangeMessageExist() {
+        StatusBarNotification[] notifications =
+                ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
+                        .getActiveNotifications();
+        for (StatusBarNotification notification : notifications) {
+            if (notification.getId() == NOTIFY_ID + 1) {
+                return true;
+            }
+        }
         return false;
     }
 
-    private void checkAlert() {
-        WebUtils.peekAlert(FBUtils.getCurrentUserAsPerson(),handle, (e)->{} );
+    private boolean isNewUnreadChangeMessage() {
+        return !DAORequester.getPersonIncomingMessages(currentUser).isEmpty();
     }
 
-    Consumer<List<AlertDTO>> handle = (response) ->{
-        if(!response.isEmpty()){
-            for (int i = 0; i < response.size(); i++) {
-                AlertDTO alertDTO = response.get(i);
+    private void checkAlert() {
+        if (alertToken != null) {
+            WebUtils.peekAlert(alertToken, handle, (e) -> {
+            });
+        }
+    }
+
+    Consumer<AlertInputDTO> handle = (response) -> {
+        List<AlertNotificationDTO> notifications = response.getNotifications();
+        if (!notifications.isEmpty()) {
+            for (int i = 0; i < notifications.size(); i++) {
+                var alertDTO = notifications.get(i);
                 createNotification(alertDTO.getType(), alertDTO.getMessage(), i);
             }
         }
@@ -88,10 +111,8 @@ public class AutoLoadingBroadcastReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.R)
     private void createNotification(String title, String content, int id) {
 
-
-
         Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        long[] vibrate = new long[] { 1000, 1000, 1000, 1000, 1000 };
+        long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
         NotificationManager nf = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(context, MainActivity.class);
 
@@ -103,15 +124,11 @@ public class AutoLoadingBroadcastReceiver extends BroadcastReceiver {
                 .setContentTitle(title)
                 .setVibrate(vibrate)
                 .setContentText(content)
-/*                .setFlag(Notification.FLAG_INSISTENT, true)
-                .setFlag(Notification.FLAG_SHOW_LIGHTS, true)*/
-                .setLights(Color.RED, 1,0)
+                .setLights(Color.RED, 1, 0)
                 .setSound(ringURI)
                 .setStyle(new Notification.BigTextStyle().bigText(content))
-                .setAutoCancel(false) // автоматически закрыть уведомление после нажатия if true
+                .setAutoCancel(false)
                 .setSmallIcon(R.mipmap.ic_launcher);
-
-        Toast.makeText(context, "new on res", Toast.LENGTH_SHORT).show();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(

@@ -18,8 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FBResult"
         android:usesCleartextTraffic="true">
-        <receiver android:name=".service.AutoLoadingBroadcastReceiver"
-            android:process=":receiver">
+        <receiver android:name=".service.AutoLoadingBroadcastReceiver">
+<!--            android:process=":receiver">-->
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

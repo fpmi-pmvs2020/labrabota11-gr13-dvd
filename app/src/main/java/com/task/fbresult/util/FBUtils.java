@@ -63,7 +63,7 @@ public class FBUtils {
                     peopleOnDuty.getFirebaseId(),
                     peopleOnDuty.getDutyId(),
                     peopleOnDuty.getFrom(),
-                    dutyIntervalData.getFrom());
+                    newFrom.toString());
 
         if (!basicEndTime.isEqual(newTo))
             createNewPeopleOnDuty(

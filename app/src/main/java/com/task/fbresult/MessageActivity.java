@@ -76,8 +76,10 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void markAsChecked() {
-        if (message.getMessageState() == MessageState.SENT)
+        if (message.getMessageState() == MessageState.SENT) {
             message.setMessageState(MessageState.READ);
+            new FBMessageDao().update(message);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

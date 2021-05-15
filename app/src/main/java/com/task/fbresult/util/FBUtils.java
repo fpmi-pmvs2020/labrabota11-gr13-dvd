@@ -56,7 +56,7 @@ public class FBUtils {
         var peopleOnDuty = peopleOnDutyDao.getWithId(peopleOnDutyId);
         var basicStartTime = peopleOnDuty.fromAsLocalDateTime();
         var basicEndTime = peopleOnDuty.toAsLocalDateTime();
-        var newFrom = LocalDateTimeHelper.parseString(dutyIntervalData.getFrom());
+        var newFrom = LocalDateTimeHelper.parseString(dutyIntervalData.getFrom()).minusMinutes(1);
         var newTo = LocalDateTimeHelper.parseString(dutyIntervalData.getTo());
         if (!basicStartTime.isEqual(newFrom))
             createNewPeopleOnDuty(
@@ -66,8 +66,6 @@ public class FBUtils {
                     dutyIntervalData.getFrom());
 
         if (!basicEndTime.isEqual(newTo))
-            if(newTo.getMinute() == 0)
-                newTo = newTo.minusMinutes(1);
             createNewPeopleOnDuty(
                     peopleOnDuty.getFirebaseId(),
                     peopleOnDuty.getDutyId(),

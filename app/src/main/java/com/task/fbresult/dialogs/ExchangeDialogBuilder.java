@@ -42,8 +42,11 @@ public class ExchangeDialogBuilder extends DialogBuilder {
     protected SeekBarConfiguration otherDutySeekBarConfiguration;
 
 
-    public ExchangeDialogBuilder(Context context, Duty currentDuty) {
+    public ExchangeDialogBuilder(Context context) {
         super(context);
+    }
+
+    public void setCurrentDuty(Duty currentDuty) {
         this.currentDuty = currentDuty;
     }
 
@@ -69,14 +72,10 @@ public class ExchangeDialogBuilder extends DialogBuilder {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected void configureSeekBars() {
-        TextView tvMyDutyFrom = mainWindow.findViewById(R.id.tvMyDutyFrom);
-        TextView tvMyDutyTo = mainWindow.findViewById(R.id.tvMyDutyTo);
-        RangeBar myDutyRangeSeekBar = mainWindow.findViewById(R.id.sbMyDutyTime);
-        myDutySeekBarConfiguration = new SeekBarConfiguration(myDutyRangeSeekBar, tvMyDutyFrom, tvMyDutyTo);
-        TextView tvOtherDutyFrom = mainWindow.findViewById(R.id.tvOtherDutyFrom);
-        TextView tvOtherDutyTo = mainWindow.findViewById(R.id.tvOtherDutyTo);
-        RangeBar otherDutyRangeSeekBar = mainWindow.findViewById(R.id.sbOtherDutyTime);
-        otherDutySeekBarConfiguration = new SeekBarConfiguration(otherDutyRangeSeekBar, tvOtherDutyFrom, tvOtherDutyTo);
+        myDutySeekBarConfiguration
+                = new SeekBarConfiguration(R.id.sbMyDutyTime, R.id.tvMyDutyFrom, R.id.tvMyDutyTo);
+        otherDutySeekBarConfiguration
+                = new SeekBarConfiguration(R.id.sbOtherDutyTime, R.id.tvOtherDutyFrom, R.id.tvOtherDutyTo);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -86,11 +85,7 @@ public class ExchangeDialogBuilder extends DialogBuilder {
                 .map(PersonWithDuty::new)
                 .collect(Collectors.toList());
 
-        List<String> personWithTime = persons.stream()
-                .map(this::getNameAndDutyTime)
-                .collect(Collectors.toList());
-
-        spGoalPerson.setAdapter(SpinnerUtils.getStringAdapterOf(context, personWithTime));
+        spGoalPerson.setAdapter(SpinnerUtils.getStringAdapterOf(context, persons, this::getNameAndDutyTime));
         configureSpinner(spGoalPerson, goalPeopleOnDuties, otherDutySeekBarConfiguration);
     }
 
@@ -176,18 +171,18 @@ public class ExchangeDialogBuilder extends DialogBuilder {
     }
 
     @RequiredArgsConstructor
-    protected final static class SeekBarConfiguration {
+    protected final class SeekBarConfiguration {
         public RangeBar rangeSeekBar;
         private TextView tvFrom;
         private TextView tvTo;
         private LocalDateTimeInterval interval;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public SeekBarConfiguration(RangeBar rangeSeekBar, TextView tvFrom, TextView tvTo) {
+        public SeekBarConfiguration(int rangeSeekBarId, int tvFromId, int tvToId) {
+            rangeSeekBar = mainWindow.findViewById(rangeSeekBarId);
             configureRangeSeekBar(rangeSeekBar);
-            this.rangeSeekBar = rangeSeekBar;
-            this.tvFrom = tvFrom;
-            this.tvTo = tvTo;
+            this.tvFrom = mainWindow.findViewById(tvFromId);
+            this.tvTo = mainWindow.findViewById(tvToId);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -238,7 +233,7 @@ public class ExchangeDialogBuilder extends DialogBuilder {
             int maxValue = rangeSeekBar.getRightIndex();
             var newStartLocalDateTime = interval.getStart().plusHours(minValue);
             var newEndLocalDateTime = interval.getEnd().minusHours(interval.getHoursBetween() - maxValue);
-            if(newEndLocalDateTime.getMinute() == 0)
+            if (newEndLocalDateTime.getMinute() == 0)
                 newEndLocalDateTime = newEndLocalDateTime.minusMinutes(1);
             return new LocalDateTimeInterval(newStartLocalDateTime, newEndLocalDateTime);
         }

@@ -15,6 +15,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.task.fbresult.dialogs.DialogBuilderFactory;
+import com.task.fbresult.dialogs.DialogType;
 import com.task.fbresult.dialogs.ExchangeDialogBuilder;
 import com.task.fbresult.dialogs.ExchangeOnCurrentDialogBuilder;
 import com.task.fbresult.model.Duty;
@@ -67,12 +69,8 @@ public class DutyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_exchange:
-
-                if(itIsCurrentUserDuty()){
-                    showExchangeOnMyDialog();
-                }else{
-                    showExchangeOnOtherDialog();
-                }
+                var exchangeType = getExchangeType();
+                showDialog(exchangeType);
                 return true;
             case android.R.id.home:
                 //do whatever
@@ -83,16 +81,10 @@ public class DutyActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showExchangeOnMyDialog() {
-        var builder = new ExchangeOnCurrentDialogBuilder(this, duty);
-        AlertDialog dialog = builder.build(null, null, () -> {
-        });
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
-        dialog.show();
-    }
-
-    private void showExchangeOnOtherDialog(){
-        var builder = new ExchangeDialogBuilder(this, duty);
+    private void showDialog(DialogType dialogType) {
+        var factory = new DialogBuilderFactory(this);
+        var builder = (ExchangeDialogBuilder) factory.getDialogBuilder(dialogType);
+        builder.setCurrentDuty(duty);
         AlertDialog dialog = builder.build(null, null, () -> {
         });
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
@@ -105,7 +97,14 @@ public class DutyActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean itIsCurrentUserDuty(){
+    private DialogType getExchangeType() {
+        if (itIsCurrentUserDuty())
+            return DialogType.EXCHANGE_ON_CURRENT;
+        else
+            return DialogType.MAKE_EXCHANGE;
+    }
+
+    private boolean itIsCurrentUserDuty() {
         Person current = FBUtils.getCurrentUserAsPerson();
         return FBUtils.personIsOnDuty(current, duty);
     }

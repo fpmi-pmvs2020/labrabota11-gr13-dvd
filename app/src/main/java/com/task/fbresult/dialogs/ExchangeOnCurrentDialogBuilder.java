@@ -41,8 +41,8 @@ public class ExchangeOnCurrentDialogBuilder extends ExchangeDialogBuilder {
 
     private PeopleOnDuty myPeopleOnDuty;
 
-    public ExchangeOnCurrentDialogBuilder(Context context, Duty currentDuty) {
-        super(context, currentDuty);
+    public ExchangeOnCurrentDialogBuilder(Context context) {
+        super(context);
     }
 
     @Override

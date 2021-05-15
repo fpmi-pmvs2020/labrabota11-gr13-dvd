@@ -48,7 +48,7 @@ public class AutoLoadingBroadcastReceiver extends BroadcastReceiver {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "on receive", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "on receive", Toast.LENGTH_SHORT).show();
         this.context = context;
         Log.d(LOG_TAG, "onReceive " + intent.getAction());
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TextView android:id="@+id/tvDialogTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:gravity="center"
+    android:textAllCaps="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:textColor="@color/dark_blue"
+    android:textAlignment="center"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

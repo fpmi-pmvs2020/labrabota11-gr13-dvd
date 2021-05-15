@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = new AlertDialogBuilder(this)
                 .build(getString(R.string.create_alert), null, () -> {
                 }, alertToken);
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.coral_oval_shape);
         alertDialog.show();
     }
 

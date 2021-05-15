@@ -85,7 +85,7 @@ public class DutyActivity extends AppCompatActivity {
         var factory = new DialogBuilderFactory(this);
         var builder = (ExchangeDialogBuilder) factory.getDialogBuilder(dialogType);
         builder.setCurrentDuty(duty);
-        AlertDialog dialog = builder.build(null, null, () -> {
+        AlertDialog dialog = builder.build(getString(R.string.exchange_dialog_title), null, () -> {
         });
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
         dialog.show();

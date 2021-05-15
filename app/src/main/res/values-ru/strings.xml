@@ -108,4 +108,5 @@
     </string-array>
     <string name="change_notification_title">У вас есть непрочитанный запрос на замену</string>
     <string name="alert_notificatio_title">Тревога</string>
+    <string name="exchange_dialog_title">Настройте замену</string>
 </resources>

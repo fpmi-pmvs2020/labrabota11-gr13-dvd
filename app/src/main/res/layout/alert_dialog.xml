@@ -7,30 +7,39 @@
     android:background="@color/gypsum"
     android:padding="10dp">
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/dark_blue"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvAlertType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:text="@string/choice_alert_type"
         android:textColor="@color/coral"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/line" />
 
     <Spinner
         android:id="@+id/spAlertType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="13dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/bottom_border_blue_line"
 
         android:entries="@array/alert_reasons"
         android:inputType="textPassword"
         android:padding="10dp"
+        app:layout_goneMarginTop="4dp"
         android:scrollbarSize="15dp"
         android:spinnerMode="dialog"
         android:textColor="@color/dark_blue"
@@ -54,11 +63,12 @@
         android:id="@+id/alertSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/dark_blue"
         android:text="@string/alert_from_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/line"/>
 
     <EditText
         android:id="@+id/editTextDescription"
@@ -66,6 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:inputType="textPersonName"
         android:lines="8"
         android:minLines="2"

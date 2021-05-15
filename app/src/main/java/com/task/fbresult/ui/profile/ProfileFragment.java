@@ -138,7 +138,7 @@ public class ProfileFragment extends Fragment implements FieldsDisplay {
     private void updatePassword() {
         DialogBuilderFactory builderFactory = new DialogBuilderFactory(getContext());
         DialogBuilder builder = builderFactory.getDialogBuilder(DialogType.PASSWORD_UPDATE);
-        AlertDialog dialog = builder.build(null,
+        AlertDialog dialog = builder.build(getString(R.string.pass_dialog_title),
                 null, this);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.light_blue_oval_shape);
         dialog.show();

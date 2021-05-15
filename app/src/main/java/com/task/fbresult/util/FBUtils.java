@@ -79,8 +79,6 @@ public class FBUtils {
                     newTo.plusMinutes(1).toString(),
                     peopleOnDuty.getTo()
             );
-
-        peopleOnDutyDao.delete(peopleOnDuty);
     }
 
     public static void createNewPeopleOnDuty(String peopleOnDutyId, String dutyId,

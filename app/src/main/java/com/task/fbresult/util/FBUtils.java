@@ -69,7 +69,7 @@ public class FBUtils {
             createNewPeopleOnDuty(
                     peopleOnDuty.getFirebaseId(),
                     peopleOnDuty.getDutyId(),
-                    newTo.toString(),
+                    newTo.plusMinutes(1).toString(),
                     peopleOnDuty.getTo()
             );
 

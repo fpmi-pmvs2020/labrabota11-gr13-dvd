@@ -59,9 +59,9 @@ public class FBUtils {
         var newFrom = LocalDateTimeHelper.parseString(dutyIntervalData.getFrom());
         var newTo = LocalDateTimeHelper.parseString(dutyIntervalData.getTo());
 
-        peopleOnDutyDao.delete(peopleOnDuty);
 
         if(basicStartTime.isEqual(newFrom) && basicEndTime.isEqual(newTo)){
+            peopleOnDutyDao.delete(peopleOnDuty);
             return;
         }
 
@@ -79,6 +79,8 @@ public class FBUtils {
                     newTo.plusMinutes(1).toString(),
                     peopleOnDuty.getTo()
             );
+
+        peopleOnDutyDao.delete(peopleOnDuty);
     }
 
     public static void createNewPeopleOnDuty(String peopleOnDutyId, String dutyId,
